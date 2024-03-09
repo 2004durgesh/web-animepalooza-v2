@@ -10,9 +10,9 @@ import Image from 'next/image';
 
 const HeroSection = ({ animeSrc, mangaSrc, movieSrc }) => {
     const slides = [
-        { src: animeSrc, type: 'video', heroText: 'Embark on an Epic Journey<br />through the World of Anime' },
+        { src: animeSrc, type: 'image', heroText: 'Embark on an Epic Journey<br />through the World of Anime',width: 964, height: 480 },
         { src: mangaSrc, type: 'image', heroText: 'Unleash Your Imagination,<br />One Page at a Time', width: 4340, height: 2441 },
-        { src: movieSrc, type: 'video', heroText: 'Streaming Asian Dramas and Global<br />Entertainment at Your Fingertips' },
+        { src: movieSrc, type: 'image', heroText: 'Streaming Asian Dramas and Global<br />Entertainment at Your Fingertips',width: 4340, height: 2441  },
     ];
 
     const heroTextStyle = 'absolute top-1/2 text-white text-2xl sm:text-4xl font-pro-bold font-bold pl-4';
@@ -31,14 +31,7 @@ const HeroSection = ({ animeSrc, mangaSrc, movieSrc }) => {
         >
             {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
-                    {slide.type === 'video' ? (
-                        <>
-                            <video src={slide.src} preload='auto' loop autoPlay muted className='w-screen h-screen object-cover'></video>
-                        </>
-
-                    ) : (
-                        <Image src={slide.src} alt='manga' className='w-screen h-screen object-cover' width={slide.width} height={slide.height} />
-                    )}
+                    <Image src={slide.src} alt={slide.type} className='w-screen h-screen object-cover' width={slide.width} height={slide.height} />
                     <h1 className={heroTextStyle} dangerouslySetInnerHTML={{ __html: slide.heroText }}></h1>
                 </SwiperSlide>
             ))}

@@ -1,20 +1,15 @@
 import fetchData from '@/components/Datafetcher'
-import Trending from '@/components/TrendingAndPopular'
-import Popular from '@/components/TrendingAndPopular'
+import ContentList from '@/components/ContentList'
 import React from 'react'
 
 const Anime = async () => {
-  let trendingData=1
-  setTimeout(async () => {
-    console.log("Anime")
-  }, 1000);
-  trendingData =await fetchData("meta","anilist","trending");
-  const popularData=await fetchData("meta","anilist","popular");
+  const trendingAnime = await fetchData("meta","anilist","trending");
+  const popularAnime = await fetchData("meta","anilist","popular");
 
   return (
     <>
-      <Trending headerText='Trending Anime' data={trendingData} />
-      <Popular headerText='Popular Anime' data={popularData} />
+      <ContentList headerText='Trending Anime' data={trendingAnime} contentType="anime" />
+      <ContentList headerText='Popular Anime' data={popularAnime} contentType="anime" />
     </>
   )
 }
