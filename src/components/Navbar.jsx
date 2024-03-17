@@ -12,11 +12,11 @@ const Navbar = () => {
   // Array of navigation items
   const listItems = ['home', 'anime', 'manga', 'movies','favorites'];
   const showNavbarRoutes = ['/', '/anime', '/anime/gogoanime', '/manga', '/manga/mangadex', '/manga/mangareader', '/movies', '/movies/dramacool', '/movies/flixhq', '/favorites'];
-
+console.log((showNavbarRoutes.includes(pathname))?"true":"false");
   return (
     <>
       {/* Navigation bar */}
-      {!(showNavbarRoutes.includes(pathname.split("")[1]))?<nav className='flex items-center py-4 px-2 absolute top-0 w-full z-20'>
+      {(showNavbarRoutes.includes(pathname))?<nav className='flex items-center py-4 px-2 absolute top-0 w-full z-20'>
         {/* Background overlay for mobile menu */}
 
         {pathname==='/'?<Link href='/'>
@@ -30,7 +30,7 @@ const Navbar = () => {
           {listItems.map((item) => (
             <li className='font-pro-bold font-semibold text-accent text-lg text-white capitalize pr-6 cursor-pointer' key={item}>
               {/* React Router Link for navigation */}
-              {<Link href={item !== 'home' ? `/${item}` : `/`}>{item}</Link>}
+              {<Link href={item !== 'home' ? `/${item}` : `/`} prefetch>{item}</Link>}
             </li>
           ))}
         </ul>

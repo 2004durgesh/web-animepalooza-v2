@@ -1,0 +1,37 @@
+[
+    {
+        "slug": "/gogoanime",
+        "service": "anime",
+        "name": "Gogoanime",
+        "logo": "/public/assets/images/gogoanime.png",
+        "description": "Gogoanime/Anitaku is a totally free-running website where you can easily watch or download anime in high quality with English subtitles."
+    },
+    {
+        "slug":"/mangadex",
+        "service":"manga",
+        "name":"MangaDex",
+        "logo":"/public/assets/images/mangadex.png",
+        "description":"MangaDex is a manga reader that is available for free. It is a platform that lets you read manga online for free."
+    },
+    {
+        "slug":"/dramacool",
+        "service":"movies",
+        "name":"DramaCool",
+        "logo":"/public/assets/images/dramacool.png",
+        "description":"Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!"
+    },
+    {
+        "slug":"/flixhq",
+        "service":"movies",
+        "name":"FlixHQ",
+        "logo":"/public/assets/images/flixhq.png",
+        "description":"Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming"
+    },
+    {
+        "slug":"/goku",
+        "service":"movies",
+        "name":"Goku",
+        "logo":"/public/assets/images/goku.png",
+        "description":"GOKU | Watch Movies online Free on Goku with No Ads And No Account registration- Get Instant Movies Stream, Get Movies in HD quality."
+    }
+]

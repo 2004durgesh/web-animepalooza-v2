@@ -1,9 +1,12 @@
 // "use client"
-import Download from "@/components/Download";
+import ContentList from "@/components/ContentList";
 import HeroSection from "@/components/HeroSection";
-
-export default function Home() {
-  
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import fetchData from "@/components/Datafetcher";
+export default async  function Home() {
+  const trendingAnime = await fetchData("meta","anilist","trending");
+  const popularAnime = await fetchData("meta","anilist","popular");
+  const recentAnime = await fetchData("meta","anilist","recent-episodes");
   return (
     <>
       <div className="">
@@ -12,7 +15,35 @@ export default function Home() {
           <div className="absolute z-10 pointer-events-none inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/80"></div>
         </div>
       </div>
-      {/* <Download/> */}
+      <div className="my-4">
+        <Tabs defaultValue="top-picks" className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value="top-picks">Top Picks</TabsTrigger>
+            <TabsTrigger value="trending-now">Trending Now</TabsTrigger>
+            <TabsTrigger value="popular">Popular</TabsTrigger>
+            <TabsTrigger value="recent-added">Recent Added</TabsTrigger>
+          </TabsList>
+          <TabsContent value="top-picks">
+            <div>Content for Top Picks</div>
+          </TabsContent>
+          <TabsContent value="trending-now">
+          <div className="w-screen">
+            <ContentList headerText='Trending Anime' data={trendingAnime} service="meta" provider="anilist" otherParams="trending" contentType="anime" />
+          </div>
+          </TabsContent>
+          <TabsContent value="popular">
+          <div className="w-screen">
+            <ContentList headerText='Popular Anime' data={popularAnime} service="meta" provider="anilist" otherParams="popular" contentType="anime" />
+          </div>
+          </TabsContent>
+          <TabsContent value="recent-added">
+          <div className="w-screen">
+            <ContentList headerText='Recent Anime' data={recentAnime} service="meta" provider="anilist" otherParams="recent-episodes" contentType="anime" />
+          </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+
     </>
   )
 }

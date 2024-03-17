@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
       <Navbar/>
-      {children}
+      <div className="max-w-[80%] mx-auto overflow-hidden">{children}</div>
       </body>
     </html>
   )
