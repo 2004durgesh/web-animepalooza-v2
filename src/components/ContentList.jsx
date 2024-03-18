@@ -3,7 +3,6 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay"
 import { Suspense, createElement, useState } from "react";
 import Loading from "@/app/(services)/loading";
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays } from "react-icons/hi2";
@@ -11,6 +10,7 @@ import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchData from "@/components/Datafetcher"
+import { usePathname } from "next/navigation";
 
 export function MiniDescription({ icon, text }) {
   return (
@@ -22,6 +22,8 @@ export function MiniDescription({ icon, text }) {
 }
 
 const ContentList = ({ headerText, service, provider, otherParams, data }) => {
+  const pathname = usePathname();
+  console.log(pathname);
   const isArray = Array.isArray(data);
   const { currentPage, hasNextPage, results } = isArray ? {} : data;
   const [currPage, setCurrPage] = useState(isArray ? 1 : currentPage);
@@ -29,13 +31,13 @@ const ContentList = ({ headerText, service, provider, otherParams, data }) => {
 
   const fetchMoreData = async () => {
     console.log("i claed");
-    const newData = await fetchData(service, provider, otherParams, currPage + 1)
+    const newData = await fetchData(service, provider, otherParams, { page: currPage + 1 })
     setCurrPage(currPage + 1)
     setItems(items.concat(isArray ? newData : newData.results));
     console.log("new", newData);
   }
+  console.log(data);
 
- 
   return (
     <Suspense fallback={<Loading />}>
       <h1 className="text-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl px-4 font-pro-bold my-4">{headerText}</h1>
@@ -65,7 +67,7 @@ const ContentList = ({ headerText, service, provider, otherParams, data }) => {
                     </CardTitle>
                     <div className="flex items-center space-x-4 mx-4">
                       <Badge variant="secondary" className='py-1 px-2'>{result.type}</Badge>
-                      <Link href="#" className="hover:underline transition-all duration-300 active:animate-ping">
+                      <Link href={`${pathname}/info/${result.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
                         Watch Now
                       </Link>
                     </div>
@@ -90,8 +92,8 @@ const ContentList = ({ headerText, service, provider, otherParams, data }) => {
                         <span className='pl-2'>Trailer</span>
                       </Link>
                     )}
-                    
-                    {(service==='movies'?result?.duration:null || result?.season) && (
+
+                    {((service === 'movies' ? result?.duration : null) || result?.season) && (
                       <div className='flex'>
                         <span className='pl-2'>{result?.duration ?? result?.season}</span>
                       </div>

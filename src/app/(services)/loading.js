@@ -9,7 +9,7 @@ const SkeletonComponent = () => (
 const Loading = () => {
     return (
         <>
-            <div className='flex  justify-center'>
+            <div className='flex flex-wrap justify-center'>
                 {Array(6).fill().map((_, i) => {
                     return (
                         <Card key={i} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 xl:w-1/7 animate-pulse m-2">
