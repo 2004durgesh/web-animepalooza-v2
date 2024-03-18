@@ -9,8 +9,8 @@ const ProviderList = ({name,description,imgSrc,slug}) => {
   const href = `${pathname}${slug}`;
   console.log(pathname);
   return (
-    <Link href={href} className="p-4 ">
-      <div className=" hover:scale-105 active:scale-90 duration-200 gap-4 mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <Link href={href} className="p-4">
+      <div className="border-b hover:scale-105 active:scale-90 duration-200 gap-4 mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
           <div className="flex-shrink-0">
             <Image
