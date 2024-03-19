@@ -23,7 +23,9 @@ export function MiniDescription({ icon, text }) {
 
 const ContentList = ({ headerText, service, provider, otherParams, data }) => {
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
+  
+  
   const isArray = Array.isArray(data);
   const { currentPage, hasNextPage, results } = isArray ? {} : data;
   const [currPage, setCurrPage] = useState(isArray ? 1 : currentPage);
@@ -37,10 +39,9 @@ const ContentList = ({ headerText, service, provider, otherParams, data }) => {
     console.log("new", newData);
   }
   console.log(data);
-
   return (
     <Suspense fallback={<Loading />}>
-      <h1 className="text-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl px-4 font-pro-bold my-4">{headerText}</h1>
+      <h1 className="text-primary text-2xl font-bold tracking-tighter lg:text-3xl xl:text-4xl/relaxed px-4 font-pro-bold my-4">{headerText}</h1>
       <InfiniteScroll
         dataLength={items.length} //This is important field to render the next data
         next={fetchMoreData}
