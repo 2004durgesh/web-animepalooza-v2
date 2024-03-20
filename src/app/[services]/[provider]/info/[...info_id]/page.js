@@ -112,7 +112,7 @@ const page = async ({ params }) => {
                     </iframe>
                 }
                 <div className={`space-y-4 ${info?.trailer ? 'col-span-3' : 'col-span-5'}`}>
-                    <ContentList headerText='Recommendations' data={info?.recommendations} />
+                    <ContentList params={params} headerText='Recommendations' data={info?.recommendations} />
                 </div>
             </div>
         </>

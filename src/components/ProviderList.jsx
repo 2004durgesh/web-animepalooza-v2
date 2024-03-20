@@ -5,9 +5,10 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 
 const ProviderList = ({name,description,imgSrc,slug}) => {
+  console.log(imgSrc);
   const pathname = usePathname();
   const href = `${pathname}${slug}`;
-  console.log(pathname);
+  // console.log(pathname);
   return (
     <Link href={href} className="p-4">
       <div className="border-b hover:scale-105 active:scale-90 duration-200 gap-4 mx-auto py-8 px-4 sm:px-6 lg:px-8">

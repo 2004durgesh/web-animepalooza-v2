@@ -1,14 +1,17 @@
+import fetchData from '@/components/Datafetcher'
+import ContentList from '@/components/ContentList'
+import React from 'react'
 import ProviderList from '@/components/ProviderList';
 import ServiceProvider from '@/constants/ServiceProvider';
-import React from 'react'
 
-const Manga =  () => {
- 
+const page = ({params}) => {
+  
+
   return (
     <>
-       <h1 className="text-3xl font-bold mb-8">Explore Providers</h1>
+      <h1 className="text-3xl font-bold mb-8">Explore Providers</h1>
       {ServiceProvider.map((provider) => {
-        return provider.service==='manga'&&<ProviderList
+        return provider.service===params.services&&<ProviderList
           key={provider.name}
           service={provider.service}
           name={provider.name}
@@ -19,9 +22,9 @@ const Manga =  () => {
 
       })}
 
-    </>
 
+    </>
   )
 }
 
-export default Manga
+export default page

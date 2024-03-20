@@ -4,13 +4,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image";
 import { Suspense, createElement, useState } from "react";
-import Loading from "@/app/(services)/loading";
+import Loading from "@/help/loading";
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays } from "react-icons/hi2";
 import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchData from "@/components/Datafetcher"
-import { usePathname } from "next/navigation";
 
 export function MiniDescription({ icon, text }) {
   return (
@@ -21,10 +20,8 @@ export function MiniDescription({ icon, text }) {
   )
 }
 
-const ContentList = ({ headerText, service, provider, otherParams, data }) => {
-  const pathname = usePathname();
-  // console.log(pathname);
-  
+const ContentList = ({params, headerText, service, provider, otherParams, data }) => {
+  console.log(params);
   
   const isArray = Array.isArray(data);
   const { currentPage, hasNextPage, results } = isArray ? {} : data;
@@ -47,7 +44,7 @@ const ContentList = ({ headerText, service, provider, otherParams, data }) => {
         next={fetchMoreData}
         hasMore={hasNextPage}
         style={{ display: 'flex', flexDirection: 'row' }}
-        loader={<h1 className="text-red text-7xl">loaghd...</h1>}
+        loader={<h1 className="text-red text-7xl">loading...</h1>}
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
@@ -68,7 +65,7 @@ const ContentList = ({ headerText, service, provider, otherParams, data }) => {
                     </CardTitle>
                     <div className="flex items-center space-x-4 mx-4">
                       <Badge variant="secondary" className='py-1 px-2'>{result.type}</Badge>
-                      <Link href={`${pathname}/info/${result.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
+                      <Link href={`/${params?.services}/${params?.provider}/info/${result.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
                         Watch Now
                       </Link>
                     </div>
