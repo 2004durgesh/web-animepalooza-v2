@@ -7,38 +7,45 @@
         "description": "Gogoanime/Anitaku is a totally free-running website where you can easily watch or download anime in high quality with English subtitles."
     },
     {
-        "slug":"/mangadex",
-        "service":"manga",
-        "name":"MangaDex",
-        "logo":"/assets/images/mangadex.jpg",
-        "description":"MangaDex is a manga reader that is available for free. It is a platform that lets you read manga online for free."
+        "slug": "/mangadex",
+        "service": "manga",
+        "name": "MangaDex",
+        "logo": "/assets/images/mangadex.jpg",
+        "description": "MangaDex is a manga reader that is available for free. It is a platform that lets you read manga online for free."
     },
     {
-        "slug":"/mangareader",
-        "service":"manga",
-        "name":"MangaReader",
-        "logo":"/assets/images/mangareader.jpg",
-        "description":"Free to Read and Download Manga in Highest quality - Daily Update - No Ads - Read Manga Online NOW!"
+        "slug": "/mangareader",
+        "service": "manga",
+        "name": "MangaReader",
+        "logo": "/assets/images/mangareader.jpg",
+        "description": "Free to Read and Download Manga in Highest quality - Daily Update - No Ads - Read Manga Online NOW!"
     },
     {
-        "slug":"/dramacool",
+        "slug": "/dramacool",
+        "service": "movies",
+        "name": "DramaCool",
+        "logo": "/assets/images/dramacool.jpeg",
+        "description": "Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!"
+    },
+    {
+        "slug": "/flixhq",
+        "service": "movies",
+        "name": "FlixHQ",
+        "logo": "/assets/images/flixhq.png",
+        "description": "Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming"
+    },
+    {
+        "slug": "/goku",
+        "service": "movies",
+        "name": "Goku",
+        "logo": "/assets/images/goku.png",
+        "description": "GOKU | Watch Movies online Free on Goku with No Ads And No Account registration- Get Instant Movies Stream, Get Movies in HD quality."
+    },
+    {
+        "slug": "/movieshd",
         "service":"movies",
-        "name":"DramaCool",
-        "logo":"/assets/images/dramacool.jpeg",
-        "description":"Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!"
-    },
-    {
-        "slug":"/flixhq",
-        "service":"movies",
-        "name":"FlixHQ",
-        "logo":"/assets/images/flixhq.png",
-        "description":"Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming"
-    },
-    {
-        "slug":"/goku",
-        "service":"movies",
-        "name":"Goku",
-        "logo":"/assets/images/goku.png",
-        "description":"GOKU | Watch Movies online Free on Goku with No Ads And No Account registration- Get Instant Movies Stream, Get Movies in HD quality."
+        "name":"MoviesHDWatch",
+        "logo":"/assets/images/movieshd.png",
+        "description":"Fast and Free streaming of over 350,000 movies and tv series in our database. No registration, no payment, 100% Free full HD"
     }
 ]
