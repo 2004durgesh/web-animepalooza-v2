@@ -9,12 +9,17 @@ import ContentList from '@/components/ContentList';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from 'next/link';
+import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays, HiOutlineClock, HiOutlinePlayCircle } from "react-icons/hi2";
+import { IoCheckmarkDoneOutline } from "react-icons/io5"
 import IconText from '@/components/IconText';
-import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays, HiOutlineClock, IoCheckmarkDoneOutline } from '@/constants/Icon'
 
 const page = async ({ params }) => {
-    const info = await fetchData('meta', 'anilist', `data/${params.info_id[0]}`, { provider: params.provider })
-    const episodes = await fetchData('meta', 'anilist', `episodes/${params.info_id[0]}`, { provider: params.provider })
+    let services = params.services === 'anime' || params.services === 'manga' ? 'meta' : params.services;
+    let provider = params.services === 'anime' || params.services === 'manga' ? "anilist" : params.provider;
+    let animeAndMangaInfo = await fetchData(services, provider, `data/${params.info_id.join("/")}`, { provider: params.provider })
+    let movieInfo = await fetchData(services, provider, `info`, { id: params.info_id.join("/") })
+    const info = params.services === 'anime' || params.services === 'manga' ? animeAndMangaInfo : movieInfo
+    const episodes = params.services === 'anime' || params.services === 'manga' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : movieInfo?.episodes;
     const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
     const ExtraInfoItem = ({ label, children }) => (
         <p className='text-xs sm:text-sm md:text-base lg:text-lg text-white'>
@@ -29,6 +34,7 @@ const page = async ({ params }) => {
 
     return (
         <>
+            {/* <div>{JSON.stringify(params.info_id.join("/"))}</div> */}
             <div style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info.cover})`
             }}
@@ -36,24 +42,24 @@ const page = async ({ params }) => {
             >
                 <div className='backdrop-blur-md h-96 w-full flex flex-col md:flex-row items-center justify-center px-4'>
                     <div className='self-center md:self-end my-4 w-full md:w-1/3 order-2 md:order-1 text-center'>
-                        <h1 className='font-bold text-2xl pro-bold inline '>{info.title.english}</h1>
+                        <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english || info?.title}</h1>
                         <div className='flex justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info.type}</ResponsiveText>
-                            <IconText Icon={<HiOutlineCalendarDays />}>{info.releaseDate}</IconText>
-                            <IconText Icon={<HiOutlineRectangleStack />}>{info.totalEpisodes}</IconText>
+                            {info?.releaseDate&&<IconText Icon={<HiOutlineCalendarDays />}>{info.releaseDate}</IconText>}
+                            {info?.totalEpisodes && <IconText Icon={<HiOutlineRectangleStack />}>{info.totalEpisodes}</IconText>}
                         </div>
                     </div>
-                    <Image src={info.image} alt={info.title.english} height={284} width={203} className='mx-auto h-full w-auto order-2' />
+                    <Image src={info.image} alt={info?.title?.english ?? info?.title} height={284} width={203} className='mx-auto h-full w-auto order-2' />
                     <div className='self-center md:self-end my-4 w-full md:w-1/3 order-3'>
                         <div className='flex flex-wrap divide-x-2 gap-x-2'>
-                            <IconText Icon={info.status === "Completed" ? <IoCheckmarkDoneOutline /> : <HiOutlineClock />}>
+                            {info?.status && <IconText Icon={info.status === "Completed" ? <IoCheckmarkDoneOutline /> : <HiOutlineClock />}>
                                 {info.status}
-                            </IconText>
-                            <IconText Icon={<HiOutlineStar />}>{(Number(info.rating) / 10).toFixed(1)}</IconText>
-                            {info.status !== "Completed" && <ResponsiveText>Ep {info.nextAiringEpisode.episode}, {airingDate.toDateString()}</ResponsiveText>}
+                            </IconText>}
+                            {info?.rating&&<IconText Icon={<HiOutlineStar />}>{`${params.services === 'movies' ? info?.rating : (Number(info.rating) / 10).toFixed(1)}`}</IconText>}
+                            {info.status !== "Completed" && info?.nextAiringEpisode && <ResponsiveText>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</ResponsiveText>}
                         </div>
                         <ScrollArea className="whitespace-nowrap">
-                            {info.genres.map((genre, index) => (
+                            {info?.genres?.map((genre, index) => (
                                 <Badge variant="outline" key={index} className='m-1 text-white inline-block'>{genre}</Badge>
                             ))}
                             <ScrollBar orientation="horizontal" />
@@ -61,28 +67,31 @@ const page = async ({ params }) => {
                     </div>
                 </div>
             </div>
-            <div className='grid grid-cols-2 md:grid-cols-4 mt-20 md:mt-4'>
-                <ExtraInfoItem label="Studios">
-                    {info.studios.map((item) => (
+            <div className={`grid ${params.services === 'movies' ? 'grid-cols-1' : 'grid-cols-2'}  md:grid-cols-4 mt-20 md:mt-4`}>
+                {info?.studios && <ExtraInfoItem label="Studios">
+                    {info.studios?.map((item) => (
                         <Badge key={item} variant="outline" className='m-1 text-white'>{item}</Badge>
                     ))}
-                </ExtraInfoItem>
-                <ExtraInfoItem label="Start Date">
+                </ExtraInfoItem>}
+                {info?.production && <ExtraInfoItem label="Production">
+                    {info?.production && info.production}
+                </ExtraInfoItem>}
+                {info?.startDate && <ExtraInfoItem label="Start Date">
                     {info?.startDate?.month}/{info?.startDate?.day}/{info?.startDate?.year}
-                </ExtraInfoItem>
-                <ExtraInfoItem label="End Date">
+                </ExtraInfoItem>}
+                {info?.endDate && <ExtraInfoItem label="End Date">
                     {info?.endDate?.month}/{info?.endDate?.day}/{info?.endDate?.year}
-                </ExtraInfoItem>
-                <ExtraInfoItem label="Season">
+                </ExtraInfoItem>}
+                {info?.season && <ExtraInfoItem label="Season">
                     {info.season}
-                </ExtraInfoItem>
+                </ExtraInfoItem>}
             </div>
             <ScrollArea className="whitespace-nowrap">
-                <ExtraInfoItem label="Other Names">
-                    {info.synonyms.map((item) => (
+                {(info?.synonyms||info?.otherNames) && <ExtraInfoItem label="Other Names">
+                    {info.synonyms||info?.otherNames?.map((item) => (
                         <Badge key={item} variant="outline" className='m-1 text-white'>{item}</Badge>
                     ))}
-                </ExtraInfoItem>
+                </ExtraInfoItem>}
                 <ScrollBar orientation="horizontal" />
             </ScrollArea>
             <Accordion type="single" collapsible>
@@ -91,11 +100,11 @@ const page = async ({ params }) => {
                         <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
                     </AccordionTrigger>
                     <AccordionContent>
-                        <span className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(info.description)}</span>
+                        <span className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</span>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
-            <div className='grid md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+            <div className='grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
                 {info?.trailer &&
                     <div className='py-4 md:col-span-2 lg:col-span-2 xl:col-span-2 flex items-center justify-center'>
                         <iframe
@@ -109,45 +118,59 @@ const page = async ({ params }) => {
                         </iframe>
                     </div>
                 }
-                <div className={`space-y-4 ${info?.trailer ? 'lg:col-span-2 xl:col-span-3' : 'lg:col-span-4 xl:col-span-5'}`}>
+                {info?.recommendations && <div className={`space-y-4 ${info?.trailer ? 'lg:col-span-2 xl:col-span-3' : 'lg:col-span-4 xl:col-span-5'}`}>
                     <ContentList params={params} headerText='Recommendations' data={info?.recommendations} />
-                </div>
+                </div>}
             </div>
-            <h2 className='text-lg font-semibold font-pro-medium text-pro-red'>Characters: </h2>
-            <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
-                {info?.characters && info.characters.map((character, index) => (
-                    <Card key={index} className='overflow-hidden mx-2 py-2 w-fit text-white border-none inline-block flex-shrink-0'>
-                        <Image src={character.image} alt={character.name.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
-                        <CardHeader className='space-y-0 p-0 mt-4'>
-                            <CardTitle className='px-2 text-lg font-bold font-pro-bold text-pro-red line-clamp-1 text-center'>
-                                {character.name.userPreferred}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-center space-x-4 mx-4">
-                                <Badge variant="secondary" className='py-1 px-2'>{character.role}</Badge>
-                                <Link
-                                    href={`/${params.services}/character/${character.id}?info_id=${params.info_id}`} className="hover:underline transition-all duration-300 active:animate-ping">
-                                    Read More
-                                </Link>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {episodes.map((episode, index) => (
+            {info?.characters && <>
+                <h2 className='text-lg font-semibold font-pro-medium text-primary'>Characters: </h2>
+                <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
+                    {info.characters.map((character, index) => (
+                        <Card key={index} className='overflow-hidden mx-2 py-2 w-fit text-white border-none inline-block flex-shrink-0'>
+                            <Image src={character.image} alt={character.name.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
+                            <CardHeader className='space-y-0 p-0 mt-4'>
+                                <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1 text-center'>
+                                    {character.name.userPreferred}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex items-center space-x-4 mx-4">
+                                    <Badge variant="secondary" className='py-1 px-2'>{character.role}</Badge>
+                                    <Link
+                                        href={`/${params.services}/character/${character.id}?info_id=${params.info_id}`} className="hover:underline transition-all duration-300 active:animate-ping">
+                                        Read More
+                                    </Link>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                    <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+            </>}
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
+                {episodes && episodes.map((episode, index) => (
                     <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
                         <CardHeader>
-                            <Image src={episode.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover'/>
-                            <CardTitle className='px-2 text-lg font-bold font-pro-bold text-pro-red line-clamp-1'>{episode.title}</CardTitle>
+                            <Link href={`/${params?.services}/${params?.provider}/watch/${episode.id}`} className="overflow-hidden">
+                                <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
+                                    {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
+                                    <div className='absolute inset-0 bg-black/50'></div>
+                                    <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
+                                </div>
+                            </Link>
+                            <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <CardDescription>Ep: {episode.number}</CardDescription>
-                            <CardDescription>Created At: {new Date(episode.createdAt).toLocaleDateString()}</CardDescription>
-                            <Link href={'#'} className="hover:underline transition-all duration-300 active:animate-ping text-white">Watch</Link>
-                        </CardContent>
+                        {episode?.description && <CardContent>
+                            <CardDescription className="line-clamp-3">
+                                {episode?.description}
+                            </CardDescription>
+                        </CardContent>}
+                        <CardFooter className='grid grid-cols-2 mx-2 '>
+                            {episode?.number && <CardDescription className='text-white'>Ep: {episode.number}</CardDescription>}
+                            {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
+                            {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
+                            <Link href={`/${params?.services}/${params?.provider}/watch/${episode.id}/${info.id}`} className="text-white hover:underline transition-all duration-300 active:animate-ping">Watch Now</Link>
+                        </CardFooter>
                     </Card>
                 ))}
             </div>

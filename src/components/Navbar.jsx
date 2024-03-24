@@ -16,7 +16,7 @@ console.log((showNavbarRoutes.includes(pathname))?"true":"false");
   return (
     <>
       {/* Navigation bar */}
-      {(showNavbarRoutes.includes(pathname))?<nav className='flex items-center py-4 px-2 absolute top-0 w-full z-20'>
+      {(showNavbarRoutes.includes(pathname))?<nav className='flex items-center py-4 px-2 absolute top-0 w-4/5 z-20'>
         {/* Background overlay for mobile menu */}
 
         {pathname==='/'?<Link href='/'>
@@ -26,7 +26,7 @@ console.log((showNavbarRoutes.includes(pathname))?"true":"false");
         </Link>:null}
 
         {/* Desktop navigation menu */}
-        <ul className='ml-auto space-x-1 md:space-x-4 hidden sm:flex'>
+        <ul className='ml-auto space-x-1 md:space-x-4 hidden lg:flex'>
           {listItems.map((item) => (
             <li className='font-pro-bold font-semibold text-accent text-lg text-white capitalize pr-6 cursor-pointer' key={item}>
               {/* React Router Link for navigation */}
@@ -36,7 +36,7 @@ console.log((showNavbarRoutes.includes(pathname))?"true":"false");
         </ul>
 
         {/* Mobile menu icon */}
-        <div className='ml-auto block sm:hidden relative z-50 mr-4'>
+        <div className='ml-auto block lg:hidden relative z-50 mr-4'>
           {nav ?
             <CgClose
               size={40}

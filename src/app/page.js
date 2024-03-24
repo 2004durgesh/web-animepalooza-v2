@@ -11,21 +11,18 @@ export default async  function Home() {
     <>
       <div className="">
         <div className='relative'>
-          <HeroSection animeSrc='/assets/images/anime-bg.png' mangaSrc='/assets/images/manga-bg.png' movieSrc='/assets/videos/movies-bg.mp4' />
+          <HeroSection animeSrc='/assets/images/anime-bg.png' mangaSrc='/assets/images/manga-bg.png' movieSrc='/assets/images/movies-bg.png' />
           <div className="absolute z-10 pointer-events-none inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/80"></div>
         </div>
       </div>
       <div className="my-4">
-        <Tabs defaultValue="top-picks" className="w-[400px]">
+        <Tabs defaultValue="trending-now" className="w-[400px]">
           <TabsList>
-            <TabsTrigger value="top-picks">Top Picks</TabsTrigger>
             <TabsTrigger value="trending-now">Trending Now</TabsTrigger>
             <TabsTrigger value="popular">Popular</TabsTrigger>
             <TabsTrigger value="recent-added">Recent Added</TabsTrigger>
           </TabsList>
-          <TabsContent value="top-picks">
-            <div>Content for Top Picks</div>
-          </TabsContent>
+          
           <TabsContent value="trending-now">
           <div className="w-screen">
             <ContentList headerText='Trending Anime' data={trendingAnime} service="meta" provider="anilist" otherParams="trending" contentType="anime" />

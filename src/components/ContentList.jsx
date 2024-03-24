@@ -20,9 +20,9 @@ export function MiniDescription({ icon, text }) {
   )
 }
 
-const ContentList = ({params, headerText, service, provider, otherParams, data }) => {
+const ContentList = ({ params, headerText, service, provider, otherParams, data }) => {
   console.log(params);
-  
+
   const isArray = Array.isArray(data);
   const { currentPage, hasNextPage, results } = isArray ? {} : data;
   const [currPage, setCurrPage] = useState(isArray ? 1 : currentPage);
@@ -91,7 +91,7 @@ const ContentList = ({params, headerText, service, provider, otherParams, data }
                       </Link>
                     )}
 
-                    {((service === 'movies' ? result?.duration : null) || result?.season) && (
+                    {((service==='movies' ? result?.duration : null) || result?.season) && (
                       <div className='flex'>
                         <span className='pl-2'>{result?.duration ?? result?.season}</span>
                       </div>

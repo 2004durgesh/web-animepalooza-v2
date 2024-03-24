@@ -23,8 +23,8 @@ const Provider = async ({ params }) => {
 
                     
                     {params.services === 'movies' && <>
-                        <ContentList headerText='Recent Movies' data={recentMovies} service={services} provider={provider} otherParams="recent-movies" />
-                        <ContentList headerText='Recent TV-Shows' data={recentShows} service={services} provider={provider} otherParams="recent-shows" />
+                        <ContentList params={params} headerText='Recent Movies' data={recentMovies} service={services} provider={provider} otherParams="recent-movies" />
+                        <ContentList params={params} headerText='Recent TV-Shows' data={recentShows} service={services} provider={provider} otherParams="recent-shows" />
                     </>}
                 </div>
             }
