@@ -16,7 +16,7 @@ export default async  function Home() {
         </div>
       </div>
       <div className="my-4">
-        <Tabs defaultValue="trending-now" className="w-[400px]">
+        <Tabs defaultValue="trending-now">
           <TabsList>
             <TabsTrigger value="trending-now">Trending Now</TabsTrigger>
             <TabsTrigger value="popular">Popular</TabsTrigger>
@@ -24,17 +24,17 @@ export default async  function Home() {
           </TabsList>
           
           <TabsContent value="trending-now">
-          <div className="w-screen">
+          <div className="">
             <ContentList headerText='Trending Anime' data={trendingAnime} service="meta" provider="anilist" otherParams="trending" contentType="anime" />
           </div>
           </TabsContent>
           <TabsContent value="popular">
-          <div className="w-screen">
+          <div className="">
             <ContentList headerText='Popular Anime' data={popularAnime} service="meta" provider="anilist" otherParams="popular" contentType="anime" />
           </div>
           </TabsContent>
           <TabsContent value="recent-added">
-          <div className="w-screen">
+          <div className="">
             <ContentList headerText='Recent Anime' data={recentAnime} service="meta" provider="anilist" otherParams="recent-episodes" contentType="anime" />
           </div>
           </TabsContent>
