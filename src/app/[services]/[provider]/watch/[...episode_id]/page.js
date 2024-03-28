@@ -8,6 +8,7 @@ const page = async ({ params }) => {
   const animeEpisodeLinks = await fetchData(services, provider, `watch/${params.episode_id}`)
   const moviesEpisodeLinks = await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` });
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
+  console.log(animeEpisodeLinks);
   return (
     <main>
       {JSON.stringify(episodeLinks)}
