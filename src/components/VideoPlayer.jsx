@@ -58,9 +58,9 @@ const VideoPlayer = ({ links }) => {
     return (
         <main>
             <div ref={containerRef} className="relative">
-                {/* <video ref={videoRef} className="w-full aspect-video">
+                <video ref={videoRef} className="w-full aspect-video">
                     Your browser does not support the video tag.
-                </video> */}
+                </video>
                 <div className="absolute bottom-0 left-0 flex space-x-4 p-4">
                     <button onClick={goFullscreen}>Go Fullscreen</button>
                     <button onClick={() => changeQuality(0)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">360</button>
