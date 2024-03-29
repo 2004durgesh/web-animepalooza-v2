@@ -45,7 +45,7 @@ const page = async ({ params }) => {
                         <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english || info?.title}</h1>
                         <div className='flex justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info.type}</ResponsiveText>
-                            {info?.releaseDate&&<IconText Icon={<HiOutlineCalendarDays />}>{info.releaseDate}</IconText>}
+                            {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info.releaseDate}</IconText>}
                             {info?.totalEpisodes && <IconText Icon={<HiOutlineRectangleStack />}>{info.totalEpisodes}</IconText>}
                         </div>
                     </div>
@@ -55,7 +55,7 @@ const page = async ({ params }) => {
                             {info?.status && <IconText Icon={info.status === "Completed" ? <IoCheckmarkDoneOutline /> : <HiOutlineClock />}>
                                 {info.status}
                             </IconText>}
-                            {info?.rating&&<IconText Icon={<HiOutlineStar />}>{`${params.services === 'movies' ? info?.rating : (Number(info.rating) / 10).toFixed(1)}`}</IconText>}
+                            {info?.rating && <IconText Icon={<HiOutlineStar />}>{`${params.services === 'movies' ? info?.rating : (Number(info.rating) / 10).toFixed(1)}`}</IconText>}
                             {info.status !== "Completed" && info?.nextAiringEpisode && <ResponsiveText>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</ResponsiveText>}
                         </div>
                         <ScrollArea className="whitespace-nowrap">
@@ -87,8 +87,8 @@ const page = async ({ params }) => {
                 </ExtraInfoItem>}
             </div>
             <ScrollArea className="whitespace-nowrap">
-                {(info?.synonyms||info?.otherNames) && <ExtraInfoItem label="Other Names">
-                    {info.synonyms||info?.otherNames?.map((item) => (
+                {(info?.synonyms || info?.otherNames) && <ExtraInfoItem label="Other Names">
+                    {info.synonyms || info?.otherNames?.map((item) => (
                         <Badge key={item} variant="outline" className='m-1 text-white'>{item}</Badge>
                     ))}
                 </ExtraInfoItem>}

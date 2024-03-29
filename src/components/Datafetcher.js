@@ -7,7 +7,7 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
 
-    console.log(`${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`);
+    console.log("url is",`${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`);
     try {
         const response = await fetch(`${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`,
             {
