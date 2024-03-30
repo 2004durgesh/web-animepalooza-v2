@@ -9,7 +9,7 @@ const IconText = ({ Icon, children,size=0 }) => {
     const isLargeScreen = useMediaQuery({ query: '(min-width: 769px) and (max-width: 1024px)' });
     const isExtraLargeScreen = useMediaQuery({ query: '(min-width: 1025px)' });
 
-    let iconSize;
+    let iconSize=20+size;
     if (isSmallScreen) iconSize = 10+size;
     else if (isMediumScreen) iconSize = 15+size;
     else if (isLargeScreen) iconSize = 20+size;

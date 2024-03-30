@@ -1,15 +1,18 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOutlinePause,MdOutlinePictureInPictureAlt } from "react-icons/md";
+import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOutlinePause, MdOutlinePictureInPictureAlt } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import IconText from './IconText';
+import moment from 'moment';
 
 const VideoPlayer = ({ links }) => {
   const videoRef = useRef();
   const hlsRef = useRef();
   const [togglePlayAndPause, setTogglePlayAndPause] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   const handlePlayAndPause = () => {
     if (togglePlayAndPause) {
@@ -19,6 +22,8 @@ const VideoPlayer = ({ links }) => {
     }
     setTogglePlayAndPause(!togglePlayAndPause);
   }
+
+
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -37,10 +42,65 @@ const VideoPlayer = ({ links }) => {
     loadVideo();
   }, [links]);
 
+
+  useEffect(() => {
+
+    let timer;
+    if (controlsVisible) {
+      timer = setTimeout(() => {
+        setControlsVisible(false);
+      }, 5000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [controlsVisible]);
+
   // fetch(links.sources[4].url)
   //     .then(response => response.text())
   //     .then(text => console.log(text))
   //     .catch(error => console.error(error));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (videoRef.current) {
+        updateProgress();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+
+  // Helper function to format duration
+  const formatDuration = (duration) => {
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
+
+    let result = '';
+
+    if (hours > 0) {
+      result += `${hours}:`;
+    }
+
+    // Always add a colon after the minutes
+    const formattedMinutes = minutes < 10 && hours > 0 ? `0${minutes}` : minutes;
+    result += `${formattedMinutes}:`;
+
+    // Always format the seconds
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    result += `${formattedSeconds}`;
+
+    return result.trim();
+  };
+
+  const updateProgress = () => {
+    const video = videoRef.current;
+    setProgress((video.currentTime / video.duration) * 100);
+  };
 
   const changeQuality = (level) => {
     if (hlsRef.current) {
@@ -49,7 +109,21 @@ const VideoPlayer = ({ links }) => {
     console.log(hlsRef.current.currentLevel);
   };
 
+  const handlePiP = async () => {
+    try {
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture();
+      } else {
+        if (videoRef.current.requestPictureInPicture) {
+          await videoRef.current.requestPictureInPicture();
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const containerRef = useRef();
+
 
   const goFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -86,37 +160,68 @@ const VideoPlayer = ({ links }) => {
   };
 
   return (
-    <main>
-      <div ref={containerRef} className="relative flex justify-center -mt-16">
+    <>
+      <div ref={containerRef} className="relative flex justify-center -mt-16"
+        onMouseEnter={() => { setControlsVisible(true); console.log("visible") }}
+        onMouseLeave={() => { setControlsVisible(false); console.log("invisible") }}
+        onClick={() => { setControlsVisible(!controlsVisible); console.log("toggle") }}
+      >
         <video ref={videoRef} autoPlay className="">
           Your browser does not support the video tag.
         </video>
-        <div className="absolute bottom-0 right-0 bg-red-500 w-full flex items-center">
+        <div className={`controls absolute bottom-0 right-0 w-full flex items-center ${controlsVisible ? "visible" : "invisible"}`}>
           <button onClick={handlePlayAndPause}>
-            {togglePlayAndPause ? <IconText size={15} Icon={<MdOutlinePlayArrow />} /> :
-              <IconText size={15} Icon={<MdOutlinePause />} />}
+            {togglePlayAndPause
+              ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
+              : <IconText size={15} Icon={<MdOutlinePause />} />
+            }
           </button>
-          <div className='ms-auto'>
-            <button>
+          <div className='flex items-start gap-y-1 md:items-center flex-col md:flex-row w-full justify-start'>
+            <div className="text-xs px-4">
+              <span className="">
+                {formatDuration(moment.duration(videoRef?.current?.currentTime??0, 'seconds'))}
+              </span>
+              /
+              <span className="">
+                {formatDuration(moment.duration(videoRef?.current?.duration??0, 'seconds'))}
+              </span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={progress}
+              onChange={(event) => {
+                const newProgress = event.target.value;
+                setProgress(newProgress);
+                videoRef.current.currentTime = (newProgress / 100) * videoRef.current.duration;
+              }}
+              className='w-full h-1 accent-primary'
+            />
+          </div>
+          <div className='ms-auto flex items-center'>
+            <button onClick={handlePiP}>
               <IconText size={13} Icon={<MdOutlinePictureInPictureAlt />} />
             </button>
             <button>
               <IconText size={13} Icon={<IoSettingsOutline />} />
             </button>
             <button onClick={goFullscreen}>
-              {fullscreen ? <IconText size={15} Icon={<MdOutlineFullscreenExit />} /> :
-                <IconText size={15} Icon={<MdOutlineFullscreen />} />}
+              {fullscreen
+                ? <IconText size={15} Icon={<MdOutlineFullscreenExit />} />
+                : <IconText size={15} Icon={<MdOutlineFullscreen />} />
+              }
             </button>
           </div>
         </div>
-        <div className="absolute top-1/2 px-4 aspect-square active:animate-ping transition-all duration-300 inline-flex rounded-full bg-primary opacity-75">
+        <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${togglePlayAndPause ? "visible scale-[2] opacity-0" : "invisible scale-[1] opacity-100"}`}>
           <button onClick={handlePlayAndPause}>
             {togglePlayAndPause ? <IconText size={15} Icon={<MdOutlinePlayArrow />} /> :
               <IconText size={15} Icon={<MdOutlinePause />} />}
           </button>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 
