@@ -1,6 +1,6 @@
 import fetchData from '@/components/Datafetcher'
 import ContentList from '@/components/ContentList'
-import React from 'react'
+import React,{Suspense} from 'react'
 import ProviderList from '@/components/ProviderList';
 import ServiceProvider from '@/constants/ServiceProvider';
 
@@ -8,7 +8,7 @@ const page = ({params}) => {
   
 
   return (
-    <>
+    <Suspense fallback={<h1>Loading...</h1>}>
       <h1 className="text-3xl font-bold mb-8">Explore Providers</h1>
       {ServiceProvider.map((provider) => {
         return provider.service===params.services&&<ProviderList
@@ -23,7 +23,7 @@ const page = ({params}) => {
       })}
 
 
-    </>
+    </Suspense>
   )
 }
 

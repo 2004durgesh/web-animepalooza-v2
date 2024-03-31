@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOutlinePause, MdOutlinePictureInPictureAlt } from "react-icons/md";
+import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOutlinePause, MdOutlinePictureInPictureAlt, MdClosedCaptionOff } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import IconText from './IconText';
 import moment from 'moment';
@@ -169,21 +169,61 @@ const VideoPlayer = ({ links }) => {
         <video ref={videoRef} autoPlay className="">
           Your browser does not support the video tag.
         </video>
-        <div className={`controls absolute bottom-0 right-0 w-full flex items-center ${controlsVisible ? "visible" : "invisible"}`}>
+        {/* top info-bar */}
+        <div className='absolute top-0 left-0 bg-red-500 w-full flex items-center'>
+          <p className='line-clamp-1'>Title of the episode or movie/tv-shows</p>
+          <div className='ms-auto flex items-center'>
+            <button>
+              <IconText size={13} Icon={<MdClosedCaptionOff />} />
+            </button>
+            <button>
+              <IconText size={13} Icon={<IoSettingsOutline />} />
+            </button>
+          </div>
+        </div>
+        <div className='absolute right-0 top-10 w-1/2 h-4/5 '
+          onDoubleClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime += 10) }}></div>
+        <div className='absolute left-0 top-10 w-1/2 h-4/5 '
+          onDoubleClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime -= 10) }}></div>
+
+        <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${togglePlayAndPause ? "visible" : "invisible"}`}>
           <button onClick={handlePlayAndPause}>
-            {togglePlayAndPause
-              ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
-              : <IconText size={15} Icon={<MdOutlinePause />} />
-            }
+            {togglePlayAndPause ? <IconText size={15} Icon={<MdOutlinePlayArrow />} /> :
+              <IconText size={15} Icon={<MdOutlinePause />} />}
           </button>
+        </div>
+        {/* bottom controls-bar */}
+        <div className={`controls absolute bottom-0 right-0 w-full flex flex-col items-center ${controlsVisible ? "visible" : "invisible"}`}>
+          <div className='flex w-full'>
+            <button onClick={handlePlayAndPause}>
+              {togglePlayAndPause
+                ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
+                : <IconText size={15} Icon={<MdOutlinePause />} />
+              }
+            </button>
+            <button
+              className='text-xs bg-primary rounded-full px-2 py-1 w-16'
+              onClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime += 85) }}>+85s</button>
+            <div className='ms-auto flex items-center'>
+              <button onClick={handlePiP}>
+                {!fullscreen&&<IconText size={13} Icon={<MdOutlinePictureInPictureAlt />} />}
+              </button>
+              <button onClick={goFullscreen}>
+                {fullscreen
+                  ? <IconText size={15} Icon={<MdOutlineFullscreenExit />} />
+                  : <IconText size={15} Icon={<MdOutlineFullscreen />} />
+                }
+              </button>
+            </div>
+          </div>
           <div className='flex items-start gap-y-1 md:items-center flex-col md:flex-row w-full justify-start'>
             <div className="text-xs px-4">
               <span className="">
-                {formatDuration(moment.duration(videoRef?.current?.currentTime??0, 'seconds'))}
+                {formatDuration(moment.duration(videoRef?.current?.currentTime ?? 0, 'seconds'))}
               </span>
               /
               <span className="">
-                {formatDuration(moment.duration(videoRef?.current?.duration??0, 'seconds'))}
+                {formatDuration(moment.duration(videoRef?.current?.duration ?? 0, 'seconds'))}
               </span>
             </div>
             <input
@@ -196,29 +236,10 @@ const VideoPlayer = ({ links }) => {
                 setProgress(newProgress);
                 videoRef.current.currentTime = (newProgress / 100) * videoRef.current.duration;
               }}
-              className='w-full h-1 accent-primary'
+              className='w-full h-1 accent-primary mr-10'
             />
           </div>
-          <div className='ms-auto flex items-center'>
-            <button onClick={handlePiP}>
-              <IconText size={13} Icon={<MdOutlinePictureInPictureAlt />} />
-            </button>
-            <button>
-              <IconText size={13} Icon={<IoSettingsOutline />} />
-            </button>
-            <button onClick={goFullscreen}>
-              {fullscreen
-                ? <IconText size={15} Icon={<MdOutlineFullscreenExit />} />
-                : <IconText size={15} Icon={<MdOutlineFullscreen />} />
-              }
-            </button>
-          </div>
-        </div>
-        <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${togglePlayAndPause ? "visible scale-[2] opacity-0" : "invisible scale-[1] opacity-100"}`}>
-          <button onClick={handlePlayAndPause}>
-            {togglePlayAndPause ? <IconText size={15} Icon={<MdOutlinePlayArrow />} /> :
-              <IconText size={15} Icon={<MdOutlinePause />} />}
-          </button>
+
         </div>
       </div>
     </>

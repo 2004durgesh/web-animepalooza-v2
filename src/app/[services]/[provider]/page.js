@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import AllProvider from '@/constants/AllProvider'
 import ContentList from '@/components/ContentList'
 import fetchData from '@/components/Datafetcher'
+import SearchBar from '@/components/SearchBar'
 const Provider = async ({ params }) => {
     console.log(params.provider)
     // console.log(AllProvider.includes(params.provider[0]))
@@ -16,6 +17,8 @@ const Provider = async ({ params }) => {
     return (
         <>
             {AllProvider.includes(params.provider) &&
+            <>
+            <SearchBar service={params.service}/>
                 <div>
                     <ContentList params={params} headerText={params.services === 'anime' ? 'Trending Anime' : params.services === 'manga' ? 'Trending Manga' : "Trending Movies and TV-Shows"} data={trending} service={services} provider={provider} otherParams="trending" />
 
@@ -27,6 +30,8 @@ const Provider = async ({ params }) => {
                         <ContentList params={params} headerText='Recent TV-Shows' data={recentShows} service={services} provider={provider} otherParams="recent-shows" />
                     </>}
                 </div>
+            </>
+           
             }
         </>
     )

@@ -1,5 +1,5 @@
 // "use client"
-import React from 'react'
+import React,{Suspense} from 'react'
 import fetchData from '@/components/Datafetcher'
 import Image from 'next/image';
 import parse from 'html-react-parser';
@@ -33,7 +33,7 @@ const page = async ({ params }) => {
 
 
     return (
-        <>
+        <Suspense fallback={<h1>Loading...</h1>}>
             {/* <div>{JSON.stringify(params.info_id.join("/"))}</div> */}
             <div style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info.cover})`
@@ -42,7 +42,7 @@ const page = async ({ params }) => {
             >
                 <div className='backdrop-blur-md h-96 w-full flex flex-col md:flex-row items-center justify-center px-4'>
                     <div className='self-center md:self-end my-4 w-full md:w-1/3 order-2 md:order-1 text-center'>
-                        <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english || info?.title}</h1>
+                        <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english|| info?.title?.romaji || info?.title}</h1>
                         <div className='flex justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info.type}</ResponsiveText>
                             {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info.releaseDate}</IconText>}
@@ -174,7 +174,7 @@ const page = async ({ params }) => {
                     </Card>
                 ))}
             </div>
-        </>
+        </Suspense>
     )
 }
 
