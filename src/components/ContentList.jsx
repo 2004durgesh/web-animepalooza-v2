@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image";
 import { Suspense, createElement, useState } from "react";
-import Loading from "@/app/[services]/loading";
+import Loading from "@/app/[services]/[provider]/loading";
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays } from "react-icons/hi2";
 import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";

@@ -25,17 +25,17 @@ export default async  function Home() {
           
           <TabsContent value="trending-now">
           <div className="">
-            <ContentList headerText='Trending Anime' data={trendingAnime} service="meta" provider="anilist" otherParams="trending" contentType="anime" />
+            <ContentList headerText='Trending Anime' data={trendingAnime} service="meta" provider="anilist" otherParams="trending" contentType="anime" params={{services:"anime", provider:"gogoanime"}}/>
           </div>
           </TabsContent>
           <TabsContent value="popular">
           <div className="">
-            <ContentList headerText='Popular Anime' data={popularAnime} service="meta" provider="anilist" otherParams="popular" contentType="anime" />
+            <ContentList headerText='Popular Anime' data={popularAnime} service="meta" provider="anilist" otherParams="popular" contentType="anime" params={{services:"anime", provider:"gogoanime"}}/>
           </div>
           </TabsContent>
           <TabsContent value="recent-added">
           <div className="">
-            <ContentList headerText='Recent Anime' data={recentAnime} service="meta" provider="anilist" otherParams="recent-episodes" contentType="anime" />
+            <ContentList headerText='Recent Anime' data={recentAnime} service="meta" provider="anilist" otherParams="recent-episodes" contentType="anime" params={{services:"anime", provider:"gogoanime"}}/>
           </div>
           </TabsContent>
         </Tabs>

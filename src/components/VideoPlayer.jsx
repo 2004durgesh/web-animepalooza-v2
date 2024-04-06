@@ -22,7 +22,10 @@ const VideoPlayer = ({ links }) => {
     }
     setTogglePlayAndPause(!togglePlayAndPause);
   }
-
+  // button component that stops propagation of the event
+  const EventLessButton = ({ onClick, children, className }) => {
+    return <button onClick={(event) => { onClick(); event.stopPropagation(); }} className={className}>{children}</button>
+  }
 
 
   useEffect(() => {
@@ -102,6 +105,10 @@ const VideoPlayer = ({ links }) => {
     setProgress((video.currentTime / video.duration) * 100);
   };
 
+  const handleSettingsDropdown = () => {
+    console.log("Settings dropdown");
+  };
+
   const changeQuality = (level) => {
     if (hlsRef.current) {
       hlsRef.current.currentLevel = level;
@@ -170,15 +177,16 @@ const VideoPlayer = ({ links }) => {
           Your browser does not support the video tag.
         </video>
         {/* top info-bar */}
-        <div className='absolute top-0 left-0 bg-red-500 w-full flex items-center'>
+        <div className={`bg-gradient-to-b from-black to-transparent absolute top-0 left-0 w-full flex items-center p-4 ${controlsVisible ? "visible" : "invisible"}`}>
           <p className='line-clamp-1'>Title of the episode or movie/tv-shows</p>
           <div className='ms-auto flex items-center'>
-            <button>
+            <EventLessButton>
               <IconText size={13} Icon={<MdClosedCaptionOff />} />
-            </button>
-            <button>
+            </EventLessButton>
+
+            <EventLessButton className='active:animate-spin' onClick={handleSettingsDropdown}>
               <IconText size={13} Icon={<IoSettingsOutline />} />
-            </button>
+            </EventLessButton>
           </div>
         </div>
         <div className='absolute right-0 top-10 w-1/2 h-4/5 '
@@ -187,37 +195,37 @@ const VideoPlayer = ({ links }) => {
           onDoubleClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime -= 10) }}></div>
 
         <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${togglePlayAndPause ? "visible" : "invisible"}`}>
-          <button onClick={handlePlayAndPause}>
+          <EventLessButton onClick={handlePlayAndPause}>
             {togglePlayAndPause ? <IconText size={15} Icon={<MdOutlinePlayArrow />} /> :
               <IconText size={15} Icon={<MdOutlinePause />} />}
-          </button>
+          </EventLessButton>
         </div>
         {/* bottom controls-bar */}
-        <div className={`controls absolute bottom-0 right-0 w-full flex flex-col items-center ${controlsVisible ? "visible" : "invisible"}`}>
+        <div className={`bg-gradient-to-t from-black to-transparent absolute bottom-0 right-0 w-full flex flex-col items-center ${controlsVisible ? "visible" : "invisible"}`}>
           <div className='flex w-full'>
-            <button onClick={handlePlayAndPause}>
+            <EventLessButton onClick={handlePlayAndPause}>
               {togglePlayAndPause
                 ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
                 : <IconText size={15} Icon={<MdOutlinePause />} />
               }
-            </button>
+            </EventLessButton>
             <button
-              className='text-xs bg-primary rounded-full px-2 py-1 w-16'
+              className='text-xs bg-primary rounded-full px-2 py-1 w-16 font-pro-bold font-bold'
               onClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime += 85) }}>+85s</button>
             <div className='ms-auto flex items-center'>
-              <button onClick={handlePiP}>
-                {!fullscreen&&<IconText size={13} Icon={<MdOutlinePictureInPictureAlt />} />}
-              </button>
-              <button onClick={goFullscreen}>
+              <EventLessButton onClick={handlePiP}>
+                {!fullscreen && <IconText size={13} Icon={<MdOutlinePictureInPictureAlt />} />}
+              </EventLessButton>
+              <EventLessButton onClick={goFullscreen}>
                 {fullscreen
                   ? <IconText size={15} Icon={<MdOutlineFullscreenExit />} />
                   : <IconText size={15} Icon={<MdOutlineFullscreen />} />
                 }
-              </button>
+              </EventLessButton>
             </div>
           </div>
           <div className='flex items-start gap-y-1 md:items-center flex-col md:flex-row w-full justify-start'>
-            <div className="text-xs px-4">
+            <div className="text-xs font-semibold font-pro-medium px-4">
               <span className="">
                 {formatDuration(moment.duration(videoRef?.current?.currentTime ?? 0, 'seconds'))}
               </span>
