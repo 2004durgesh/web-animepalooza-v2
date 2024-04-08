@@ -5,14 +5,32 @@ import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOut
 import { IoSettingsOutline } from "react-icons/io5";
 import IconText from './IconText';
 import moment from 'moment';
+import { useSearchParams } from 'next/navigation';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+
 
 const VideoPlayer = ({ links }) => {
   const videoRef = useRef();
   const hlsRef = useRef();
+  const searchParams = useSearchParams()
+
+  const title = searchParams.get('title')
+  const episodeNumber = searchParams.get('episode-number')
+  const thumbnail = searchParams.get('thumbnail')
   const [togglePlayAndPause, setTogglePlayAndPause] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [skipPlusTen, setSkipPlusTen] = useState(false);
+  const [skipMinusTen, setSkipMinusTen] = useState(false);
 
   const handlePlayAndPause = () => {
     if (togglePlayAndPause) {
@@ -35,8 +53,8 @@ const VideoPlayer = ({ links }) => {
         hls.loadSource(links.sources[4].url);
         hls.attachMedia(videoRef.current);
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          videoRef.current.play();
-          setTogglePlayAndPause(false);
+          // videoRef.current.play();
+          // setTogglePlayAndPause(false);
         });
         hlsRef.current = hls;
       }
@@ -173,26 +191,38 @@ const VideoPlayer = ({ links }) => {
         onMouseLeave={() => { setControlsVisible(false); console.log("invisible") }}
         onClick={() => { setControlsVisible(!controlsVisible); console.log("toggle") }}
       >
-        <video ref={videoRef} autoPlay className="">
+        <video ref={videoRef} className="" poster={thumbnail}>
           Your browser does not support the video tag.
         </video>
         {/* top info-bar */}
         <div className={`bg-gradient-to-b from-black to-transparent absolute top-0 left-0 w-full flex items-center p-4 ${controlsVisible ? "visible" : "invisible"}`}>
-          <p className='line-clamp-1'>Title of the episode or movie/tv-shows</p>
+          <div className="flex flex-col">
+            <p className='line-clamp-1 font-pro-bold font-bold'>{title}</p>
+            <p className='line-clamp-1 text-xs font-pro-regular'>Ep: {episodeNumber}</p>
+          </div>
           <div className='ms-auto flex items-center'>
             <EventLessButton>
               <IconText size={13} Icon={<MdClosedCaptionOff />} />
             </EventLessButton>
-
             <EventLessButton className='active:animate-spin' onClick={handleSettingsDropdown}>
               <IconText size={13} Icon={<IoSettingsOutline />} />
             </EventLessButton>
           </div>
         </div>
-        <div className='absolute right-0 top-10 w-1/2 h-4/5 '
-          onDoubleClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime += 10) }}></div>
-        <div className='absolute left-0 top-10 w-1/2 h-4/5 '
-          onDoubleClick={() => { videoRef && videoRef.current && (videoRef.current.currentTime -= 10) }}></div>
+
+        {/* skip buttons */}
+        <div className={`absolute right-0 top-10 w-1/2 h-4/5 rounded-full ${skipPlusTen ? 'animate-ping bg-red-500' : null}`}
+          onDoubleClick={() => {
+            videoRef && videoRef.current && (videoRef.current.currentTime += 10);
+            setSkipPlusTen(true);
+            setTimeout(() => setSkipPlusTen(false), 1000);
+          }}></div>
+        <div className={`absolute left-0 top-10 w-1/2 h-4/5 rounded-full  ${skipMinusTen ? 'animate-ping bg-red-500' : null}`}
+          onDoubleClick={() => {
+            videoRef && videoRef.current && (videoRef.current.currentTime -= 10);
+            setSkipMinusTen(true);
+            setTimeout(() => setSkipMinusTen(false), 1000);
+          }}></div>
 
         <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${togglePlayAndPause ? "visible" : "invisible"}`}>
           <EventLessButton onClick={handlePlayAndPause}>

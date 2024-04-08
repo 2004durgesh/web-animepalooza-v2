@@ -1,5 +1,5 @@
 // "use client"
-import React,{Suspense} from 'react'
+import React, { Suspense } from 'react'
 import fetchData from '@/components/Datafetcher'
 import Image from 'next/image';
 import parse from 'html-react-parser';
@@ -42,7 +42,7 @@ const page = async ({ params }) => {
             >
                 <div className='backdrop-blur-md h-96 w-full flex flex-col md:flex-row items-center justify-center px-4'>
                     <div className='self-center md:self-end my-4 w-full md:w-1/3 order-2 md:order-1 text-center'>
-                        <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english|| info?.title?.romaji || info?.title}</h1>
+                        <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
                         <div className='flex justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info.type}</ResponsiveText>
                             {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info.releaseDate}</IconText>}
@@ -77,10 +77,10 @@ const page = async ({ params }) => {
                     {info?.production && info.production}
                 </ExtraInfoItem>}
                 {info?.startDate && <ExtraInfoItem label="Start Date">
-                    {info?.startDate?.month}/{info?.startDate?.day}/{info?.startDate?.year}
+                    {info?.startDate?.day}/{info?.startDate?.month}/{info?.startDate?.year}
                 </ExtraInfoItem>}
                 {info?.endDate && <ExtraInfoItem label="End Date">
-                    {info?.endDate?.month}/{info?.endDate?.day}/{info?.endDate?.year}
+                    {info?.endDate?.day}/{info?.endDate?.month}/{info?.endDate?.year}
                 </ExtraInfoItem>}
                 {info?.season && <ExtraInfoItem label="Season">
                     {info.season}
@@ -88,9 +88,11 @@ const page = async ({ params }) => {
             </div>
             <ScrollArea className="whitespace-nowrap">
                 {(info?.synonyms || info?.otherNames) && <ExtraInfoItem label="Other Names">
-                    {info.synonyms || info?.otherNames?.map((item) => (
-                        <Badge key={item} variant="outline" className='m-1 text-white'>{item}</Badge>
-                    ))}
+                    {(info?.synonyms?.map((item) => (
+                        <Badge key={item} variant="outline" className='m-1 text-white inline-block border'>{item}</Badge>
+                    ))) || (info?.otherNames?.map((item) => (
+                        <Badge key={item} variant="outline" className='m-1 text-white inline-block border'>{item}</Badge>
+                    )))}
                 </ExtraInfoItem>}
                 <ScrollBar orientation="horizontal" />
             </ScrollArea>
@@ -147,33 +149,42 @@ const page = async ({ params }) => {
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
             </>}
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
-                {episodes && episodes.map((episode, index) => (
-                    <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
-                        <CardHeader>
-                            <Link href={`/${params?.services}/${params?.provider}/watch/${episode.id}`} className="overflow-hidden">
-                                <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
-                                    {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
-                                    <div className='absolute inset-0 bg-black/50'></div>
-                                    <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
-                                </div>
-                            </Link>
-                            <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
-                        </CardHeader>
-                        {episode?.description && <CardContent>
-                            <CardDescription className="line-clamp-3">
-                                {episode?.description}
-                            </CardDescription>
-                        </CardContent>}
-                        <CardFooter className='grid grid-cols-2 mx-2 '>
-                            {episode?.number && <CardDescription className='text-white'>Ep: {episode.number}</CardDescription>}
-                            {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
-                            {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
-                            <Link href={`/${params?.services}/${params?.provider}/watch/${episode.id}/${info.id}`} className="text-white hover:underline transition-all duration-300 active:animate-ping">Watch Now</Link>
-                        </CardFooter>
-                    </Card>
-                ))}
-            </div>
+            <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
+            <ScrollArea>
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 h-[75vh]">
+                    {episodes && episodes.map((episode, index) => (
+                        <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
+                            <CardHeader>
+                                <Link
+                                    href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                    className="overflow-hidden">
+                                    <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
+                                        {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
+                                        <div className='absolute inset-0 bg-black/50'></div>
+                                        <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
+                                    </div>
+                                </Link>
+                                <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
+                            </CardHeader>
+                            {episode?.description && <CardContent>
+                                <CardDescription className="line-clamp-3">
+                                    {episode?.description}
+                                </CardDescription>
+                            </CardContent>}
+                            <CardFooter className='grid grid-cols-2 mx-2 '>
+                                {episode?.number && <CardDescription className='text-white'>Ep: {episode.number}</CardDescription>}
+                                {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
+                                {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
+                                <Link
+                                    href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                    className="text-white hover:underline transition-all duration-300 active:animate-ping"
+                                >Watch Now
+                                </Link>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+            </ScrollArea>
         </Suspense>
     )
 }
