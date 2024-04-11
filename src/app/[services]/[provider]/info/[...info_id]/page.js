@@ -121,7 +121,7 @@ const page = async ({ params }) => {
                         </iframe>
                     </div>
                 }
-                {info?.recommendations &&info?.recommendations.length>0&& <div className={`space-y-4 ${info?.trailer ? 'lg:col-span-2 xl:col-span-3' : 'lg:col-span-4 xl:col-span-5'}`}>
+                {info?.recommendations && info?.recommendations.length > 0 && <div className={`space-y-4 ${info?.trailer ? 'lg:col-span-2 xl:col-span-3' : 'lg:col-span-4 xl:col-span-5'}`}>
                     <ContentList params={params} headerText='Recommendations' data={info?.recommendations} />
                 </div>}
             </div>
@@ -150,42 +150,46 @@ const page = async ({ params }) => {
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
             </>}
-            <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
-            <ScrollArea>
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 h-[75vh]">
-                    {episodes && episodes.map((episode, index) => (
-                        <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
-                            <CardHeader>
-                                <Link
-                                    href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
-                                    className="overflow-hidden">
-                                    <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
-                                        {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
-                                        <div className='absolute inset-0 bg-black/50'></div>
-                                        <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
-                                    </div>
-                                </Link>
-                                <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
-                            </CardHeader>
-                            {episode?.description && <CardContent>
-                                <CardDescription className="line-clamp-3">
-                                    {episode?.description}
-                                </CardDescription>
-                            </CardContent>}
-                            <CardFooter className='grid grid-cols-2 mx-2 '>
-                                {episode?.number && <CardDescription className='text-white'>Ep: {episode.number}</CardDescription>}
-                                {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
-                                {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
-                                <Link
-                                    href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
-                                    className="text-white hover:underline transition-all duration-300 active:animate-ping"
-                                >Watch Now
-                                </Link>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            </ScrollArea>
+            {episodes && episodes.length > 0 &&
+                <>
+                    <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
+                    <ScrollArea>
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 h-[75vh]">
+                            {episodes.map((episode, index) => (
+                                <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
+                                    <CardHeader>
+                                        <Link
+                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                            className="overflow-hidden">
+                                            <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
+                                                {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
+                                                <div className='absolute inset-0 bg-black/50'></div>
+                                                <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
+                                            </div>
+                                        </Link>
+                                        <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
+                                    </CardHeader>
+                                    {episode?.description && <CardContent>
+                                        <CardDescription className="line-clamp-3">
+                                            {episode?.description}
+                                        </CardDescription>
+                                    </CardContent>}
+                                    <CardFooter className='grid grid-cols-2 mx-2 '>
+                                        {episode?.number && <CardDescription className='text-white'>Ep: {episode.number}</CardDescription>}
+                                        {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
+                                        {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
+                                        <Link
+                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                            className="text-white hover:underline transition-all duration-300 active:animate-ping"
+                                        >Watch Now
+                                        </Link>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                </>
+            }
         </Suspense>
     )
 }

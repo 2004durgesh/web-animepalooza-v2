@@ -36,12 +36,12 @@ console.log((showNavbarRoutes.includes(pathname))?"true":"false");
         </ul>
 
         {/* Mobile menu icon */}
-        <div className='ml-auto block lg:hidden relative z-50 mr-4'>
+        <div className='ml-auto block lg:hidden relative z-50'>
           {nav ?
             <CgClose
               size={40}
               color='white'
-              className='relative'
+              className='relative mt-4'
               onClick={() => setNav(prevValue => !prevValue)}
             /> :
             <CgMenu
