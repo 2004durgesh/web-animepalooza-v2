@@ -20,7 +20,7 @@ export function MiniDescription({ icon, text }) {
   )
 }
 
-const ContentList = ({ params, headerText, service, provider, otherParams, data }) => {
+const ContentList = ({ params, headerText, service, provider, otherParams, data, displayStyle }) => {
   console.log(params);
 
   const isArray = Array.isArray(data);
@@ -36,18 +36,21 @@ const ContentList = ({ params, headerText, service, provider, otherParams, data 
     console.log("new", newData);
   }
   console.log(data);
+  console.log(items.length,"items");
   return (
-    <Suspense fallback={<Loading />}>
+    <div>
       <h1 className="text-primary text-2xl font-bold tracking-tighter lg:text-3xl xl:text-4xl/relaxed px-4 font-pro-bold my-4">{headerText}</h1>
       <InfiniteScroll
         dataLength={items.length} //This is important field to render the next data
         next={fetchMoreData}
         hasMore={hasNextPage}
-        style={{ display: 'flex', flexDirection: 'row' }}
+        style={displayStyle === 'grid'
+          ? { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem',justifyItems:'center' }
+          : { display: 'flex', flexDirection: 'row' }}
         loader={<h1 className="text-red text-7xl">loading...</h1>}
         endMessage={
           <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
+            <b>No more anime/manga and movies</b>
           </p>
         }
         className="infinity-scroll"
@@ -91,7 +94,7 @@ const ContentList = ({ params, headerText, service, provider, otherParams, data 
                       </Link>
                     )}
 
-                    {((service==='movies' ? result?.duration : null) || result?.season) && (
+                    {((service === 'movies' ? result?.duration : null) || result?.season) && (
                       <div className='flex'>
                         <span className='pl-2'>{result?.duration ?? result?.season}</span>
                       </div>
@@ -103,7 +106,7 @@ const ContentList = ({ params, headerText, service, provider, otherParams, data 
           })
         }
       </InfiniteScroll>
-    </Suspense>
+    </div>
   )
 }
 

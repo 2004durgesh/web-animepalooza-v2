@@ -1,19 +1,12 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOutlinePause, MdOutlinePictureInPictureAlt, MdClosedCaptionOff } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import IconText from './IconText';
 import moment from 'moment';
 import { useSearchParams } from 'next/navigation';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './ui/popover';
 
 
 
@@ -28,18 +21,21 @@ const VideoPlayer = ({ links }) => {
   const [togglePlayAndPause, setTogglePlayAndPause] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
+  const [settingsVisible, setSettingsVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [skipPlusTen, setSkipPlusTen] = useState(false);
   const [skipMinusTen, setSkipMinusTen] = useState(false);
-
-  const handlePlayAndPause = () => {
+  const qualityLevels = [360, 480, 720, 1080]
+  const [currentQuality, setCurrentQuality] = useState(qualityLevels[0]);
+  console.log(currentQuality, "currentQuality");
+  const handlePlayAndPause = useCallback(() => {
     if (togglePlayAndPause) {
       videoRef.current.play();
     } else {
       videoRef.current.pause();
     }
     setTogglePlayAndPause(!togglePlayAndPause);
-  }
+  }, [togglePlayAndPause, videoRef]);
   // button component that stops propagation of the event
   const EventLessButton = ({ onClick, children, className }) => {
     return <button onClick={(event) => { onClick(); event.stopPropagation(); }} className={className}>{children}</button>
@@ -62,6 +58,8 @@ const VideoPlayer = ({ links }) => {
 
     loadVideo();
   }, [links]);
+
+
 
 
   useEffect(() => {
@@ -125,13 +123,15 @@ const VideoPlayer = ({ links }) => {
 
   const handleSettingsDropdown = () => {
     console.log("Settings dropdown");
+    setSettingsVisible(!settingsVisible);
   };
 
   const changeQuality = (level) => {
     if (hlsRef.current) {
       hlsRef.current.currentLevel = level;
+      setCurrentQuality(qualityLevels[level]); // Update the currentQuality state variable
     }
-    console.log(hlsRef.current.currentLevel);
+    console.log(hlsRef.current.currentLevel, qualityLevels[level]);
   };
 
   const handlePiP = async () => {
@@ -150,7 +150,7 @@ const VideoPlayer = ({ links }) => {
   const containerRef = useRef();
 
 
-  const goFullscreen = () => {
+  const goFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
       setFullscreen(true);
       if (containerRef.current.requestFullscreen) {
@@ -182,7 +182,54 @@ const VideoPlayer = ({ links }) => {
         document.msExitFullscreen();
       }
     }
-  };
+  }, [containerRef, setFullscreen]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === 'Space' || event.code === 'KeyK') {
+        handlePlayAndPause();
+      }
+      if (event.code === 'KeyF') {
+        goFullscreen();
+      }
+      if (event.code === 'KeyP' || event.code === 'KeyI') {
+        handlePiP();
+      }
+      if (event.code === "Escape" || event.code === 'F11') {
+        // setFullscreen(false);
+        event.preventDefault();
+      }
+      if (event.code === 'ArrowRight') {
+        videoRef.current.currentTime += 10;
+        setSkipPlusTen(true);
+        setTimeout(() => setSkipPlusTen(false), 1000);
+      }
+      if (event.code === 'ArrowLeft') {
+        videoRef.current.currentTime -= 10;
+        setSkipMinusTen(true);
+        setTimeout(() => setSkipMinusTen(false), 1000);
+      }
+      if (event.code === 'ArrowUp') {
+        if (videoRef.current.volume < 1) {
+          videoRef.current.volume += 0.1;
+        }
+      }
+      if (event.code === 'ArrowDown') {
+        if (videoRef.current.volume > 0) {
+          videoRef.current.volume -= 0.1;
+        }
+      }
+      if (event.code === 'KeyM') {
+        videoRef.current.muted = !videoRef.current.muted;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handlePlayAndPause, goFullscreen]);
 
   return (
     <>
@@ -204,9 +251,27 @@ const VideoPlayer = ({ links }) => {
             <EventLessButton>
               <IconText size={13} Icon={<MdClosedCaptionOff />} />
             </EventLessButton>
-            <EventLessButton className='active:animate-spin' onClick={handleSettingsDropdown}>
-              <IconText size={13} Icon={<IoSettingsOutline />} />
-            </EventLessButton>
+            <div className="relative bg-geen-500 flex justify-center flex-col items-center">
+              <EventLessButton className='active:animate-spin' onClick={handleSettingsDropdown}>
+                <IconText size={13} Icon={<IoSettingsOutline />} />
+              </EventLessButton>
+              <div className={`absolute top-full right-0 transition-all duration-150 z-50 bg-secondary ${settingsVisible ? 'scale-1' : 'scale-0'}`}>
+                <div className='flex flex-col gap-y-1'>
+                  <div className='py-1' role='menu' aria-orientation='vertical' aria-labelledby='options-menu'>
+                    {qualityLevels.map((quality, index) => (
+                      <button
+                        key={index}
+                        onClick={() => changeQuality(index)}
+                        className={`w-20 px-4 py-2 text-sm text-gray-700 hover:bg-secondary-foreground hover:text-gray-900 ${quality === currentQuality ? 'bg-secondary-foreground text-gray-900' : ''}`}
+                        role='menuitem'
+                      >
+                        {quality}p
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

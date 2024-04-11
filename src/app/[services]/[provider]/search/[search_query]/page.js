@@ -8,10 +8,9 @@ const page = async({ params }) => {
     // // const moviesSearchResults = fetchData(services, provider, '${params.search_query}');
     const searchResults =await fetchData(services, provider, `${params.search_query}`);
     return (
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<h1>Loading search results...</h1>}>
             {/* {JSON.stringify(animeAndMangaSearchResults)} */}
-            <ContentList params={params} headerText={`Search Results for ${decodeURIComponent(params.search_query)}`} data={searchResults} service={services} provider={provider} otherParams="trending" />
-
+            <ContentList params={params} headerText={`Search Results for ${decodeURIComponent(params.search_query)}`} data={searchResults} service={services} provider={provider} otherParams="trending" displayStyle="grid"/>
         </Suspense>
     )
 }

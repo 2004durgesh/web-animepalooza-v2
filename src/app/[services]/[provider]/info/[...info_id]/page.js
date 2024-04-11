@@ -3,6 +3,7 @@ import React, { Suspense } from 'react'
 import fetchData from '@/components/Datafetcher'
 import Image from 'next/image';
 import parse from 'html-react-parser';
+import Loading from '../loading';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import ContentList from '@/components/ContentList';
@@ -33,7 +34,7 @@ const page = async ({ params }) => {
 
 
     return (
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<Loading />}>
             {/* <div>{JSON.stringify(params.info_id.join("/"))}</div> */}
             <div style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info.cover})`
@@ -120,7 +121,7 @@ const page = async ({ params }) => {
                         </iframe>
                     </div>
                 }
-                {info?.recommendations && <div className={`space-y-4 ${info?.trailer ? 'lg:col-span-2 xl:col-span-3' : 'lg:col-span-4 xl:col-span-5'}`}>
+                {info?.recommendations &&info?.recommendations.length>0&& <div className={`space-y-4 ${info?.trailer ? 'lg:col-span-2 xl:col-span-3' : 'lg:col-span-4 xl:col-span-5'}`}>
                     <ContentList params={params} headerText='Recommendations' data={info?.recommendations} />
                 </div>}
             </div>
