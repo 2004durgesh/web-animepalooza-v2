@@ -10,7 +10,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './ui/pop
 
 
 
-const VideoPlayer = ({ links }) => {
+const VideoPlayer = ({ sourceLink,services }) => {
   const videoRef = useRef();
   const hlsRef = useRef();
   const searchParams = useSearchParams()
@@ -25,7 +25,7 @@ const VideoPlayer = ({ links }) => {
   const [progress, setProgress] = useState(0);
   const [skipPlusTen, setSkipPlusTen] = useState(false);
   const [skipMinusTen, setSkipMinusTen] = useState(false);
-  const qualityLevels = [360, 480, 720, 1080]
+  const qualityLevels = services==="anime"?[360, 480, 720, 1080]:[360, 480, 720]
   const [currentQuality, setCurrentQuality] = useState(qualityLevels[0]);
   console.log(currentQuality, "currentQuality");
   const handlePlayAndPause = useCallback(() => {
@@ -46,7 +46,7 @@ const VideoPlayer = ({ links }) => {
     const loadVideo = async () => {
       if (Hls.isSupported() && videoRef.current) {
         const hls = new Hls();
-        hls.loadSource(links.sources[4].url);
+        hls.loadSource(sourceLink);
         hls.attachMedia(videoRef.current);
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
           // videoRef.current.play();
@@ -57,7 +57,7 @@ const VideoPlayer = ({ links }) => {
     };
 
     loadVideo();
-  }, [links]);
+  }, [sourceLink]);
 
 
 
@@ -75,10 +75,10 @@ const VideoPlayer = ({ links }) => {
     };
   }, [controlsVisible]);
 
-  // fetch(links.sources[4].url)
-  //     .then(response => response.text())
-  //     .then(text => console.log(text))
-  //     .catch(error => console.error(error));
+  fetch(sourceLink)
+      .then(response => response.text())
+      .then(text => console.log(text))
+      .catch(error => console.error(error));
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -238,7 +238,7 @@ const VideoPlayer = ({ links }) => {
         onMouseLeave={() => { setControlsVisible(false); console.log("invisible") }}
         onClick={() => { setControlsVisible(!controlsVisible); console.log("toggle") }}
       >
-        <video ref={videoRef} className="" poster={thumbnail}>
+        <video ref={videoRef} className="h-screen" poster={thumbnail}>
           Your browser does not support the video tag.
         </video>
         {/* top info-bar */}

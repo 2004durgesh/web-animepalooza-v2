@@ -154,7 +154,7 @@ const page = async ({ params }) => {
                 <>
                     <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
                     <ScrollArea>
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 h-[75vh]">
+                        <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${episodes.length>5?"h-[75vh]":null}`}>
                             {episodes.map((episode, index) => (
                                 <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
                                     <CardHeader>
@@ -167,7 +167,7 @@ const page = async ({ params }) => {
                                                 <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
                                             </div>
                                         </Link>
-                                        <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
+                                        <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
                                     </CardHeader>
                                     {episode?.description && <CardContent>
                                         <CardDescription className="line-clamp-3">
