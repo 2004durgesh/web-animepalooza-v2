@@ -37,7 +37,7 @@ const page = async ({ params }) => {
         <Suspense fallback={<Loading />}>
             {/* <div>{JSON.stringify(params.info_id.join("/"))}</div> */}
             <div style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info.cover})`
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info?.cover})`
             }}
                 className='h-96 bg-cover bg-center bg-no-repeat bg-none m-4'
             >
@@ -159,7 +159,7 @@ const page = async ({ params }) => {
                                 <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
                                     <CardHeader>
                                         <Link
-                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ??info?.cover?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
                                             className="overflow-hidden">
                                             <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
                                                 {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
@@ -167,7 +167,7 @@ const page = async ({ params }) => {
                                                 <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
                                             </div>
                                         </Link>
-                                        <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{episode.title}</CardTitle>
+                                        <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{episode?.title ?? info?.title?.english ?? info?.title}</CardTitle>
                                     </CardHeader>
                                     {episode?.description && <CardContent>
                                         <CardDescription className="line-clamp-3">
@@ -179,7 +179,7 @@ const page = async ({ params }) => {
                                         {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
                                         {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
                                         <Link
-                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode.title || info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ??info?.cover?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
                                             className="text-white hover:underline transition-all duration-300 active:animate-ping"
                                         >Watch Now
                                         </Link>
