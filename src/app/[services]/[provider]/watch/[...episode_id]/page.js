@@ -5,7 +5,6 @@ import Loading from '../loading';
 
 const page = async ({ params }) => {
   // await new Promise(resolve => setTimeout(resolve, 5000))
-  let videoTitle=params.episode_id[0].split("-").join(" ");
   let services = params.services === 'anime' || params.services === 'manga' ? 'meta' : params.services;
   let provider = params.services === 'anime' || params.services === 'manga' ? "anilist" : params.provider;
   const animeEpisodeLinks = await fetchData(services, provider, `watch/${params.episode_id[0]}`)

@@ -3,7 +3,7 @@ import fetchData from '@/components/Datafetcher'
 import ContentList from '@/components/ContentList';
 const page = async({ params }) => {
     let services = params.services === 'anime' || params.services === 'manga' ? 'meta' : params.services;
-    let provider = params.services === 'anime' || params.services === 'manga' ? "anilist" : params.provider;
+    let provider = params.services === 'anime'?"anilist" : params.services === 'manga' ? "anilist-manga" : params.provider;
     // const animeAndMangaSearchResults 
     // // const moviesSearchResults = fetchData(services, provider, '${params.search_query}');
     const searchResults =await fetchData(services, provider, `${params.search_query}`);

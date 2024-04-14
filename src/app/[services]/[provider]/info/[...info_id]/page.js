@@ -16,11 +16,13 @@ import IconText from '@/components/IconText';
 
 const page = async ({ params }) => {
     let services = params.services === 'anime' || params.services === 'manga' ? 'meta' : params.services;
-    let provider = params.services === 'anime' || params.services === 'manga' ? "anilist" : params.provider;
-    let animeAndMangaInfo = await fetchData(services, provider, `data/${params.info_id.join("/")}`, { provider: params.provider })
+    let provider = params.services === 'anime' ? "anilist" : params.services === 'manga' ? "anilist-manga" : params.provider;
+    let animeInfo = await fetchData(services, provider, `data/${params.info_id.join("/")}`, { provider: params.provider })
+    let mangaInfo = await fetchData(services, provider, `info/${params.info_id.join("/")}`, { provider: params.provider })
     let movieInfo = await fetchData(services, provider, `info`, { id: params.info_id.join("/") })
-    const info = params.services === 'anime' || params.services === 'manga' ? animeAndMangaInfo : movieInfo
-    const episodes = params.services === 'anime' || params.services === 'manga' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : movieInfo?.episodes;
+    const info = params.services === 'anime' ? animeInfo : params.services === 'manga' ? mangaInfo : movieInfo
+    const episodes = params.services === 'anime' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : movieInfo?.episodes;
+    const chapters = mangaInfo?.chapters;
     const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
     const ExtraInfoItem = ({ label, children }) => (
         <p className='text-xs sm:text-sm md:text-base lg:text-lg text-white'>
@@ -154,12 +156,12 @@ const page = async ({ params }) => {
                 <>
                     <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
                     <ScrollArea>
-                        <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${episodes.length>5?"h-[75vh]":null}`}>
+                        <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${episodes.length > 5 ? "h-[75vh]" : null}`}>
                             {episodes.map((episode, index) => (
                                 <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
                                     <CardHeader>
                                         <Link
-                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ??info?.cover?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
                                             className="overflow-hidden">
                                             <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
                                                 {episode?.image && <Image src={episode?.image} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
@@ -179,9 +181,48 @@ const page = async ({ params }) => {
                                         {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
                                         {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
                                         <Link
-                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ??info?.cover?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
+                                            href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info?.id}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent(episode?.number || '')}`}
                                             className="text-white hover:underline transition-all duration-300 active:animate-ping"
                                         >Watch Now
+                                        </Link>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                </>
+            }
+            {chapters && chapters.length > 0 &&
+                <>
+                    <h2 className='text-lg font-semibold font-pro-medium text-primary'>Chapters</h2>
+                    <ScrollArea>
+                        <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${chapters.length > 5 ? "h-[75vh]" : null}`}>
+                            {chapters.map((chapter, index) => (
+                                <Card key={chapter.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
+                                    <CardHeader>
+                                        {/* <Link
+                                            href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
+                                            className="overflow-hidden">
+                                            <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
+                                                {chapter?.image && <Image src={chapter?.image} alt={chapter.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
+                                                <div className='absolute inset-0 bg-black/50'></div>
+                                                <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
+                                            </div>
+                                        </Link> */}
+                                        <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{chapter?.title ?? info?.title?.english ?? info?.title}</CardTitle>
+                                    </CardHeader>
+                                    {chapter?.description && <CardContent>
+                                        <CardDescription className="line-clamp-3">
+                                            {chapter?.description}
+                                        </CardDescription>
+                                    </CardContent>}
+                                    <CardFooter className='grid grid-cols-2 mx-2 '>
+                                        {chapter?.chapterNumber && <CardDescription className='text-white'>Chapter: {chapter.chapterNumber}</CardDescription>}
+                                        {chapter?.volumeNumber && <CardDescription className='text-white'>Volume: {chapter.volumeNumber}</CardDescription>}
+                                        <Link
+                                            href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
+                                            className="text-white hover:underline transition-all duration-300 active:animate-ping"
+                                        >Read Now
                                         </Link>
                                     </CardFooter>
                                 </Card>
