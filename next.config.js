@@ -1,20 +1,26 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*',
-      },
-    ],
-  },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-    level: 'verbose'
-  },
-}
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  extendDefaultRuntimeCaching: true,
+});
 
-module.exports = nextConfig
+module.exports = withPWA({
+  reactStrictMode: true,
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '*',
+        },
+      ],
+    },
+    logging: {
+      fetches: {
+        fullUrl: true,
+      },
+      level: 'verbose'
+    },
+});
+
+
+// module.exports = nextConfig
