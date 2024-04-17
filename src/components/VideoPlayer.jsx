@@ -233,16 +233,16 @@ const VideoPlayer = ({ sourceLink,services }) => {
 
   return (
     <>
-      <div ref={containerRef} className="relative flex justify-center -mt-16"
+      <div ref={containerRef} className="relative flex justify-center -mt-16 bg-red-500"
         onMouseEnter={() => { setControlsVisible(true); console.log("visible") }}
         onMouseLeave={() => { setControlsVisible(false); console.log("invisible") }}
         onClick={() => { setControlsVisible(!controlsVisible); console.log("toggle") }}
       >
-        <video ref={videoRef} className="h-screen" poster={thumbnail}>
+        <video ref={videoRef} className="" poster={thumbnail}>
           Your browser does not support the video tag.
         </video>
         {/* top info-bar */}
-        <div className={`bg-gradient-to-b from-black to-transparent absolute top-0 left-0 w-full flex items-center p-4 ${controlsVisible ? "visible" : "invisible"}`}>
+        <div className={`controls bg-gradient-to-b from-black to-transparent top-0 ${controlsVisible ? "visible" : "invisible"}`}>
           <div className="flex flex-col">
             <p className='line-clamp-1 font-pro-bold font-bold'>{title}</p>
             <p className='line-clamp-1 text-xs font-pro-regular'>Ep: {episodeNumber}</p>
@@ -296,7 +296,7 @@ const VideoPlayer = ({ sourceLink,services }) => {
           </EventLessButton>
         </div>
         {/* bottom controls-bar */}
-        <div className={`bg-gradient-to-t from-black to-transparent absolute bottom-0 right-0 w-full flex flex-col items-center ${controlsVisible ? "visible" : "invisible"}`}>
+        <div className={`controls bg-gradient-to-t from-black to-transparent bottom-0 flex-col ${controlsVisible ? "visible" : "invisible"}`}>
           <div className='flex w-full'>
             <EventLessButton onClick={handlePlayAndPause}>
               {togglePlayAndPause

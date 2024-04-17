@@ -48,6 +48,10 @@
   }
 }
 
+.controls {
+  @apply absolute w-full flex items-center px-4 py-2
+}
+
 body {
   background-color: black;
   color: white;
@@ -63,6 +67,9 @@ video {
   video {
     width: 100vw;
     height: 40vh;
+  }
+  .controls{
+    @apply w-screen;
   }
 }
 
