@@ -3,14 +3,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdOutlinePlayArrow, MdOutlinePause, MdOutlinePictureInPictureAlt, MdClosedCaptionOff } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
+import { ImSpinner8 } from "react-icons/im";
 import IconText from './IconText';
 import moment from 'moment';
 import { useSearchParams } from 'next/navigation';
-import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './ui/popover';
 
 
 
-const VideoPlayer = ({ sourceLink,services }) => {
+const VideoPlayer = ({ sourceLink, services }) => {
   const videoRef = useRef();
   const hlsRef = useRef();
   const searchParams = useSearchParams()
@@ -22,20 +22,38 @@ const VideoPlayer = ({ sourceLink,services }) => {
   const [fullscreen, setFullscreen] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
   const [settingsVisible, setSettingsVisible] = useState(false);
+  const [buffering, setBuffering] = useState(false);
   const [progress, setProgress] = useState(0);
   const [skipPlusTen, setSkipPlusTen] = useState(false);
   const [skipMinusTen, setSkipMinusTen] = useState(false);
-  const qualityLevels = services==="anime"?[360, 480, 720, 1080]:[360, 480, 720]
+
+  const qualityLevels = services === "meta" ? [360, 480, 720, 1080] : [360, 480, 720]
   const [currentQuality, setCurrentQuality] = useState(qualityLevels[0]);
-  console.log(currentQuality, "currentQuality");
+  // console.log(currentQuality, "currentQuality");
   const handlePlayAndPause = useCallback(() => {
     if (togglePlayAndPause) {
       videoRef.current.play();
+      setBuffering(false);
     } else {
       videoRef.current.pause();
     }
     setTogglePlayAndPause(!togglePlayAndPause);
   }, [togglePlayAndPause, videoRef]);
+
+
+  //this is to check if the video is playing or not and set the buffering state accordingly
+  useEffect(() => {
+    const handlePlaying = () => {
+      // console.log("Video is playing...");
+      setBuffering(false);
+    };
+
+    videoRef?.current?.addEventListener('playing', handlePlaying);
+
+    return () => {
+      videoRef?.current?.removeEventListener('playing', handlePlaying);
+    };
+  }, []);
   // button component that stops propagation of the event
   const EventLessButton = ({ onClick, children, className }) => {
     return <button onClick={(event) => { onClick(); event.stopPropagation(); }} className={className}>{children}</button>
@@ -68,6 +86,7 @@ const VideoPlayer = ({ sourceLink,services }) => {
     if (controlsVisible) {
       timer = setTimeout(() => {
         setControlsVisible(false);
+        // setSettingsVisible(false);
       }, 5000);
     }
     return () => {
@@ -75,10 +94,10 @@ const VideoPlayer = ({ sourceLink,services }) => {
     };
   }, [controlsVisible]);
 
-  fetch(sourceLink)
-      .then(response => response.text())
-      .then(text => console.log(text))
-      .catch(error => console.error(error));
+  // fetch(sourceLink)
+  //   .then(response => response.text())
+  //   .then(text => console.log(text))
+  //   .catch(error => console.error(error));
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -131,7 +150,7 @@ const VideoPlayer = ({ sourceLink,services }) => {
       hlsRef.current.currentLevel = level;
       setCurrentQuality(qualityLevels[level]); // Update the currentQuality state variable
     }
-    console.log(hlsRef.current.currentLevel, qualityLevels[level]);
+    // console.log(hlsRef.current.currentLevel, qualityLevels[level]);
   };
 
   const handlePiP = async () => {
@@ -146,6 +165,11 @@ const VideoPlayer = ({ sourceLink,services }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleWaiting = () => {
+    console.log("Video is waiting for data...");
+    setBuffering(true);
   };
   const containerRef = useRef();
 
@@ -233,12 +257,12 @@ const VideoPlayer = ({ sourceLink,services }) => {
 
   return (
     <>
-      <div ref={containerRef} className="relative flex justify-center -mt-16 bg-red-500"
+      <div ref={containerRef} className="relative flex justify-center -mt-16"
         onMouseEnter={() => { setControlsVisible(true); console.log("visible") }}
         onMouseLeave={() => { setControlsVisible(false); console.log("invisible") }}
         onClick={() => { setControlsVisible(!controlsVisible); console.log("toggle") }}
       >
-        <video ref={videoRef} className="" poster={thumbnail}>
+        <video ref={videoRef} className="" poster={thumbnail} onWaiting={handleWaiting}>
           Your browser does not support the video tag.
         </video>
         {/* top info-bar */}
@@ -280,25 +304,29 @@ const VideoPlayer = ({ sourceLink,services }) => {
           onDoubleClick={() => {
             videoRef && videoRef.current && (videoRef.current.currentTime += 10);
             setSkipPlusTen(true);
-            setTimeout(() => setSkipPlusTen(false), 1000);
+            setTimeout(() => setSkipPlusTen(false), 150);
           }}></div>
         <div className={`absolute left-0 top-10 w-1/2 h-4/5 rounded-full  ${skipMinusTen ? 'animate-ping bg-red-500' : null}`}
           onDoubleClick={() => {
             videoRef && videoRef.current && (videoRef.current.currentTime -= 10);
             setSkipMinusTen(true);
-            setTimeout(() => setSkipMinusTen(false), 1000);
+            setTimeout(() => setSkipMinusTen(false), 150);
           }}></div>
 
-        <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${togglePlayAndPause ? "visible" : "invisible"}`}>
-          <EventLessButton onClick={handlePlayAndPause}>
-            {togglePlayAndPause ? <IconText size={15} Icon={<MdOutlinePlayArrow />} /> :
-              <IconText size={15} Icon={<MdOutlinePause />} />}
+        <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${controlsVisible || togglePlayAndPause ? "visible" : "invisible"}`}>
+          <EventLessButton onClick={handlePlayAndPause} >
+            {buffering
+              ? <IconText size={15} Icon={<ImSpinner8 className='animate-spin' />}/>
+              : togglePlayAndPause
+                ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
+                : <IconText size={15} Icon={<MdOutlinePause />} />
+            }
           </EventLessButton>
         </div>
         {/* bottom controls-bar */}
         <div className={`controls bg-gradient-to-t from-black to-transparent bottom-0 flex-col ${controlsVisible ? "visible" : "invisible"}`}>
           <div className='flex w-full'>
-            <EventLessButton onClick={handlePlayAndPause}>
+            <EventLessButton onClick={handlePlayAndPause} className="hidden md:block">
               {togglePlayAndPause
                 ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
                 : <IconText size={15} Icon={<MdOutlinePause />} />
