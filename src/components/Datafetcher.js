@@ -7,17 +7,17 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
 
-    console.log("url is",`${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`);
+    console.log("url is", `${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`);
     try {
         const response = await fetch(`${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`,
             {
-                cache: 'force-cache',
+                // cache: 'force-cache',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-api-key': process.env.API_KEY
-                }
-            },
-            { next: { revalidate: 3600 } });
+                },
+                next: { revalidate: 3600 }
+            });
         const data = await response.json();
         return data;
     } catch (error) {

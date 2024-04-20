@@ -35,7 +35,7 @@ const ContentList = ({ params, headerText, service, provider, otherParams, data,
     setItems(items.concat(isArray ? newData : newData.results));
     console.log("new", newData);
   }
-  console.log(data);
+  // console.log(data);
   console.log(items.length,"items");
   return (
     <div>
