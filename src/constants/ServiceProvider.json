@@ -28,6 +28,13 @@
         "description": "Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!"
     },
     {
+        "slug": "/tmdb",
+        "service": "movies",
+        "name": "TMDB",
+        "logo": "/assets/images/flixhq.png",
+        "description": "Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming"
+    },
+    {
         "slug": "/flixhq",
         "service": "movies",
         "name": "FlixHQ",
@@ -43,9 +50,9 @@
     },
     {
         "slug": "/movieshd",
-        "service":"movies",
-        "name":"MoviesHDWatch",
-        "logo":"/assets/images/movieshd.png",
-        "description":"Fast and Free streaming of over 350,000 movies and tv series in our database. No registration, no payment, 100% Free full HD"
+        "service": "movies",
+        "name": "MoviesHDWatch",
+        "logo": "/assets/images/movieshd.png",
+        "description": "Fast and Free streaming of over 350,000 movies and tv series in our database. No registration, no payment, 100% Free full HD"
     }
 ]
