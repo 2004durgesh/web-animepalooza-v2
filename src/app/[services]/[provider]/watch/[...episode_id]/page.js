@@ -12,7 +12,7 @@ const page = async ({ params }) => {
     ?
     await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
     :
-    await fetch(`http://localhost:3000/api/${params.episode_id[0]}?s=${params.episode_id[3]}&e=${params.episode_id[4]}`).then(res => res.json());
+    await fetch(`https://animepalooza.vercel.app/api/${params.episode_id[0]}?s=${params.episode_id[3]}&e=${params.episode_id[4]}`).then(res => res.json());
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
   const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "tmdb" ? episodeLinks.source: episodeLinks.sources[0].url;
   return (
