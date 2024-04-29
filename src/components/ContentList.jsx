@@ -58,17 +58,17 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
         {
           items?.map((result) => {
             return (
-              <div key={result.id} className='mx-4'>
+              <div key={result?.id} className='mx-4'>
                 <Card className='overflow-hidden w-fit text-white border-none'>
-                  <Image src={result?.image} alt={services === 'movies' || provider === "tmdb" ? result.title : `${result?.title?.userPreferred} or ${result?.title?.english}`}
+                  <Image src={result?.image} alt={services === 'movies' || provider === "tmdb" ? result?.title : `${result?.title?.userPreferred} or ${result?.title?.english}`}
                     className="h-72 w-full object-contain" width={200} height={150} />
                   <CardHeader className='space-y-0 p-0 mt-4'>
                     <CardTitle className='px-2 text-lg font-bold overflow-hidden w-52 whitespace-nowrap overflow-ellipsis'>
-                      {services === 'movies' || provider === "tmdb" ? result.title : result?.title?.userPreferred ?? result?.title?.english}
+                      {services === 'movies' || provider === "tmdb" ? result?.title : result?.title?.userPreferred ?? result?.title?.english}
                     </CardTitle>
                     <div className="flex items-center space-x-4 mx-4">
-                      <Badge variant="secondary" className='py-1 px-2'>{result.type}</Badge>
-                      <Link href={provider === "tmdb" ? `/${params?.services}/${params?.provider}/info/${result.id}/${result.type.split(" ")[0].toLowerCase()}` : `/${params?.services}/${params?.provider}/info/${result.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
+                      <Badge variant="secondary" className='py-1 px-2'>{result?.type}</Badge>
+                      <Link href={provider === "tmdb" ? `/${params?.services}/${params?.provider}/info/${result?.id}/${result?.type.split(" ")[0].toLowerCase()}` : `/${params?.services}/${params?.provider}/info/${result?.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
                         Watch Now
                       </Link>
                     </div>
@@ -82,13 +82,13 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
                     )}
 
                     {result?.rating && (
-                      <MiniDescription icon={HiOutlineStar} text={provider === "tmdb" ? result?.rating.toFixed(1) : (Number(result.rating) / 10).toFixed(1)} />
+                      <MiniDescription icon={HiOutlineStar} text={provider === "tmdb" ? result?.rating.toFixed(1) : (Number(result?.rating) / 10).toFixed(1)} />
                     )}
                     {result?.releaseDate && (
-                      <MiniDescription icon={HiOutlineCalendarDays} text={result.releaseDate} />
+                      <MiniDescription icon={HiOutlineCalendarDays} text={result?.releaseDate} />
                     )}
                     {result?.trailer && (
-                      <Link href={`https://www.youtube.com/watch?v=${result.trailer?.id}`} target="_blank" className='flex hover:underline'>
+                      <Link href={`https://www.youtube.com/watch?v=${result?.trailer?.id}`} target="_blank" className='flex hover:underline'>
                         <FaYoutube size={20} color="#ff0000" />
                         <span className='pl-2'>Trailer</span>
                       </Link>
