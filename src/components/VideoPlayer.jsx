@@ -313,7 +313,7 @@ const VideoPlayer = ({ sourceLink, services }) => {
             setTimeout(() => setSkipMinusTen(false), 150);
           }}></div>
 
-        <div className={`absolute top-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${controlsVisible || togglePlayAndPause||buffering ? "visible" : "invisible"}`}>
+        <div className={`absolute top-1/2 -translate-y-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${controlsVisible || togglePlayAndPause||buffering ? "visible" : "invisible"}`}>
           <EventLessButton onClick={handlePlayAndPause} >
             {buffering
               ? <IconText size={15} Icon={<ImSpinner8 className='animate-spin' />}/>
