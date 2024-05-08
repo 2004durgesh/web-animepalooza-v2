@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
-import fetchData from "@/components/Datafetcher"
-import VideoPlayer from '@/components/VideoPlayer';
+import fetchData from "../../../../../components/Datafetcher"
+import VideoPlayer from '../../../../../components/VideoPlayer';
 import Loading from '../loading';
 
 const page = async ({ params }) => {
@@ -12,7 +12,7 @@ const page = async ({ params }) => {
   const animeEpisodeLinks = await fetchData(services, provider, `watch/${params.episode_id[0]}`)
   // const moviesEpisodeLinks=await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
 
-  let moviesEpisodeLinks=""
+  let moviesEpisodeLinks = ""
   if (params.services === "movies") {
     if (params.provider !== "tmdb") {
       moviesEpisodeLinks = await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })

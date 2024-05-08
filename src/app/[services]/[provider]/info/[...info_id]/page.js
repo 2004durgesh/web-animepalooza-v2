@@ -1,18 +1,18 @@
 // "use client"
 import React, { Suspense } from 'react'
-import fetchData from '@/components/Datafetcher'
+import fetchData from '../../../../../components/Datafetcher'
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import Loading from '../loading';
-import { Badge } from '@/components/ui/badge';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import ContentList from '@/components/ContentList';
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from '../../../../../components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../../../components/ui/accordion"
+import ContentList from '../../../../../components/ContentList';
+import { ScrollArea, ScrollBar } from "../../../../../components/ui/scroll-area"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../../../components/ui/card"
 import Link from 'next/link';
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays, HiOutlineClock, HiOutlinePlayCircle } from "react-icons/hi2";
 import { IoCheckmarkDoneOutline } from "react-icons/io5"
-import IconText from '@/components/IconText';
+import IconText from '../../../../../components/IconText';
 
 const page = async ({ params }) => {
     let services = params.services === 'anime' || params.services === 'manga' || params.provider === "tmdb" ? 'meta' : params.services;

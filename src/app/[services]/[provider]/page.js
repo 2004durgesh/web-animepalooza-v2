@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react'
 import { redirect } from 'next/navigation'
-import AllProvider from '@/constants/AllProvider'
-import ContentList from '@/components/ContentList'
-import fetchData from '@/components/Datafetcher'
-import SearchBar from '@/components/SearchBar'
+import AllProvider from '../../../constants/AllProvider.json'
+import ContentList from '../../../components/ContentList'
+import fetchData from '../../../components/Datafetcher'
+import SearchBar from '../../../components/SearchBar'
 import Loading from './loading'
 const Provider = async ({ params }) => {
     console.log(params.provider)
     // console.log(AllProvider.includes(params.provider[0]))
-    let services = params.services === 'anime' || params.services === 'manga' ||params.provider==="tmdb" ? 'meta' : params.services;
+    let services = params.services === 'anime' || params.services === 'manga' || params.provider === "tmdb" ? 'meta' : params.services;
     let provider = params.services === 'anime' ? "anilist" : params.services === 'manga' ? "anilist-manga" : params.provider;
     const trending = await fetchData(services, provider, "trending", { page: 1 });
     const popular = await fetchData(services, provider, "popular", { page: 1 });

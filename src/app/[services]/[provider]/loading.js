@@ -1,6 +1,6 @@
 import React from 'react'
-import { Skeleton } from "@/components/ui/skeleton"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Skeleton } from "../../../components/ui/skeleton"
+import { Card, CardContent, CardHeader } from "../../../components/ui/card"
 
 const SkeletonComponent = () => (
     <div className="h-6 w-1/4 bg-gray-300 rounded-md" />
@@ -22,12 +22,12 @@ const Loading = () => {
                                     <div className="space-y-3">
                                         <Skeleton className="h-6 w-3/4 bg-gray-300 rounded-md" />
                                         <div className="flex justify-between">
-                                            <SkeletonComponent/>
-                                            <SkeletonComponent/>
+                                            <SkeletonComponent />
+                                            <SkeletonComponent />
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <SkeletonComponent/>
-                                            <SkeletonComponent/>
+                                            <SkeletonComponent />
+                                            <SkeletonComponent />
                                         </div>
                                     </div>
                                 </div>

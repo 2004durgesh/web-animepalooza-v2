@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Lottie from "lottie-react";
-import Error404 from "@/../public/assets/lottie/404-error.json";
+import Error404 from "../../public/assets/lottie/404-error.json";
 const NotFound = () => {
     return (
         <>

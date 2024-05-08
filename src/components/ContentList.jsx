@@ -1,15 +1,15 @@
 "use client"
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
+import { Badge } from "../components/ui/badge"
 import Image from "next/image";
 import { Suspense, createElement, useState } from "react";
-import Loading from "@/app/[services]/[provider]/loading";
+import Loading from "../app/[services]/[provider]/loading";
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays } from "react-icons/hi2";
 import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import fetchData from "@/components/Datafetcher"
+import fetchData from "../components/Datafetcher"
 
 export function MiniDescription({ icon, text }) {
   return (
@@ -67,7 +67,7 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
                       {services === 'movies' || provider === "tmdb" ? result?.title : result?.title?.userPreferred ?? result?.title?.english}
                     </CardTitle>
                     <div className="flex items-center space-x-4 mx-4">
-                      {result?.type&&<Badge variant="secondary" className='py-1 px-2'>{result?.type}</Badge>}
+                      {result?.type && <Badge variant="secondary" className='py-1 px-2'>{result?.type}</Badge>}
                       <Link href={provider === "tmdb" ? `/${params?.services}/${params?.provider}/info/${result?.id}/${result?.type.split(" ")[0].toLowerCase()}` : `/${params?.services}/${params?.provider}/info/${result?.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
                         Watch Now
                       </Link>

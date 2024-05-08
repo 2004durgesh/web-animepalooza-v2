@@ -1,9 +1,9 @@
-import fetchData from '@/components/Datafetcher'
-import ContentList from '@/components/ContentList'
+// import fetchData from '../components/Datafetcher'
+// import ContentList from '../components/ContentList'
 import React, { Suspense } from 'react'
-import ProviderList from '@/components/ProviderList';
-import ServiceProvider from '@/constants/ServiceProvider';
-import { Skeleton } from "@/components/ui/skeleton"
+import ProviderList from '../../components/ProviderList';
+import ServiceProvider from '../../constants/ServiceProvider.json';
+import { Skeleton } from "../../components/ui/skeleton"
 const page = async ({ params }) => {
 
   await new Promise(resolve => setTimeout(resolve, 5000))
