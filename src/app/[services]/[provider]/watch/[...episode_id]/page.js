@@ -7,30 +7,45 @@ const page = async ({ params }) => {
   // await new Promise(resolve => setTimeout(resolve, 5000))
   let services = params.services === 'anime' || params.services === 'manga' ? 'meta' : params.services;
   let provider = params.services === 'anime' || params.services === 'manga' ? "anilist" : params.provider;
-  let tmdbUrl=`https://animepalooza.vercel.app/api/${params.episode_id[0]}?s=${params.episode_id[3]}&e=${params.episode_id[4]}`
-  console.log("tmdburl",tmdbUrl)
+  let tmdbUrl = `https://animepalooza.vercel.app/api/${params.episode_id[0]}?s=${params.episode_id[3]}&e=${params.episode_id[4]}`
+  console.log("tmdburl", tmdbUrl)
   const animeEpisodeLinks = await fetchData(services, provider, `watch/${params.episode_id[0]}`)
-  const moviesEpisodeLinks=await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
-  // const moviesEpisodeLinks = (params.services === "movies" && provider !== "tmdb")
+  // const moviesEpisodeLinks=await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
+
+  let moviesEpisodeLinks=""
+  if (params.services === "movies") {
+    if (params.provider !== "tmdb") {
+      moviesEpisodeLinks = await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
+    }
+    else {
+      moviesEpisodeLinks = await fetch(tmdbUrl, { cache: 'no-store' })
+        .then(res => {
+          return res.json();
+        })
+        .then(data => { console.log(data); return data })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+  }
+  // const moviesEpisodeLinks = params.services === "movies"
   //   ?
-  //   await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
+  //   provider !== "tmdb" && await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
   //   :
-  //   await fetch(tmdbUrl)
-  //   .then(res => {
-  //       console.log(res);
+  //   await fetch(tmdbUrl, { cache: 'no-store' })
+  //     .then(res => {
   //       return res.json();
-  //   })
-  //   .then(data => console.log(data))
-  //   .catch(error => console.error('Error fetching data:', error));
+  //     })
+  //     .then(data => { console.log(data); return data })
+  //     .catch(error => console.error('Error fetching data:', error));
+
 
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
-  const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "tmdb" ? episodeLinks.source: episodeLinks.sources[0].url;
+  const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "tmdb" ? episodeLinks.source : episodeLinks.sources[0].url;
   return (
     <Suspense fallback={<Loading />}>
       <main>
         {/* {SearchParams} */}
         {/* {JSON.stringify(episodeLinks)} */}
-        <VideoPlayer sourceLink={sourceLink} services={services}/>
+        <VideoPlayer sourceLink={sourceLink} services={services} />
       </main>
     </Suspense>
   )
