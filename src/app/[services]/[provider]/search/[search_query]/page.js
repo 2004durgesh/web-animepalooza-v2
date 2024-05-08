@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import fetchData from '../../../../../components'
+import fetchData from '../../../../../components/Datafetcher'
 import ContentList from '../../../../../components/ContentList';
 const page = async ({ params }) => {
     let services = params.services === 'anime' || params.services === 'manga' || params.provider === "tmdb" ? 'meta' : params.services;

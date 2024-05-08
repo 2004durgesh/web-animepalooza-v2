@@ -6,7 +6,7 @@ import Image from 'next/image'
 import parse from 'html-react-parser'
 import { ScrollArea, ScrollBar } from "../../../../components/ui/scroll-area"
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../../components/ui/card"
 
 const Page = ({ params }) => {
     const searchParams = useSearchParams()
