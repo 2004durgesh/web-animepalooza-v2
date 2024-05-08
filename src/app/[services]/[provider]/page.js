@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import AllProvider from '../../../constants/AllProvider.json'
 import ContentList from '../../../components/ContentList'
 import fetchData from '../../../components/Datafetcher'
@@ -15,6 +15,7 @@ const Provider = async ({ params }) => {
     const recent = await fetchData(services, provider, "recent", { page: 1 });
     const recentMovies = await fetchData(services, provider, "recent-movies");
     const recentShows = await fetchData(services, provider, "recent-shows");
+    if(!AllProvider.includes(params.provider))  notFound()
     return (
         <>
             {AllProvider.includes(params.provider) &&

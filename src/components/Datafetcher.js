@@ -18,13 +18,22 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
                 },
                 next: { revalidate: 3600 }
             });
-        console.log("response", response)
+        // console.log("response", response)
         const data = await response.json();
-        console.log("data", data)
+        // console.log("data", data)
+        if (
+            data === null ||
+            data === undefined ||
+            (Array.isArray(data) && data.length === 0) ||
+            (Object.keys(data).length === 0 && data.constructor === Object)
+          ) {
+            throw new Error("No data found");
+          }
+
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
-        throw error;
+        throw new Error(`${error}`);;
     }
 }
 export default fetchData;
