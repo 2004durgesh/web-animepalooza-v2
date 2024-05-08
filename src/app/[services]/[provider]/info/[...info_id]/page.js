@@ -18,10 +18,10 @@ const page = async ({ params }) => {
     let services = params.services === 'anime' || params.services === 'manga' || params.provider === "tmdb" ? 'meta' : params.services;
     let provider = params.services === 'anime' ? "anilist" : params.services === 'manga' ? "anilist-manga" : params.provider;
     let animeInfo = params.services === "anime" && await fetchData(services, provider, `data/${params.info_id.join("/")}`, { provider: params.provider })
-    let mangaInfo = params.services && await fetchData(services, provider, `info/${params.info_id.join("/")}`, { provider: params.provider })
-    let movieInfo = params.services === "movies" && provider !== "tmdb" ? await fetchData(services, provider, `info`, { id: params.info_id.join("/") }) : await fetchData(services, provider, `info/${params.info_id[0]}`, { type: params.info_id[1] })
+    let mangaInfo = params.services==="manga" && await fetchData(services, provider, `info/${params.info_id.join("/")}`, { provider: params.provider })
+    let movieInfo = params.services === "movies" &&( provider !== "tmdb" ? await fetchData(services, provider, `info`, { id: params.info_id.join("/") }) : await fetchData(services, provider, `info/${params.info_id[0]}`, { type: params.info_id[1] }))
     const info = params.services === 'anime' ? animeInfo : params.services === 'manga' ? mangaInfo : movieInfo
-    const episodes = params.services === 'anime' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : params.provider === "tmdb" ? info?.seasons && info?.seasons[0]?.episodes : movieInfo?.episodes;
+    // const episodes = params.services === 'anime' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : params.provider === "tmdb" ? info?.seasons && info?.seasons[0]?.episodes : movieInfo?.episodes;
     const chapters = mangaInfo?.chapters;
     const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
     const ExtraInfoItem = ({ label, children }) => (
@@ -153,7 +153,7 @@ const page = async ({ params }) => {
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
             </>}
-            {episodes && episodes.length > 0 &&
+            {/* {episodes && episodes.length > 0 &&
                 <>
                     <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
                     <ScrollArea>
@@ -193,7 +193,7 @@ const page = async ({ params }) => {
                         </div>
                     </ScrollArea>
                 </>
-            }
+            } */}
             {chapters && chapters.length > 0 &&
                 <>
                     <h2 className='text-lg font-semibold font-pro-medium text-primary'>Chapters</h2>

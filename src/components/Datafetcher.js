@@ -18,7 +18,9 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
                 },
                 next: { revalidate: 3600 }
             });
+        console.log("response", response)
         const data = await response.json();
+        console.log("data", data)
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
