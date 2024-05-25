@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
-import fetchData from "../../../../../components/Datafetcher"
-import VideoPlayer from '../../../../../components/VideoPlayer';
+import fetchData from "@/components/Datafetcher"
+import VideoPlayer from '@/components/VideoPlayer';
 import Loading from '../loading';
 
 const page = async ({ params }) => {

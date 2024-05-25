@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import { notFound } from 'next/navigation'
-import AllProvider from '../../../constants/AllProvider.json'
-import ContentList from '../../../components/ContentList'
-import fetchData from '../../../components/Datafetcher'
-import SearchBar from '../../../components/SearchBar'
+import AllProvider from '@/constants/AllProvider.json'
+import ContentList from '@/components/ContentList'
+import fetchData from '@/components/Datafetcher'
+import SearchBar from '@/components/SearchBar'
 import Loading from './loading'
 const Provider = async ({ params }) => {
     console.log(params.provider)

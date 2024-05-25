@@ -1,8 +1,8 @@
 // "use client"
-import ContentList from "../components/ContentList";
-import HeroSection from "../components/HeroSection";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
-import fetchData from "../components/Datafetcher";
+import ContentList from "@/components/ContentList";
+import HeroSection from "@/components/HeroSection";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import fetchData from "@/components/Datafetcher";
 export default async function Home() {
   const trendingAnime = await fetchData("meta", "anilist", "trending", { page: 1 });
   const popularAnime = await fetchData("meta", "anilist", "popular", { page: 1 });

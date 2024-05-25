@@ -1,5 +1,5 @@
 import './globals.css'
-import Navbar from '../components/Navbar'
+import Navbar from '@/components/Navbar'
 const APP_NAME = "AnimePalooza";
 const APP_DEFAULT_TITLE = "AnimePalooza-Your Ultimate Destination for Anime, Movies, TV Shows, Drama, Manga, and More";
 const APP_TITLE_TEMPLATE = "%s - PWA App";

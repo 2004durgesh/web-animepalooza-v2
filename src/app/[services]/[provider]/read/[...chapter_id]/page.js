@@ -1,5 +1,5 @@
-import ChapterImage from '../../../../../components/ChapterImage';
-import fetchData from '../../../../../components/Datafetcher'
+import ChapterImage from '@/components/ChapterImage';
+import fetchData from '@/components/Datafetcher'
 import Image from 'next/image';
 import React, { Suspense } from 'react'
 import Loading from '../loading';

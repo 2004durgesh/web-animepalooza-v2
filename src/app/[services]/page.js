@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
-import ProviderList from '../../components/ProviderList';
-import ServiceProvider from '../../constants/ServiceProvider.json';
-import { Skeleton } from "../../components/ui/skeleton"
+import ProviderList from '@/components/ProviderList';
+import ServiceProvider from '@/constants/ServiceProvider.json';
+import { Skeleton } from "@/components/ui/skeleton"
 import { notFound } from 'next/navigation'
 const page = ({ params }) => {
 
