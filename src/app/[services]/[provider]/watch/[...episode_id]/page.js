@@ -40,7 +40,7 @@ const page = async ({ params }) => {
 
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
   const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "tmdb" ? episodeLinks.source : episodeLinks.sources[0].url;
-  console.log("episodeLinks...........", episodeLinks)
+  // console.log("episodeLinks...........", episodeLinks)
   return (
     <Suspense fallback={<Loading />}>
       <main>

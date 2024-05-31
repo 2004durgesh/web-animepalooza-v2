@@ -27,9 +27,13 @@ const VideoPlayer = ({ sourceLink, services }) => {
   const [skipPlusTen, setSkipPlusTen] = useState(false);
   const [skipMinusTen, setSkipMinusTen] = useState(false);
 
-  const qualityLevels = services === "meta" ? [360, 480, 720, 1080] : [360, 480, 720]
-  const [currentQuality, setCurrentQuality] = useState(qualityLevels[0]);
+  const [qualityLevels,setQualityLevels]=useState([])
+  const [currentQuality, setCurrentQuality] = useState(qualityLevels[qualityLevels.length - 1]);
   // console.log(currentQuality, "currentQuality");
+  useEffect(() => {
+    setCurrentQuality(qualityLevels[qualityLevels.length - 1]);
+  }, [qualityLevels]);
+  
   const handlePlayAndPause = useCallback(() => {
     if (togglePlayAndPause) {
       videoRef.current.play();
@@ -64,20 +68,27 @@ const VideoPlayer = ({ sourceLink, services }) => {
     const loadVideo = async () => {
       if (Hls.isSupported() && videoRef.current) {
         const hls = new Hls();
-        hls.loadSource(sourceLink);
+        hls.loadSource(decodeURIComponent(sourceLink));
         hls.attachMedia(videoRef.current);
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
           // videoRef.current.play();
           // setTogglePlayAndPause(false);
+          console.warn(hls.levels.map(level => level.height));
+          setQualityLevels(hls.levels.map(level => level.height));
         });
+
         hlsRef.current = hls;
+      }
+      else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+        videoRef.current.src = decodeURIComponent(sourceLink);
+        videoRef.current.addEventListener('loadedmetadata', function () {
+          videoRef.current.play();
+        });
       }
     };
 
     loadVideo();
   }, [sourceLink]);
-
-
 
 
   useEffect(() => {
@@ -313,10 +324,10 @@ const VideoPlayer = ({ sourceLink, services }) => {
             setTimeout(() => setSkipMinusTen(false), 150);
           }}></div>
 
-        <div className={`absolute top-1/2 -translate-y-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${controlsVisible || togglePlayAndPause||buffering ? "visible" : "invisible"}`}>
+        <div className={`absolute top-1/2 -translate-y-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${controlsVisible || togglePlayAndPause || buffering ? "visible" : "invisible"}`}>
           <EventLessButton onClick={handlePlayAndPause} >
             {buffering
-              ? <IconText size={15} Icon={<ImSpinner8 className='animate-spin' />}/>
+              ? <IconText size={15} Icon={<ImSpinner8 className='animate-spin' />} />
               : togglePlayAndPause
                 ? <IconText size={15} Icon={<MdOutlinePlayArrow />} />
                 : <IconText size={15} Icon={<MdOutlinePause />} />
