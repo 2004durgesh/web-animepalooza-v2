@@ -4,6 +4,7 @@ import fetchData from '@/components/Datafetcher'
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import Loading from '../loading';
+import FavoriteButton from '@/components/FavoriteButton';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -25,6 +26,15 @@ const page = async ({ params }) => {
     const episodes = params.services === 'anime' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : params.provider === "tmdb" ? info?.seasons && info?.seasons[0]?.episodes : movieInfo?.episodes;
     const chapters = mangaInfo?.chapters;
     // if(!info||!chapters) return notFound()
+        const favoriteItem={
+            id:params.info_id.join("/"),
+            title:info?.title?.english || info?.title?.romaji || info?.title,
+            image:info?.image || info?.cover,
+            type:info?.type,
+            provider:params.provider,
+            services:params.services,
+            url:`/${params.services}/${params.provider}/info/${params.info_id.join("/")}`
+        }
     const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
     const ExtraInfoItem = ({ label, children }) => (
         <p className='text-xs sm:text-sm md:text-base lg:text-lg text-white'>
@@ -46,13 +56,14 @@ const page = async ({ params }) => {
             }}
                 className='h-96 bg-cover bg-center bg-no-repeat bg-none m-4'
             >
-                <div className='backdrop-blur-md h-96 w-full flex flex-col md:flex-row items-center justify-center px-4'>
-                    <div className='self-center md:self-end my-4 w-full md:w-1/3 order-2 md:order-1 text-center'>
-                        <h1 className='font-bold text-2xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
+                <div className='backdrop-blur-sm h-96 w-full flex flex-col md:flex-row items-center justify-center px-4'>
+                    <div className='self-center md:self-end mt-3 w-full md:w-1/3 order-2 md:order-1 text-center'>
+                        <h1 className='font-bold text-lg md:text-2xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
                         <div className='flex justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info?.type}</ResponsiveText>
                             {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info?.releaseDate}</IconText>}
                             {info?.totalEpisodes && <IconText Icon={<HiOutlineRectangleStack />}>{info?.totalEpisodes}</IconText>}
+                        <FavoriteButton item={favoriteItem}/>
                         </div>
                     </div>
                     <Image src={info?.image} alt={info?.title?.english ?? info?.title} height={284} width={203} className='mx-auto h-full w-auto order-2' />

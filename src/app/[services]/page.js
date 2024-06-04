@@ -3,6 +3,7 @@ import ProviderList from '@/components/ProviderList';
 import ServiceProvider from '@/constants/ServiceProvider.json';
 import { Skeleton } from "@/components/ui/skeleton"
 import { notFound } from 'next/navigation'
+import Favorite from './favorite'
 const page = ({ params }) => {
 
   const LoaderUi = () => (
@@ -20,9 +21,14 @@ const page = ({ params }) => {
   if (matchingProviders.length === 0 && params.services !== 'favorites') {
     notFound()
   }
+  if(params.services === 'favorites'){
+    return (
+      <Favorite/>
+    )
+  }
   return (
     <Suspense fallback={<LoaderUi />}>
-      <h1 className="text-3xl font-bold mb-8">Explore Providers</h1>
+      {params.services !== 'favorites'&&<h1 className="text-3xl font-bold mb-8">Explore Providers</h1>}
       {ServiceProvider.map((provider) => {
         if (provider.service === params.services) {
           return <ProviderList
