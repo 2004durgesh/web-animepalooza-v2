@@ -3,7 +3,7 @@ import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carous
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
 import Image from "next/image";
-import { Suspense, createElement, useState } from "react";
+import { Suspense, createElement, useEffect, useState } from "react";
 import Loading from "../app/[services]/[provider]/loading";
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays } from "react-icons/hi2";
 import { FaYoutube } from "react-icons/fa";
@@ -27,6 +27,10 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
   const { currentPage, hasNextPage, results } = isArray ? {} : data;
   const [currPage, setCurrPage] = useState(isArray ? 1 : currentPage);
   const [items, setItems] = useState(isArray ? data : results);
+
+  useEffect(() => {
+    setItems(isArray ? data : results);
+  }, [data, results, isArray]);
 
   const fetchMoreData = async () => {
     console.log("i was called from contentlist.jsx");
@@ -73,10 +77,10 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
                           ?
                           `/${params?.services}/${params?.provider}/info/${result?.id}/${result?.type.split(" ")[0].toLowerCase()}`
                           :
-                          services==="favorites"?
-                          `/${result?.services}/${result?.provider}/info/${result?.id}`
-                          :
-                          `/${params?.services}/${params?.provider}/info/${result?.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
+                          services === "favorites" ?
+                            `/${result?.services}/${result?.provider}/info/${result?.id}`
+                            :
+                            `/${params?.services}/${params?.provider}/info/${result?.id}`} className="hover:underline transition-all duration-300 active:animate-ping">
                         Watch Now
                       </Link>
                     </div>

@@ -1,23 +1,25 @@
 "use client"
 import ContentList from '@/components/ContentList';
-import React from 'react'
+import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react'
 
-const favorite = () => {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+const Favorite = () => {
+    const storedFavorites = localStorage.getItem('favorites');
+    const [favorites, setFavorites] = useState(storedFavorites ? JSON.parse(storedFavorites) : []);
+    const handleClearFavorites = () => {
+        localStorage.setItem('favorites', JSON.stringify([]));
+        setFavorites([]);
+    }
     return (
         <div>
-            {/* <Suspense fallback={<Loading />}>
-                            <ContentList 
-                            params={params} 
-                            headerText={params.services === 'anime' ? 'Trending Anime' : params.services === 'manga' ? 'Trending Manga' : "Trending Movies and TV-Shows"}    
-                            data={trending} 
-                            services={services} 
-                            provider={provider}                                 
-                            otherParams="trending" />
-                        </Suspense> */}
-            <ContentList data={favorites} services="favorites"/>
+            {favorites.length>0&&<ContentList headerText="Your Favorites" data={favorites} services="favorites" displayStyle="grid" />}
+            {favorites.length === 0 && <div className="text-center text-white font-bold flex flex-col justify-center gap-4">
+                <span className="text-4xl md:text-6xl lg:text-7xl">{'.·´¯`(>__<)´¯`·.'}</span>
+                <span className="md:text-xl lg:text-2xl">No favorites found</span>
+            </div>}
+            {favorites.length > 0 && <Button variant="destructive" onClick={handleClearFavorites}>Clear favorites</Button>}
         </div>
     )
 }
 
-export default favorite
+export default Favorite
