@@ -24,16 +24,18 @@ const VideoPlayer = ({ sourceLink, services }) => {
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [buffering, setBuffering] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [lastClickTimeLeft, setLastClickTimeLeft] = useState(0);
+  const [lastClickTimeRight, setLastClickTimeRight] = useState(0);
   const [skipPlusTen, setSkipPlusTen] = useState(false);
   const [skipMinusTen, setSkipMinusTen] = useState(false);
 
-  const [qualityLevels,setQualityLevels]=useState([])
+  const [qualityLevels, setQualityLevels] = useState([])
   const [currentQuality, setCurrentQuality] = useState(qualityLevels[qualityLevels.length - 1]);
   // console.log(currentQuality, "currentQuality");
   useEffect(() => {
     setCurrentQuality(qualityLevels[qualityLevels.length - 1]);
   }, [qualityLevels]);
-  
+
   const handlePlayAndPause = useCallback(() => {
     if (togglePlayAndPause) {
       videoRef.current.play();
@@ -311,19 +313,45 @@ const VideoPlayer = ({ sourceLink, services }) => {
         </div>
 
         {/* skip buttons */}
-        <div className={`absolute right-0 top-10 w-1/2 h-4/5 rounded-full ${skipPlusTen ? 'animate-ping bg-red-500' : null}`}
-          onDoubleClick={() => {
-            videoRef && videoRef.current && (videoRef.current.currentTime += 10);
-            setSkipPlusTen(true);
-            setTimeout(() => setSkipPlusTen(false), 150);
-          }}></div>
         <div className={`absolute left-0 top-10 w-1/2 h-4/5 rounded-full  ${skipMinusTen ? 'animate-ping bg-red-500' : null}`}
-          onDoubleClick={() => {
-            videoRef && videoRef.current && (videoRef.current.currentTime -= 10);
-            setSkipMinusTen(true);
-            setTimeout(() => setSkipMinusTen(false), 150);
-          }}></div>
+          onClick={() => {
+            const currentTime = new Date().getTime();
+            const timeSinceLastClick = currentTime - lastClickTimeLeft;
 
+            if (timeSinceLastClick <= 500) { // Double press interval threshold (500 milliseconds)
+              if (videoRef.current) {
+                const newTime = videoRef.current.currentTime - 10; // Go 10 seconds backward
+                if (newTime >= 0) {
+                  videoRef.current.currentTime = newTime;
+                  setSkipMinusTen(true); // Set state only when currentTime is changed
+                  setTimeout(() => setSkipMinusTen(false), 150);
+                }
+              }
+            }
+
+            setLastClickTimeLeft(currentTime);
+          }
+          } />
+        <div className={`absolute right-0 top-10 w-1/2 h-4/5 rounded-full ${skipPlusTen ? 'animate-ping bg-red-500' : null}`}
+          onClick={() => {
+            const currentTime = new Date().getTime();
+            const timeSinceLastClick = currentTime - lastClickTimeRight;
+
+            if (timeSinceLastClick <= 500) { // Double press interval threshold (500 milliseconds)
+              if (videoRef.current) {
+                const newTime = videoRef.current.currentTime + 10; // Go 10 seconds forward
+                if (newTime <= videoRef.current.duration) {
+                  videoRef.current.currentTime = newTime;
+                  setSkipPlusTen(true); // Set state only when currentTime is changed
+                  setTimeout(() => setSkipPlusTen(false), 150);
+                }
+              }
+            }
+
+            setLastClickTimeRight(currentTime);
+          }
+          } />
+        {/* center play-pause button */}
         <div className={`absolute top-1/2 -translate-y-1/2 px-4 aspect-square transition-all duration-300 inline-flex rounded-full bg-primary opacity-75 ${controlsVisible || togglePlayAndPause || buffering ? "visible" : "invisible"}`}>
           <EventLessButton onClick={handlePlayAndPause} >
             {buffering
