@@ -15,6 +15,7 @@ const ProviderList = ({name,description,imgSrc,slug}) => {
         <div className="flex items-center gap-4">
           <div className="flex-shrink-0">
             <Image
+            unoptimized
               alt={name}
               className="h-24 w-24 rounded-full bg-yellow-300 aspect-square"
               height="100"

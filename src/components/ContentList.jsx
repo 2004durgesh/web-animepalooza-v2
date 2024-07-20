@@ -64,7 +64,7 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
             return (
               <div key={result?.id} className='mx-4'>
                 <Card className='overflow-hidden w-fit text-white border-none'>
-                  <Image src={result?.image} alt={services === 'movies' || provider === "tmdb" || services === "favorites" ? result?.title : `${result?.title?.userPreferred} or ${result?.title?.english}`}
+                  <Image unoptimized src={result?.image} alt={services === 'movies' || provider === "tmdb" || services === "favorites" ? result?.title : `${result?.title?.userPreferred} or ${result?.title?.english}`}
                     className="h-72 w-full object-contain" width={200} height={150} />
                   <CardHeader className='space-y-0 p-0 mt-4'>
                     <CardTitle className='px-2 text-lg font-bold overflow-hidden w-52 whitespace-nowrap overflow-ellipsis'>

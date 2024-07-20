@@ -7,7 +7,7 @@ const ChapterImage = ({chapterPages}) => {
         {chapterPages.map((page, index) => (
           <div key={index} className='flex flex-col items-center justify-center shadow rounded'>
             <div className='flex items-center justify-center overflow-hidden rounded'>
-              <Image src={page.img} alt={`page-${page.page}`} height={384} width={500} objectFit='contain' />
+              <Image unoptimized src={page.img} alt={`page-${page.page}`} height={384} width={500} objectFit='contain' />
             </div>
             <span className='text-center mb-4'>Page number: {page.page}</span>
           </div>

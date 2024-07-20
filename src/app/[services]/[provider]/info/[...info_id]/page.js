@@ -59,14 +59,14 @@ const page = async ({ params }) => {
                 <div className='backdrop-blur-sm h-96 w-full flex flex-col md:flex-row items-center justify-center px-4'>
                     <div className='self-center md:self-end mt-3 w-full md:w-1/3 order-2 md:order-1 text-center'>
                         <h1 className='font-bold text-lg md:text-2xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
-                        <div className='flex justify-center divide-x-2 gap-x-2'>
+                        <div className='flex items-center justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info?.type}</ResponsiveText>
                             {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info?.releaseDate}</IconText>}
                             {info?.totalEpisodes && <IconText Icon={<HiOutlineRectangleStack />}>{info?.totalEpisodes}</IconText>}
                         <FavoriteButton item={favoriteItem}/>
                         </div>
                     </div>
-                    <Image src={info?.image} alt={info?.title?.english ?? info?.title} height={284} width={203} className='mx-auto h-full w-auto order-2' />
+                    <Image unoptimized src={info?.image} alt={info?.title?.english ?? info?.title} height={284} width={203} className='mx-auto h-full w-auto order-2' />
                     <div className='self-center md:self-end my-4 w-full md:w-1/3 order-3'>
                         <div className='flex flex-wrap divide-x-2 gap-x-2'>
                             {info?.status && <IconText Icon={info?.status === "Completed" ? <IoCheckmarkDoneOutline /> : <HiOutlineClock />}>
@@ -146,7 +146,7 @@ const page = async ({ params }) => {
                 <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
                     {info?.characters.map((character, index) => (
                         <Card key={index} className='overflow-hidden mx-2 py-2 w-fit text-white border-none inline-block flex-shrink-0'>
-                            <Image src={character.image} alt={character.name.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
+                            <Image unoptimized src={character.image} alt={character.name.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
                             <CardHeader className='space-y-0 p-0 mt-4'>
                                 <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1 text-center'>
                                     {character.name.userPreferred}

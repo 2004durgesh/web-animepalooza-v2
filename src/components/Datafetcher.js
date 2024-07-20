@@ -23,9 +23,7 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
         // console.log("data", data)
         if (
             data === null ||
-            data === undefined ||
-            (Array.isArray(data) && data.length === 0) ||
-            (Object.keys(data).length === 0 && data.constructor === Object)
+            data === undefined
           ) {
             throw new Error("No data found");
           }
