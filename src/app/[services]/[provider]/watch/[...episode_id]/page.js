@@ -10,22 +10,22 @@ const page = async ({ params }) => {
   let tmdbUrl = `https://animepalooza.vercel.app/api/${params.episode_id[0]}?s=${params.episode_id[3]}&e=${params.episode_id[4]}`
   console.log("tmdburl", tmdbUrl)
   const animeEpisodeLinks = await fetchData(services, provider, `watch/${params.episode_id[0]}`)
-  // const moviesEpisodeLinks=await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
+  const moviesEpisodeLinks=await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
 
-  let moviesEpisodeLinks = ""
-  if (params.services === "movies") {
-    if (params.provider !== "tmdb") {
-      moviesEpisodeLinks = await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
-    }
-    else {
-      moviesEpisodeLinks = await fetch(tmdbUrl, { cache: 'no-store' })
-        .then(res => {
-          return res.json();
-        })
-        .then(data => { console.log(data); return data })
-        .catch(error => console.error('Error fetching data:', error));
-    }
-  }
+  // let moviesEpisodeLinks = ""
+  // if (params.services === "movies") {
+  //   if (params.provider !== "tmdb") {
+  //     moviesEpisodeLinks = await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
+  //   }
+  //   else {
+  //     moviesEpisodeLinks = await fetch(tmdbUrl, { cache: 'no-store' })
+  //       .then(res => {
+  //         return res.json();
+  //       })
+  //       .then(data => { console.log(data); return data })
+  //       .catch(error => console.error('Error fetching data:', error));
+  //   }
+  // }
   // const moviesEpisodeLinks = params.services === "movies"
   //   ?
   //   provider !== "tmdb" && await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
@@ -39,13 +39,13 @@ const page = async ({ params }) => {
 
 
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
-  const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "tmdb" ? episodeLinks.source : episodeLinks.sources[0].url;
-  // console.log("episodeLinks...........", episodeLinks)
+  const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "dramacool" ? episodeLinks.sources[0].url : episodeLinks.sources[3].url;
+  // console.log("episodeLinks...........", sourceLink,episodeLinks)
   return (
     <Suspense fallback={<Loading />}>
       <main>
         {/* {SearchParams} */}
-        {/* {JSON.stringify(episodeLinks)} */}
+        {/* {JSON.stringify(sourceLink)} */}
         <VideoPlayer sourceLink={sourceLink} services={services} />
       </main>
     </Suspense>
