@@ -279,7 +279,7 @@ const VideoPlayer = ({ sourceLink, subtitle }) => {
         <video ref={videoRef} className="" poster={thumbnail} onWaiting={handleWaiting}>
           Your browser does not support the video tag.
           {subtitle && subtitle.map((sub, index) => (
-            <track key={index} src={sub.url} kind="subtitles" label={sub.lang} default={index === 0} />
+            <track key={index} src={sub.url} kind="captions" label={sub.lang} default={index === 0} />
           ))}
         </video>
         {/* top info-bar */}
