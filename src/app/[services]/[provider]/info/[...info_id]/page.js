@@ -15,26 +15,65 @@ import Link from 'next/link';
 import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays, HiOutlineClock, HiOutlinePlayCircle } from "react-icons/hi2";
 import { IoCheckmarkDoneOutline } from "react-icons/io5"
 import IconText from '@/components/IconText';
+import TMDBInfo from '@/components/TMDBInfo';
+import EpisodeCard from '@/components/EpisodeCard';
 
 const page = async ({ params }) => {
-    let services = params.services === 'anime' || params.services === 'manga' || params.provider === "tmdb" ? 'meta' : params.services;
-    let provider = params.services === 'anime' ? "anilist" : params.services === 'manga' ? "anilist-manga" : params.provider;
-    let animeInfo = params.services === "anime" && await fetchData(services, provider, `data/${params.info_id.join("/")}`, { provider: params.provider })
-    let mangaInfo = params.services==="manga" && await fetchData(services, provider, `info/${params.info_id.join("/")}`, { provider: params.provider })
-    let movieInfo = params.services === "movies" &&( provider !== "tmdb" ? await fetchData(services, provider, `info`, { id: params.info_id.join("/") }) : await fetchData(services, provider, `info/${params.info_id[0]}`, { type: params.info_id[1] }))
-    const info = params.services === 'anime' ? animeInfo : params.services === 'manga' ? mangaInfo : movieInfo
-    const episodes = params.services === 'anime' ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider }) : params.provider === "tmdb" ? info?.seasons && info?.seasons[0]?.episodes : movieInfo?.episodes;
+    let services =
+        (params.services === 'anime' || params.services === 'manga' || params.provider === "tmdb")
+            ? 'meta'
+            : params.services;
+
+    let provider =
+        (params.services === 'anime')
+            ? "anilist"
+            : (params.services === 'manga')
+                ? "anilist-manga"
+                : params.provider;
+
+    let animeInfo =
+        (params.services === "anime")
+            ? await fetchData(services, provider, `data/${params.info_id.join("/")}`, { provider: params.provider })
+            : null;
+
+    let mangaInfo =
+        (params.services === "manga")
+            ? await fetchData(services, provider, `info/${params.info_id.join("/")}`, { provider: params.provider })
+            : null;
+
+    let movieInfo =
+        (params.services === "movies")
+            ? (provider !== "tmdb")
+                ? await fetchData(services, provider, `info`, { id: params.info_id.join("/") })
+                : await fetchData(services, provider, `info/${params.info_id[0]}`, { type: params.info_id[1] })
+            : null;
+
+    const info =
+        (params.services === 'anime')
+            ? animeInfo
+            : (params.services === 'manga')
+                ? mangaInfo
+                : movieInfo;
+
+    const episodes =
+        (params.services === 'anime')
+            ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, { provider: params.provider })
+            : (params.provider === "tmdb")
+                ? info?.seasons
+                : movieInfo?.episodes;
+
     const chapters = mangaInfo?.chapters;
+
     // if(!info||!chapters) return notFound()
-        const favoriteItem={
-            id:params.info_id.join("/"),
-            title:info?.title?.english || info?.title?.romaji || info?.title,
-            image:info?.image || info?.cover,
-            type:info?.type,
-            provider:params.provider,
-            services:params.services,
-            url:`/${params.services}/${params.provider}/info/${params.info_id.join("/")}`
-        }
+    const favoriteItem = {
+        id: params.info_id.join("/"),
+        title: info?.title?.english || info?.title?.romaji || info?.title,
+        image: info?.image || info?.cover,
+        type: info?.type,
+        provider: params.provider,
+        services: params.services,
+        url: `/${params.services}/${params.provider}/info/${params.info_id.join("/")}`
+    }
     const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
     const ExtraInfoItem = ({ label, children }) => (
         <p className='text-xs sm:text-sm md:text-base lg:text-lg text-white'>
@@ -63,7 +102,7 @@ const page = async ({ params }) => {
                             <ResponsiveText>{info?.type}</ResponsiveText>
                             {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info?.releaseDate}</IconText>}
                             {info?.totalEpisodes && <IconText Icon={<HiOutlineRectangleStack />}>{info?.totalEpisodes}</IconText>}
-                        <FavoriteButton item={favoriteItem}/>
+                            <FavoriteButton item={favoriteItem} />
                         </div>
                     </div>
                     <Image unoptimized src={info?.image} alt={info?.title?.english ?? info?.title} height={284} width={203} className='mx-auto h-full w-auto order-2' />
@@ -166,46 +205,10 @@ const page = async ({ params }) => {
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
             </>}
-            {episodes && episodes.length > 0 &&
-                <>
-                    <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
-                    <ScrollArea>
-                        <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${episodes.length > 5 ? "h-[75vh]" : null}`}>
-                            {episodes.map((episode, index) => (
-                                <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
-                                    <CardHeader>
-                                        <Link
-                                            href={`/${params?.services}/${params?.provider}/watch/${params.provider === "tmdb" ? params.info_id[0] : episode?.id}/${info?.id}/${params.provider === "tmdb" ? episode?.season : null}/${params.provider === "tmdb" ? episode?.episode : null}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}`}
-                                            className="overflow-hidden">
-                                            <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
-                                                {(episode?.image ?? episode?.img) && <Image src={episode?.image ?? episode?.img?.hd} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
-                                                <div className='absolute inset-0 bg-black/50'></div>
-                                                <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' />
-                                            </div>
-                                        </Link>
-                                        <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{episode?.title ?? info?.title?.english ?? info?.title}</CardTitle>
-                                    </CardHeader>
-                                    {episode?.description && <CardContent>
-                                        <CardDescription className="line-clamp-2">
-                                            {episode?.description}
-                                        </CardDescription>
-                                    </CardContent>}
-                                    <CardFooter className='grid grid-cols-2 mx-2'>
-                                        {(episode?.number ?? episode?.episode) && <CardDescription className='text-white'>EP: {episode?.number ?? episode?.episode}</CardDescription>}
-                                        {(episode?.season) && <CardDescription className='text-white'>SS: {episode?.season}</CardDescription>}
-                                        {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
-                                        {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
-                                        <Link
-                                            href={`/${params?.services}/${params?.provider}/watch/${params.provider === "tmdb" ? params.info_id[0] : episode?.id}/${info?.id}/${params.provider === "tmdb" ? episode?.season : null}/${params.provider === "tmdb" ? episode?.episode : null}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}`}
-                                            className="text-white hover:underline transition-all duration-300 active:animate-ping"
-                                        >Watch Now
-                                        </Link>
-                                    </CardFooter>
-                                </Card>
-                            ))}
-                        </div>
-                    </ScrollArea>
-                </>
+            {(episodes && episodes.length > 0)
+                && (provider !== "tmdb" ?
+                    <EpisodeCard episodes={episodes} params={params} info={info}/> :
+                    <TMDBInfo episodes={episodes} params={params} info={info}/>)
             }
             {chapters && chapters.length > 0 &&
                 <>

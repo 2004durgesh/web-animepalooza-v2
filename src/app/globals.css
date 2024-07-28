@@ -64,6 +64,27 @@ video {
   object-fit: contain;
 }
 
+video::-webkit-media-text-track-background {
+  background-color: black;
+}
+video::-webkit-media-text-track-container {
+  overflow: visible !important;
+  transform: translateY(30%) !important;
+ }
+video::-webkit-media-text-track-display-backdrop {
+  background-color: black !important;
+  overflow: visible !important;
+}
+video::-webkit-media-text-track-display {
+  overflow: visible !important;
+}
+
+video::cue {
+  opacity: 1;
+  background-color: black;
+  font-size: 20px !important;
+}
+
 @media screen and (max-width: 768px) {
   video {
     width: 100vw;

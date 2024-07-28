@@ -10,7 +10,8 @@ import { useSearchParams } from 'next/navigation';
 
 
 
-const VideoPlayer = ({ sourceLink, services }) => {
+const VideoPlayer = ({ sourceLink, subtitle }) => {
+  console.log(subtitle);
   const videoRef = useRef();
   const hlsRef = useRef();
   const searchParams = useSearchParams()
@@ -277,6 +278,9 @@ const VideoPlayer = ({ sourceLink, services }) => {
       >
         <video ref={videoRef} className="" poster={thumbnail} onWaiting={handleWaiting}>
           Your browser does not support the video tag.
+          {subtitle && subtitle.map((sub, index) => (
+            <track key={index} src={sub.url} kind="subtitles" label={sub.lang} default={index === 0} />
+          ))}
         </video>
         {/* top info-bar */}
         <div className={`controls bg-gradient-to-b from-black to-transparent top-0 ${controlsVisible ? "visible" : "invisible"}`}>
