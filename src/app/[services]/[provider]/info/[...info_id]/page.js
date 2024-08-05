@@ -75,8 +75,8 @@ const page = async ({ params }) => {
         url: `/${params.services}/${params.provider}/info/${params.info_id.join("/")}`
     }
     const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
-    const ExtraInfoItem = ({ label, children }) => (
-        <p className='text-xs sm:text-sm md:text-base lg:text-lg text-white'>
+    const ExtraInfoItem = ({ label, children,className }) => (
+        <p className={`text-xs sm:text-sm md:text-base lg:text-lg text-white ${className}`}>
             <strong>{label}: </strong>
             <span>{children}</span>
         </p>
@@ -129,8 +129,8 @@ const page = async ({ params }) => {
                         <Badge key={item} variant="outline" className='m-1 text-white'>{item}</Badge>
                     ))}
                 </ExtraInfoItem>}
-                {info?.production && <ExtraInfoItem label="Production">
-                    {info?.production && info?.production}
+                {(info?.production||info?.originalNetwork) && <ExtraInfoItem className="capitalize" label="Production">
+                    {info?.production ?? info?.originalNetwork}
                 </ExtraInfoItem>}
                 {info?.startDate && <ExtraInfoItem label="Start Date">
                     {info?.startDate?.day}/{info?.startDate?.month}/{info?.startDate?.year}
@@ -185,13 +185,13 @@ const page = async ({ params }) => {
                 <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
                     {info?.characters.map((character, index) => (
                         <Card key={index} className='overflow-hidden mx-2 py-2 w-fit text-white border-none inline-block flex-shrink-0'>
-                            <Image unoptimized src={character.image} alt={character.name.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
+                            <Image unoptimized src={character.image} alt={character?.name??character?.name?.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
                             <CardHeader className='space-y-0 p-0 mt-4'>
                                 <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1 text-center'>
-                                    {character.name.userPreferred}
+                                    {character?.name??character?.name?.userPreferred}
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent>
+                            {character?.role&&<CardContent>
                                 <div className="flex items-center space-x-4 mx-4">
                                     <Badge variant="secondary" className='py-1 px-2'>{character.role}</Badge>
                                     <Link
@@ -199,7 +199,7 @@ const page = async ({ params }) => {
                                         Read More
                                     </Link>
                                 </div>
-                            </CardContent>
+                            </CardContent>}
                         </Card>
                     ))}
                     <ScrollBar orientation="horizontal" />

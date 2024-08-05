@@ -41,14 +41,14 @@ const page = async ({ params }) => {
 
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
   const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "dramacool" ? episodeLinks.sources[0].url : episodeLinks.sources[3].url;
-  const subtitle = episodeLinks.subtitles ? episodeLinks.subtitles : null;
+  const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
   // console.log("episodeLinks...........",episodeLinks)
   return (
     <Suspense fallback={<Loading />}>
       <main>
         {/* {SearchParams} */}
         {/* {JSON.stringify(subtitle)} */}
-        <VideoPlayer sourceLink={sourceLink} subtitle={subtitle}/>
+        <VideoPlayer sourceLink={sourceLink} subtitles={subtitles}/>
       </main>
     </Suspense>
   )

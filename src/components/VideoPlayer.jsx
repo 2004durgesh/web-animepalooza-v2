@@ -10,8 +10,7 @@ import { useSearchParams } from 'next/navigation';
 
 
 
-const VideoPlayer = ({ sourceLink, subtitle }) => {
-  console.log(subtitle);
+const VideoPlayer = ({ sourceLink, subtitles }) => {
   const videoRef = useRef();
   const hlsRef = useRef();
   const searchParams = useSearchParams()
@@ -79,7 +78,7 @@ const VideoPlayer = ({ sourceLink, subtitle }) => {
           console.warn(hls.levels.map(level => level.height));
           setQualityLevels(hls.levels.map(level => level.height));
         });
-
+        console.warn(hls.allSubtitleTracks,"allSubtitleTracks");
         hlsRef.current = hls;
       }
       else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
@@ -277,9 +276,15 @@ const VideoPlayer = ({ sourceLink, subtitle }) => {
         onClick={() => { setControlsVisible(!controlsVisible); console.log("toggle") }}
       >
         <video ref={videoRef} className="" poster={thumbnail} onWaiting={handleWaiting}>
-          Your browser does not support the video tag.
-          {subtitle && subtitle.map((sub, index) => (
-            <track key={index} src={sub.url} kind="captions" label={sub.lang} default={index === 0} />
+          {subtitles && subtitles.map((sub, index) => (
+            <track
+              key={index}
+              src={sub.url}
+              kind="subtitles"
+              srclang={sub.lang}
+              label={sub.lang}
+              default={index === 0}
+            />
           ))}
         </video>
         {/* top info-bar */}
@@ -289,7 +294,7 @@ const VideoPlayer = ({ sourceLink, subtitle }) => {
             <p className='line-clamp-1 text-xs font-pro-regular'>Ep: {episodeNumber}</p>
           </div>
           <div className='ms-auto flex items-center'>
-            <EventLessButton>
+          <EventLessButton>
               <IconText size={13} Icon={<MdClosedCaptionOff />} />
             </EventLessButton>
             <div className="relative bg-geen-500 flex justify-center flex-col items-center">

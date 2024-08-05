@@ -21,7 +21,6 @@ export function MiniDescription({ icon, text }) {
 }
 
 const ContentList = ({ params, headerText, services, provider, otherParams, data, displayStyle }) => {
-  console.log(params);
 
   const isArray = Array.isArray(data);
   const { currentPage, hasNextPage, results } = isArray ? {} : data;
@@ -39,8 +38,8 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
     setItems(items.concat(isArray ? newData : newData.results));
     console.log("new", newData);
   }
-  // console.log(provider, data);
-  // console.log(items.length,"items");
+  console.log(provider, data);
+  console.log(items.length,"items");
   return (
     <div>
       <h1 className="text-primary text-2xl font-bold tracking-tighter lg:text-3xl xl:text-4xl/relaxed px-4 font-pro-bold my-4">{headerText}</h1>
