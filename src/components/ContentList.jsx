@@ -32,14 +32,14 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
   }, [data, results, isArray]);
 
   const fetchMoreData = async () => {
-    console.log("i was called from contentlist.jsx");
+    // console.log("i was called from contentlist.jsx");
     const newData = await fetchData(services, provider, otherParams, { page: Number(currPage) + 1 })
     setCurrPage(Number(currPage) + 1)
     setItems(items.concat(isArray ? newData : newData.results));
     console.log("new", newData);
   }
-  console.log(provider, data);
-  console.log(items.length,"items");
+  // console.log(provider, data);
+  // console.log(items.length,"items");
   return (
     <div>
       <h1 className="text-primary text-2xl font-bold tracking-tighter lg:text-3xl xl:text-4xl/relaxed px-4 font-pro-bold my-4">{headerText}</h1>

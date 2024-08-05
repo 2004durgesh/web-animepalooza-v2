@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# AnimePalooza
 
-First, run the development server:
+**AnimePalooza** is your ultimate destination for streaming the latest in anime, movies, TV shows, dramas, and manga. Built with Next.js, it offers a seamless and user-friendly experience, allowing enthusiasts to explore, track, and enjoy a vast collection of content across various genres and formats. Developed using [Next.js](https://nextjs.org/), it provides a seamless, user-friendly experience and is optimized as a Progressive Web App (PWA), allowing enthusiasts to explore, track, and enjoy a vast collection of content across various genres and formats from any device.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Stream Your Favorites**: Watch the latest anime, movies, and TV shows with ease.
+- **Read the Latest Manga**: Stay updated with new manga releases.
+- **Advanced Search**: Find specific content quickly with our intuitive search functionality.
+- **Personalized Favorites**: Mark content as favorites to create a custom list for easy access.
+- **Responsive Design**: Optimized for both desktop and mobile devices to ensure a smooth browsing experience.
+- **Dynamic Content Loading**: Leverages Next.js's dynamic routing and suspense features for efficient content loading and rendering.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js**: For server-side rendering and static site generation, ensuring fast and optimized performance.
+- **React**: To build a responsive and interactive user interface with reusable components.
+- **Tailwind CSS**: For modern styling and responsive design.
+- **React Icons**: To enhance the user interface with intuitive and meaningful icons.
+- **Workbox**: Implements service worker and caching strategies to enable Progressive Web App (PWA) capabilities.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### Screenshots
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(1050px, 1fr)); gap: 16px;">
+  <div>
+    <h3>Home</h3>
+    <img src="./public/readme-assets/home.png" alt="Anime Section" height="500">
+  </div>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  <div>
+    <h3>Anime Section</h3>
+    <img src="./public/readme-assets/anime.png" alt="Anime Section" height="500">
+  </div>
 
-## Deploy on Vercel
+  <div>
+    <h3>Manga Section</h3>
+    <img src="./public/readme-assets/manga.png" alt="Manga Section" height="500">
+  </div>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  <div>
+    <h3>Movies Section</h3>
+    <img src="./public/readme-assets/movie.png" alt="Movies Section" height="500">
+  </div>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  <div>
+    <h3>Favorites Section</h3>
+    <img src="./public/readme-assets/favorite.png" alt="Favorites Section" height="500">
+  </div>
+</div>

@@ -185,10 +185,10 @@ const page = async ({ params }) => {
                 <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
                     {info?.characters.map((character, index) => (
                         <Card key={index} className='overflow-hidden mx-2 py-2 w-fit text-white border-none inline-block flex-shrink-0'>
-                            <Image unoptimized src={character.image} alt={character?.name??character?.name?.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
+                            <Image unoptimized src={character.image} alt={services==="movies"?character?.name:character?.name?.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
                             <CardHeader className='space-y-0 p-0 mt-4'>
                                 <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1 text-center'>
-                                    {character?.name??character?.name?.userPreferred}
+                                    {services==="movies"?character?.name:character?.name?.userPreferred}
                                 </CardTitle>
                             </CardHeader>
                             {character?.role&&<CardContent>
