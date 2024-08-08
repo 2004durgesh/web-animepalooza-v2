@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import '@vidstack/react/player/styles/default/theme.css';
@@ -16,6 +16,9 @@ const VideoPlayer = ({ sourceLink, subtitles }) => {
   const title = searchParams.get('title')
   const episodeNumber = searchParams.get('episode-number')
   const thumbnail = searchParams.get('thumbnail')
+  const smallVideoLayoutQuery = useCallback(({ width, height }) => {
+    return width < 576 || height < 380;
+  }, []);
   return <MediaPlayer
     className="-mt-16 w-full aspect-video ring-media-focus data-[focus]:ring-4 relative"
     title={title}
@@ -41,6 +44,8 @@ const VideoPlayer = ({ sourceLink, subtitles }) => {
     </MediaProvider>
     <DefaultVideoLayout
       icons={defaultLayoutIcons}
+      smallLayoutWhen={smallVideoLayoutQuery}
+      colorScheme='dark'
     />
   </MediaPlayer>
 };
