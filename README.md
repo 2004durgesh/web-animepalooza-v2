@@ -1,5 +1,7 @@
 
-# AnimePalooza
+<p align="center"><img src="./src/app/favicon.ico" width="153.6" style="border-radius:50%;aspect-ratio:1/1"/></p>
+
+<h1 align="center"> AnimePalooza </h1>
 
 **AnimePalooza** is your ultimate destination for streaming the latest in anime, movies, TV shows, dramas, and manga. Built with Next.js, it offers a seamless and user-friendly experience, allowing enthusiasts to explore, track, and enjoy a vast collection of content across various genres and formats. Developed using [Next.js](https://nextjs.org/), it provides a seamless, user-friendly experience and is optimized as a Progressive Web App (PWA), allowing enthusiasts to explore, track, and enjoy a vast collection of content across various genres and formats from any device.
 
