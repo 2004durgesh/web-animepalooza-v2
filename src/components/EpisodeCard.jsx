@@ -35,7 +35,7 @@ const EpisodeCard = ({episodes,params,info}) => {
                                 {episode?.createdAt && <CardDescription className='text-white'>{new Date(episode?.createdAt).toLocaleDateString()}</CardDescription>}
                                 {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
                                 <Link
-                                    href={`/${params?.services}/${params?.provider}/watch/${params.provider === "tmdb" ? params.info_id[0] : episode?.id}/${info?.id}/${params.provider === "tmdb" ? episode?.season : null}/${params.provider === "tmdb" ? episode?.episode : null}?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}`}
+                                    href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}`}
                                     className="text-white hover:underline transition-all duration-300 active:animate-ping"
                                 >Watch Now
                                 </Link>
