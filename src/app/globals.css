@@ -56,27 +56,14 @@ body {
   background-color: black;
   color: white;
 }
-video {
-  all: unset;
-  width: 100%;
-  height:100vh;
-  max-height: 100vh;
-  object-fit: contain;
+
+[data-media-player] {
+  /* width: unset; */
+  /* max-height: 90vh; */
+  /* margin-inline:0; */
+  /* aspect-ratio: 16 / 9; */
 }
 
-video::cue {
-  font-size: 1rem;
-}
-
-@media screen and (max-width: 768px) {
-  video {
-    width: 100vw;
-    height: 40vh;
-  }
-  .controls{
-    @apply w-screen;
-  }
-}
 
 .logo {
   font-family: 'Bebas Neue', sans-serif;
@@ -170,8 +157,3 @@ input[type='range']::-moz-range-thumb {
   border-radius: 50%;
   box-shadow: 40px 0 4px 0 rgba(0, 0, 0, 0.5); 
 } */
-
-
-
-
-

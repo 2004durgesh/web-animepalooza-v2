@@ -13,42 +13,21 @@ const page = async ({ params }) => {
   const moviesEpisodeLinks = params.provider !== "tmdb" ? (await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })) :
     (await fetchData(services, provider, `watch/${params.episode_id[0]}`, { id: `${params.episode_id[1]}/${params.episode_id[2]}` }))
 
-  // let moviesEpisodeLinks = ""
-  // if (params.services === "movies") {
-  //   if (params.provider !== "tmdb") {
-  //     moviesEpisodeLinks = await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
-  //   }
-  //   else {
-  //     moviesEpisodeLinks = await fetch(tmdbUrl, { cache: 'no-store' })
-  //       .then(res => {
-  //         return res.json();
-  //       })
-  //       .then(data => { console.log(data); return data })
-  //       .catch(error => console.error('Error fetching data:', error));
-  //   }
-  // }
-  // const moviesEpisodeLinks = params.services === "movies"
-  //   ?
-  //   provider !== "tmdb" && await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })
-  //   :
-  //   await fetch(tmdbUrl, { cache: 'no-store' })
-  //     .then(res => {
-  //       return res.json();
-  //     })
-  //     .then(data => { console.log(data); return data })
-  //     .catch(error => console.error('Error fetching data:', error));
 
 
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
   const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "dramacool" ? episodeLinks.sources[0].url : episodeLinks.sources[3].url;
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
+  const downloadLink = episodeLinks.download ? episodeLinks.download : null;
   // console.log("episodeLinks...........",episodeLinks)
   return (
     <Suspense fallback={<Loading />}>
-      <main>
+      <main
+        className='-mt-16'
+      >
         {/* {SearchParams} */}
         {/* {JSON.stringify(subtitle)} */}
-        <VideoPlayer sourceLink={sourceLink} subtitles={subtitles}/>
+        <VideoPlayer provider={provider} sourceLink={sourceLink} subtitles={subtitles} downloadLink={downloadLink}/>
       </main>
     </Suspense>
   )
