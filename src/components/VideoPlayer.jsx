@@ -77,7 +77,7 @@ const VideoPlayer = ({ provider,sourceLink, subtitles ,downloadLink}) => {
         )
       }}
     download={{url:downloadLink}} 
-    thumbnails={subtitles[0].url}
+    thumbnails={provider==="dramacool"&&subtitles&&subtitles[0].url}
     />
   </MediaPlayer>
   </>
