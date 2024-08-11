@@ -19,7 +19,11 @@ const page = async ({ params }) => {
   const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "dramacool" ? episodeLinks.sources[0].url : episodeLinks.sources[3].url;
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
+  const headers = episodeLinks.headers ? episodeLinks.headers : null;
   // console.log("episodeLinks...........",episodeLinks)
+  
+  const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
+  console.log("proxiedLink",proxiedLink)
   return (
     <Suspense fallback={<Loading />}>
       <main
@@ -27,7 +31,7 @@ const page = async ({ params }) => {
       >
         {/* {SearchParams} */}
         {/* {JSON.stringify(subtitle)} */}
-        <VideoPlayer provider={provider} sourceLink={sourceLink} subtitles={subtitles} downloadLink={downloadLink}/>
+        <VideoPlayer provider={provider} sourceLink={headers?proxiedLink:sourceLink} subtitles={subtitles} downloadLink={downloadLink}/>
       </main>
     </Suspense>
   )

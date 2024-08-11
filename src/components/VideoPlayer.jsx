@@ -15,7 +15,6 @@ import { Button } from './ui/button';
 
 const VideoPlayer = ({ provider,sourceLink, subtitles ,downloadLink}) => {
   const searchParams = useSearchParams()
-console.warn(provider);
   const title = searchParams.get('title')
   const episodeNumber = searchParams.get('episode-number')
   const thumbnail = searchParams.get('thumbnail')
