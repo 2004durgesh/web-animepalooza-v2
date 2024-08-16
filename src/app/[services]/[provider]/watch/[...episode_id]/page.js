@@ -22,7 +22,7 @@ const page = async ({ params }) => {
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
   // console.log("episodeLinks...........",episodeLinks)
   
-  const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
+  // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
     <Suspense fallback={<Loading />}>
       <main

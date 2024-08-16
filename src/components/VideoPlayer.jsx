@@ -54,12 +54,13 @@ const VideoPlayer = ({ provider,sourceLink, subtitles ,downloadLink}) => {
       icons={defaultLayoutIcons}
       smallLayoutWhen={smallVideoLayoutQuery}
       colorScheme='dark'
+      noScrubGesture={true}
       slots={{
         afterSettingsMenu: (
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
               <ToggleButton
-                className="group ring-sky-400 relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 hover:scale-110 transition-all duration-300"
+                className="vds-button"
                 aria-label="Like video">
                 <SeekButton seconds={85}>
                 <HiForward size={32} />
