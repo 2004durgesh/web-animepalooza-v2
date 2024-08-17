@@ -48,15 +48,21 @@
   }
 }
 
-.controls {
-  @apply absolute w-full flex items-center px-4 py-2
-}
 
 body {
   background-color: black;
   color: white;
 }
 
+.vds-video-layout {
+  --media-brand: hsl(var(--primary));
+  --media-controls-color:  hsl(var(--primary-foreground));
+  --media-cue-backdrop: blur(0px);
+  --media-cue-bg: rgba(0, 0, 0, 0);
+}
+.vds-button{
+  margin: 0px 5px;
+}
 
 .logo {
   font-family: 'Bebas Neue', sans-serif;

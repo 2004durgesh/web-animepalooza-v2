@@ -9,8 +9,8 @@ const page = async ({ params }) => {
   let provider = params.services === 'anime' || params.services === 'manga' ? "anilist" : params.provider;
   // let tmdbUrl = `https://animepalooza.vercel.app/api/${params.episode_id[0]}?s=${params.episode_id[3]}&e=${params.episode_id[4]}`
   // console.log("tmdburl", tmdbUrl)
-  const animeEpisodeLinks = await fetchData(services, provider, `watch/${params.episode_id[0]}`)
-  const moviesEpisodeLinks = params.provider !== "tmdb" ? (await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })) :
+  const animeEpisodeLinks = (params.services === 'anime') && await fetchData(services, provider, `watch/${params.episode_id[0]}`)
+  const moviesEpisodeLinks = (params.services === "movies") && params.provider !== "tmdb" ? (await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })) :
     (await fetchData(services, provider, `watch/${params.episode_id[0]}`, { id: `${params.episode_id[1]}/${params.episode_id[2]}` }))
 
 
@@ -21,7 +21,7 @@ const page = async ({ params }) => {
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
   // console.log("episodeLinks...........",episodeLinks)
-  
+
   // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
     <Suspense fallback={<Loading />}>
@@ -30,7 +30,7 @@ const page = async ({ params }) => {
       >
         {/* {SearchParams} */}
         {/* {JSON.stringify(subtitle)} */}
-        <VideoPlayer provider={provider} sourceLink={sourceLink} subtitles={subtitles} downloadLink={downloadLink}/>
+        <VideoPlayer provider={provider} sourceLink={sourceLink} subtitles={subtitles} downloadLink={downloadLink} />
       </main>
     </Suspense>
   )
