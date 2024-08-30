@@ -6,11 +6,12 @@ import { HiOutlineForward, HiForward } from "react-icons/hi2";
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 
-import { MediaPlayer, MediaProvider, Poster, ToggleButton, Track, Tooltip, SeekButton, ChapterTitle } from "@vidstack/react"
+import { MediaPlayer, MediaProvider, Poster, ToggleButton, Track, Tooltip, SeekButton, ChapterTitle, useStore, MediaPlayerInstance, Controls } from "@vidstack/react"
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import SeekForward85Icon from './SeekForward85Icon';
 import DownloadIcon from './DownloadIcon';
 import Link from 'next/link';
+import { Button } from './ui/button';
 
 
 
@@ -19,15 +20,17 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
   const title = searchParams.get('title')
   const episodeNumber = searchParams.get('episode-number')
   const thumbnail = searchParams.get('thumbnail')
+  const ref = useRef(null);
+  const { controlsVisible, mediaWidth, paused } = useStore(MediaPlayerInstance, ref);
+
   const smallVideoLayoutQuery = useCallback(({ width, height }) => {
     return width < 576 || height < 380;
   }, []);
 
-
-
   return <>
     <MediaPlayer
-      title={title}
+      ref={ref}
+      title={mediaWidth < 576 && title}
       src={sourceLink}
       crossOrigin
       viewType='video'
@@ -39,10 +42,10 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
       keyTarget='document'
     >
       <MediaProvider>
-        <ChapterTitle className=' text-white absolute top-0 p-4'>
+        {controlsVisible && mediaWidth > 576 && <ChapterTitle className='text-white absolute top-0 p-4'>
           <p className='font-bold font-pro-bold text-lg'>{title}</p>
-          {episodeNumber&&<p className='font-medium font-pro-medium text-sm italic'>Episode {episodeNumber}</p>}
-        </ChapterTitle>
+          {episodeNumber && <p className='font-medium font-pro-medium text-sm italic'>Episode {episodeNumber}</p>}
+        </ChapterTitle>}
         {provider !== "dramacool" && subtitles && subtitles.map((subtitle, index) => (
           <Track
             key={index}
@@ -53,14 +56,22 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
             default={index === 0}
           />
         ))}
-        <Poster className="vds-poster object-contain" />
+        <Poster src={thumbnail} className="vds-poster object-contain" />
+        {/* <Controls.Root className="vds-controls">
+          <div className="vds-controls-spacer" />
+          <Controls.Group className="vds-controls-group">
+            {controlsVisible && mediaWidth > 576 && <ToggleButton className=' bg-white/10 hover:!bg-white/10 rounded-full backdrop-blur-md shadow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>{paused?"play":"pause"}</ToggleButton>}
+          </Controls.Group>
+          <div className="vds-controls-spacer" />
+        </Controls.Root> */}
+        {/* {controlsVisible && mediaWidth > 576 && <ToggleButton className='vds-button bg-white/10 hover:!bg-white/10 rounded-full backdrop-blur-md shadow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>{paused?"play":"pause"}</ToggleButton>} */}
       </MediaProvider>
       <DefaultVideoLayout
         icons={defaultLayoutIcons}
         smallLayoutWhen={smallVideoLayoutQuery}
         colorScheme='dark'
         noScrubGesture={true}
-        slots={{
+        slots={mediaWidth > 576 && {
           afterSettingsMenu: (
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
