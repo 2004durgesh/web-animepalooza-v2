@@ -12,8 +12,7 @@ import ContentList from '@/components/ContentList';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from 'next/link';
-import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays, HiOutlineClock, HiOutlinePlayCircle } from "react-icons/hi2";
-import { IoCheckmarkDoneOutline } from "react-icons/io5"
+import { CardStackIcon,StarIcon,CalendarIcon,ClockIcon, CheckIcon } from '@radix-ui/react-icons'
 import IconText from '@/components/IconText';
 import TMDBInfo from '@/components/TMDBInfo';
 import EpisodeCard from '@/components/EpisodeCard';
@@ -100,18 +99,18 @@ const page = async ({ params }) => {
                         <h1 className='font-bold text-lg md:text-2xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
                         <div className='flex items-center justify-center divide-x-2 gap-x-2'>
                             <ResponsiveText>{info?.type}</ResponsiveText>
-                            {info?.releaseDate && <IconText Icon={<HiOutlineCalendarDays />}>{info?.releaseDate}</IconText>}
-                            {info?.totalEpisodes && <IconText Icon={<HiOutlineRectangleStack />}>{info?.totalEpisodes}</IconText>}
+                            {info?.releaseDate && <IconText Icon={<CalendarIcon />}>{info?.releaseDate}</IconText>}
+                            {info?.totalEpisodes && <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>}
                             <FavoriteButton item={favoriteItem} />
                         </div>
                     </div>
                     <Image unoptimized src={info?.image} alt={info?.title?.english ?? info?.title} height={284} width={203} className='mx-auto h-full w-auto order-2' />
                     <div className='self-center md:self-end my-4 w-full md:w-1/3 order-3'>
                         <div className='flex flex-wrap divide-x-2 gap-x-2'>
-                            {info?.status && <IconText Icon={info?.status === "Completed" ? <IoCheckmarkDoneOutline /> : <HiOutlineClock />}>
+                            {info?.status && <IconText Icon={info?.status === "Completed" ? <CheckIcon /> : <ClockIcon />}>
                                 {info?.status}
                             </IconText>}
-                            {info?.rating && <IconText Icon={<HiOutlineStar />}>{`${params.services === 'movies' ? info?.rating : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>}
+                            {info?.rating && <IconText Icon={<StarIcon />}>{`${params.services === 'movies' ? info?.rating : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>}
                             {info?.status !== "Completed" && info?.nextAiringEpisode && <ResponsiveText>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</ResponsiveText>}
                         </div>
                         <ScrollArea className="whitespace-nowrap">

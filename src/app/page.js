@@ -10,10 +10,7 @@ export default async function Home() {
   return (
     <>
       <div className="">
-        <div className='relative'>
-          <HeroSection animeSrc='/assets/images/anime-bg.png' mangaSrc='/assets/images/manga-bg.png' movieSrc='/assets/images/movies-bg.png' />
-          <div className="absolute z-10 pointer-events-none inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/80"></div>
-        </div>
+        <HeroSection animeSrc='/assets/images/anime-bg.png' mangaSrc='/assets/images/manga-bg.png' movieSrc='/assets/images/movies-bg.png' />
       </div>
       <div className="my-4">
         <Tabs defaultValue="trending-now">

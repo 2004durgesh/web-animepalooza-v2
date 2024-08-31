@@ -1,6 +1,6 @@
 "use client"
 import { useState } from 'react';
-import { CgMenu, CgClose } from 'react-icons/cg';
+import { HamburgerMenuIcon, Cross1Icon } from '@radix-ui/react-icons';
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 const Navbar = () => {
@@ -11,7 +11,8 @@ const Navbar = () => {
 
   // Array of navigation items
   const listItems = ['home', 'anime', 'manga', 'movies', 'favorites'];
-  const showNavbarRoutes = ['/', '/anime', '/anime/gogoanime', '/manga', '/manga/mangadex', '/manga/mangareader', '/movies', '/movies/dramacool', '/movies/flixhq', '/favorites'];
+  const showNavbarRoutes = ['/', '/anime', '/anime/gogoanime', '/manga', '/manga/mangadex', '/manga/mangareader', '/movies', '/movies/dramacool',
+    '/movies/tmdb', '/movies/flixhq', '/favorites'];
   console.log((showNavbarRoutes.includes(pathname)) ? "true" : "false");
   return (
     <>
@@ -38,13 +39,13 @@ const Navbar = () => {
         {/* Mobile menu icon */}
         <div className='ml-auto block lg:hidden relative z-50'>
           {nav ?
-            <CgClose
-              size={40}
+            <Cross1Icon
               color='white'
-              className='relative mt-4'
+              className='relative mt-4 h-8 w-8'
               onClick={() => setNav(prevValue => !prevValue)}
             /> :
-            <CgMenu
+            <HamburgerMenuIcon
+               className='h-8 w-8'
               size={40}
               color='white'
               onClick={() => setNav(prevValue => !prevValue)}

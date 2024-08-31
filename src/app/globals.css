@@ -87,35 +87,6 @@ input[type="search"]::-webkit-search-cancel-button {
   src: url('../../public/fonts/NetflixSans_W_Blk.woff2') format('woff');
 }
 
-.swiper {
-  /* width: 80%; */
-  height: 50%;
-}
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.swiper-slide img {
-  display: block;
-  object-fit: cover;
-}
-
-.swiper-pagination-bullet {
-  background-color: white;
-  border: 2px solid black;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #DB202C !important;
-  border: none;
-}
-
 .infinity-scroll::-webkit-scrollbar {
   display: none;
 }

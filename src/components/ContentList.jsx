@@ -5,15 +5,14 @@ import { Badge } from "../components/ui/badge"
 import Image from "next/image";
 import { Suspense, createElement, useEffect, useState } from "react";
 import Loading from "../app/[services]/[provider]/loading";
-import { HiOutlineRectangleStack, HiOutlineStar, HiOutlineCalendarDays } from "react-icons/hi2";
-import { FaYoutube } from "react-icons/fa";
+import { CardStackIcon,StarIcon,CalendarIcon,VideoIcon} from '@radix-ui/react-icons'
 import Link from "next/link";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchData from "../components/Datafetcher"
 
 export function MiniDescription({ icon, text }) {
   return (
-    <div className='flex'>
+    <div className='flex items-center'>
       {icon && createElement(icon, { size: 20 })}
       <span className='pl-2'>{text}</span>
     </div>
@@ -87,20 +86,20 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
                   <div className={`p-4 text-white text-sm grid ${result?.episodeTitle ? 'grid-cols-1' : 'grid-cols-2'} `}>
                     {(result?.totalEpisodes || result?.episodeTitle || result?.latestEpisode) && (
                       <MiniDescription
-                        icon={HiOutlineRectangleStack}
+                        icon={CardStackIcon}
                         text={result?.totalEpisodes ?? result?.episodeTitle ?? result?.latestEpisode}
                       />
                     )}
 
                     {result?.rating && (
-                      <MiniDescription icon={HiOutlineStar} text={provider === "tmdb" ? result?.rating.toFixed(1) : (Number(result?.rating) / 10).toFixed(1)} />
+                      <MiniDescription icon={StarIcon} text={provider === "tmdb" ? result?.rating.toFixed(1) : (Number(result?.rating) / 10).toFixed(1)} />
                     )}
                     {result?.releaseDate && (
-                      <MiniDescription icon={HiOutlineCalendarDays} text={result?.releaseDate} />
+                      <MiniDescription icon={CalendarIcon} text={result?.releaseDate} />
                     )}
                     {result?.trailer && (
-                      <Link href={`https://www.youtube.com/watch?v=${result?.trailer?.id}`} target="_blank" className='flex hover:underline'>
-                        <FaYoutube size={20} color="#ff0000" />
+                      <Link href={`https://www.youtube.com/watch?v=${result?.trailer?.id}`} target="_blank" className='flex items-center hover:underline'>
+                        <VideoIcon size={20} color="#ff0000" />
                         <span className='pl-2'>Trailer</span>
                       </Link>
                     )}

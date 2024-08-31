@@ -1,7 +1,8 @@
 "use client"
 import React,{useState} from 'react'
-import { IoSearchOutline } from "react-icons/io5";
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { usePathname,useRouter } from 'next/navigation';
+import { Button } from './ui/button';
 const SearchBar = ({ placeholder,service}) => {
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -27,9 +28,9 @@ const SearchBar = ({ placeholder,service}) => {
                     value={searchQuery}
                     onChange={(e) => { setSearchQuery(e.target.value) }}
                 />
-                <button className="bg-transparent cursor-pointer border-none" onSubmit={handleSearch}>
-                    <IoSearchOutline  size={20} />
-                </button>
+                <Button className="bg-transparent cursor-pointer border-none" onSubmit={handleSearch}>
+                    <MagnifyingGlassIcon className='h-4 w-4' />
+                </Button>
             </div>
         </form>
     )
