@@ -56,6 +56,29 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
         <Poster src={thumbnail} className="vds-poster object-contain" />
 
       </MediaProvider>
+      
+      <Controls.Root className="vds-controls ">
+        <div className="vds-controls-spacer" />
+        <Controls.Group className="vds-controls-group">
+          {controlsVisible && mediaWidth > 576 && (
+            <>
+              <div className='flex items-center gap-8'>
+              <div className="vds-controls-spacer" />
+                {/* <PreviousIcon size={32} /> */}
+                <ToggleButton
+                  onClick={(e) => (paused ? remote.play(e) : remote.pause(e))}
+                  className='bg-black/60 hover:!bg-black/60 size-14 flex items-center justify-center rounded-full backdrop-blur-md shadow '
+                >
+                  {paused ? <PlayIcon size={35} /> : <PauseIcon size={35} />}
+                </ToggleButton>
+                {/* <NextIcon size={32} /> */}
+                <div className="vds-controls-spacer" />
+              </div>
+            </>
+          )}
+        </Controls.Group>
+        <div className="vds-controls-spacer" />
+      </Controls.Root>
       <DefaultVideoLayout
         icons={defaultLayoutIcons}
         smallLayoutWhen={smallVideoLayoutQuery}
@@ -124,26 +147,6 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
         // download={{url:downloadLink}} 
         thumbnails={provider === "dramacool" && subtitles && subtitles[0].url}
       />
-      <Controls.Root className="vds-controls ">
-        <div className="vds-controls-spacer" />
-        <Controls.Group className="vds-controls-group">
-          {controlsVisible && mediaWidth > 576 && (
-            <div className="w-full h-52 gap-8 flex-center media-buffering:hidden">
-              <div className='flex absolute items-center gap-8 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                {/* <PreviousIcon size={32} /> */}
-                <ToggleButton
-                  onClick={(e) => (paused ? remote.play(e) : remote.pause(e))}
-                  className='bg-white/10 hover:!bg-white/10 size-14 flex items-center justify-center rounded-full backdrop-blur-md shadow '
-                >
-                  {paused ? <PlayIcon size={35} /> : <PauseIcon size={35} />}
-                </ToggleButton>
-                {/* <NextIcon size={32} /> */}
-              </div>
-            </div>
-          )}
-        </Controls.Group>
-        <div className="vds-controls-spacer" />
-      </Controls.Root>
     </MediaPlayer>
   </>
 };
