@@ -3,12 +3,13 @@ import React from 'react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from 'next/image';
-const EpisodeCard = ({episodes,params,info}) => {
+const EpisodeCard = ({episodes=[],params,info}) => {
+    console.warn(episodes,"episodes")
     return (
         <section className='my-4'>
             <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
             <ScrollArea>
-                <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${episodes.length > 5 ? "h-[75vh]" : null}`}>
+                <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 `}>
                     {episodes&&episodes?.map((episode, index) => (
                         <Card key={episode.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
                             <CardHeader>

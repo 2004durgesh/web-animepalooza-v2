@@ -2,14 +2,20 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import EpisodeCard from './EpisodeCard'
 
-const TMDBInfo = ({ episodes, params,info}) => {
+const TMDBInfo = ({ episodes, params, info }) => {
+    if (params?.info_id[1]==="movie") {
+        
+        return <section>
+            <EpisodeCard episodes={episodes} params={params} info={info} />
+        </section>
+    }
     return (
         <section>
             <Tabs defaultValue="season-1">
-                <TabsList>
+                <TabsList className="flex-wrap h-fit">
                     {
                         episodes.map((season, seasonIndex) => (
-                            <TabsTrigger key={seasonIndex} value={`season-${seasonIndex + 1}`}>
+                            <TabsTrigger key={seasonIndex} value={`season-${seasonIndex + 1}`} >
                                 Season {season.season}
                             </TabsTrigger>
                         ))
@@ -18,8 +24,7 @@ const TMDBInfo = ({ episodes, params,info}) => {
                 {
                     (episodes && episodes?.map((season, seasonIndex) => (
                         <TabsContent key={seasonIndex} value={`season-${seasonIndex + 1}`}>
-                            <h2>Season {season.season}</h2>
-                            <EpisodeCard episodes={season?.episodes} params={params} info={info}/>
+                            <EpisodeCard episodes={season?.episodes} params={params} info={info} />
                         </TabsContent>
                     )))
                 }

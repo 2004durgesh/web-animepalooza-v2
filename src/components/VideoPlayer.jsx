@@ -37,6 +37,7 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
       playsInline
       autoPlay
       keyTarget='document'
+      className='relative'
     >
       <MediaProvider>
         {controlsVisible && mediaWidth > 576 && <ChapterTitle className='text-white absolute top-0 p-4'>
@@ -62,16 +63,18 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
         <Controls.Group className="vds-controls-group">
           {controlsVisible && mediaWidth > 576 && (
             <>
-              <div className='flex items-center gap-8'>
+              <div>
               <div className="vds-controls-spacer" />
-                {/* <PreviousIcon size={32} /> */}
-                <ToggleButton
-                  onClick={(e) => (paused ? remote.play(e) : remote.pause(e))}
-                  className='bg-black/60 hover:!bg-black/60 size-14 flex items-center justify-center rounded-full backdrop-blur-md shadow '
-                >
-                  {paused ? <PlayIcon size={35} /> : <PauseIcon size={35} />}
-                </ToggleButton>
-                {/* <NextIcon size={32} /> */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {/* <PreviousIcon size={32} /> */}
+                  <ToggleButton
+                    onClick={(e) => (paused ? remote.play(e) : remote.pause(e))}
+                    className='bg-black/60 hover:!bg-black/60 size-14 flex items-center justify-center rounded-full backdrop-blur-md shadow '
+                  >
+                    {paused ? <PlayIcon size={35} /> : <PauseIcon size={35} />}
+                  </ToggleButton>
+                  {/* <NextIcon size={32} /> */}
+                </div>
                 <div className="vds-controls-spacer" />
               </div>
             </>

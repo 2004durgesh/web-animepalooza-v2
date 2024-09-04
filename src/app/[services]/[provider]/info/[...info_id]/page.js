@@ -12,7 +12,7 @@ import ContentList from '@/components/ContentList';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from 'next/link';
-import { CardStackIcon,StarIcon,CalendarIcon,ClockIcon, CheckIcon } from '@radix-ui/react-icons'
+import { CardStackIcon, StarIcon, CalendarIcon, ClockIcon, CheckIcon } from '@radix-ui/react-icons'
 import IconText from '@/components/IconText';
 import TMDBInfo from '@/components/TMDBInfo';
 import EpisodeCard from '@/components/EpisodeCard';
@@ -61,6 +61,19 @@ const page = async ({ params }) => {
                 ? info?.seasons
                 : movieInfo?.episodes;
 
+    const moviesEpisode = (provider === 'tmdb' && params.info_id[1] === 'movie') ? [
+        {
+            "id": info?.episodeId || 'N/A',
+            "title": info?.title || 'No Title',
+            "description": info?.description || 'No Description',
+            "releaseDate": info?.releaseDate || 'No Release Date',
+            "img": {
+                "mobile": info?.cover || 'default-mobile-cover.jpg',
+                "hd": info?.cover || 'default-hd-cover.jpg'
+            }
+        }
+    ] : null;
+
     const chapters = mangaInfo?.chapters;
 
     // if(!info||!chapters) return notFound()
@@ -73,8 +86,8 @@ const page = async ({ params }) => {
         services: params.services,
         url: `/${params.services}/${params.provider}/info/${params.info_id.join("/")}`
     }
-    const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000);
-    const ExtraInfoItem = ({ label, children,className }) => (
+    const airingDate = new Date(info?.nextAiringEpisode?.airingTime * 1000 ?? info?.nextAiringEpisode?.releaseDate);
+    const ExtraInfoItem = ({ label, children, className }) => (
         <p className={`text-xs sm:text-sm md:text-base lg:text-lg text-white ${className}`}>
             <strong>{label}: </strong>
             <span>{children}</span>
@@ -87,7 +100,7 @@ const page = async ({ params }) => {
 
     return (
         <Suspense fallback={<Loading />}>
-            {/* <div>{JSON.stringify(params.info_id[0])}</div> */}
+            {/* <div>{JSON.stringify(params?.info_id[1]==="movie")}</div> */}
             {/* <div>{JSON.stringify(info && info?.seasons[0]?.episodes)}</div> */}
             <div style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info?.cover})`
@@ -128,7 +141,7 @@ const page = async ({ params }) => {
                         <Badge key={item} variant="outline" className='m-1 text-white'>{item}</Badge>
                     ))}
                 </ExtraInfoItem>}
-                {(info?.production||info?.originalNetwork) && <ExtraInfoItem className="capitalize" label="Production">
+                {(info?.production || info?.originalNetwork) && <ExtraInfoItem className="capitalize" label="Production">
                     {info?.production ?? info?.originalNetwork}
                 </ExtraInfoItem>}
                 {info?.startDate && <ExtraInfoItem label="Start Date">
@@ -184,13 +197,13 @@ const page = async ({ params }) => {
                 <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
                     {info?.characters.map((character, index) => (
                         <Card key={index} className='overflow-hidden mx-2 py-2 w-fit text-white border-none inline-block flex-shrink-0'>
-                            <Image unoptimized src={character.image} alt={services==="movies"?character?.name:character?.name?.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
+                            <Image unoptimized src={character.image} alt={services === "movies" ? character?.name : character?.name?.userPreferred} className="h-40 w-40 mx-auto rounded-full object-cover" width={197} height={296} />
                             <CardHeader className='space-y-0 p-0 mt-4'>
                                 <CardTitle className='px-2 text-lg font-bold font-pro-bold text-primary line-clamp-1 text-center'>
-                                    {services==="movies"?character?.name:character?.name?.userPreferred}
+                                    {services === "movies" ? character?.name : character?.name?.userPreferred}
                                 </CardTitle>
                             </CardHeader>
-                            {character?.role&&<CardContent>
+                            {character?.role && <CardContent>
                                 <div className="flex items-center space-x-4 mx-4">
                                     <Badge variant="secondary" className='py-1 px-2'>{character.role}</Badge>
                                     <Link
@@ -204,11 +217,21 @@ const page = async ({ params }) => {
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
             </>}
-            {(episodes && episodes.length > 0)
-                && (provider !== "tmdb" ?
-                    <EpisodeCard episodes={episodes} params={params} info={info}/> :
-                    <TMDBInfo episodes={episodes} params={params} info={info}/>)
+            {
+                episodes && episodes.length > 0 ? (
+                    provider !== "tmdb" ? (
+                        <EpisodeCard episodes={episodes} params={params} info={info} />
+                    ) : (
+                        <TMDBInfo episodes={episodes} params={params} info={info} />
+                    )
+                ) : (
+                    provider === "tmdb" && params?.info_id[1] === 'movie' && (
+                        <TMDBInfo episodes={moviesEpisode} params={params} info={info} />
+                    )
+                )
             }
+
+
             {chapters && chapters.length > 0 &&
                 <>
                     <h2 className='text-lg font-semibold font-pro-medium text-primary'>Chapters</h2>

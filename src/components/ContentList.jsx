@@ -60,7 +60,8 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
         {
           items?.map((result) => {
             return (
-              <div key={result?.id} className='mx-4'>
+              
+                !result?.image?.includes("null")&&<div key={result?.id} className='mx-4'>
                 <Card className='overflow-hidden w-fit text-white border-none'>
                   <Image unoptimized src={result?.image} alt={services === 'movies' || provider === "tmdb" || services === "favorites" ? result?.title : `${result?.title?.userPreferred} or ${result?.title?.english}`}
                     className="h-72 w-full object-contain" width={200} height={150} />

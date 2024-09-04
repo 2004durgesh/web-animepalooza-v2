@@ -20,7 +20,7 @@ const page = async ({ params }) => {
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
-  // console.log("episodeLinks...........",episodeLinks)
+  console.log("episodeLinks...........",episodeLinks)
 
   // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
@@ -29,7 +29,7 @@ const page = async ({ params }) => {
         className='-mt-16'
       >
         {/* {SearchParams} */}
-        {/* {JSON.stringify(subtitle)} */}
+        {/* {JSON.stringify(episodeLinks)} */}
         <VideoPlayer provider={provider} sourceLink={sourceLink} subtitles={subtitles} downloadLink={downloadLink} />
       </main>
     </Suspense>
