@@ -74,7 +74,7 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
                       <Link
                         href={provider === "tmdb"
                           ?
-                          `/${params?.services}/${params?.provider}/info/${result?.id}/${result?.type.split(" ")[0].toLowerCase()}`
+                          `/${params?.services}/${params?.provider}/info/${result?.id}/${result?.type?.split(" ")[0].toLowerCase()}`
                           :
                           services === "favorites" ?
                             `/${result?.services}/${result?.provider}/info/${result?.id}`

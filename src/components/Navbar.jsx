@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 const Navbar = () => {
   const pathname = usePathname()
-  console.log(pathname)
+  // console.log(pathname)
   // State href manage the navigation menu open/close
   const [nav, setNav] = useState(false);
 

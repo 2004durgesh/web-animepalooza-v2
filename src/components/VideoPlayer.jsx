@@ -3,15 +3,17 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
-
+import { useMediaQuery } from 'react-responsive'
 import { MediaPlayer, MediaProvider, useMediaRemote, Poster, ToggleButton, Track, Tooltip, SeekButton, ChapterTitle, useStore, MediaPlayerInstance, Controls } from "@vidstack/react"
 import { DownloadIcon, NextIcon, PauseIcon, PlayIcon, PreviousIcon } from '@vidstack/react/icons';
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import SeekForward85Icon from './SeekForward85Icon';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
+import useEpisode from '@/store/store';
+import EpisodeListSidebar from './EpisodeListSidebar';
 
-
-const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
+const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink,currentPlayingEpisodeId }) => {
   const searchParams = useSearchParams()
   const title = searchParams.get('title')
   const episodeNumber = searchParams.get('episode-number')
@@ -19,15 +21,21 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
   const ref = useRef(null);
   const { controlsVisible, mediaWidth, paused } = useStore(MediaPlayerInstance, ref);
   const remote = useMediaRemote();
+  const router = useRouter();
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+  const episodes = useEpisode((state) => state.episodes);
+  const info = useEpisode((state) => state.info);
+  console.warn({ episodes, info });
+
 
   const smallVideoLayoutQuery = useCallback(({ width, height }) => {
-    return width < 576 || height < 380;
+    return width < 1000 || height < 380;
   }, []);
 
   return <>
     <MediaPlayer
       ref={ref}
-      title={mediaWidth < 576 && title}
+      title={mediaWidth < 1000 && title}
       src={sourceLink}
       crossOrigin
       viewType='video'
@@ -38,13 +46,14 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
       autoPlay
       keyTarget='document'
       className='relative'
+      style={{width:isSmallScreen?'100%':'50%',height:'50vh'}}
     >
       <MediaProvider>
-        {controlsVisible && mediaWidth > 576 && <ChapterTitle className='text-white absolute top-0 p-4'>
+        {controlsVisible && mediaWidth > 1000 && <ChapterTitle className='text-white absolute top-0 p-4'>
           <p className='font-bold font-pro-bold text-lg'>{title}</p>
           {episodeNumber && <p className='font-medium font-pro-medium text-sm italic'>Episode {episodeNumber}</p>}
         </ChapterTitle>}
-        {provider !== "dramacool" && subtitles && subtitles.map((subtitle, index) => (
+        {params.provider !== "dramacool" && subtitles && subtitles.map((subtitle, index) => (
           <Track
             key={index}
             src={subtitle.url}
@@ -57,14 +66,14 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
         <Poster src={thumbnail} className="vds-poster object-contain" />
 
       </MediaProvider>
-      
+
       <Controls.Root className="vds-controls ">
         <div className="vds-controls-spacer" />
         <Controls.Group className="vds-controls-group">
-          {controlsVisible && mediaWidth > 576 && (
+          {controlsVisible && mediaWidth > 1000 && (
             <>
               <div>
-              <div className="vds-controls-spacer" />
+                <div className="vds-controls-spacer" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   {/* <PreviousIcon size={32} /> */}
                   <ToggleButton
@@ -87,7 +96,7 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
         smallLayoutWhen={smallVideoLayoutQuery}
         colorScheme='dark'
         noScrubGesture={true}
-        slots={mediaWidth > 576 && {
+        slots={mediaWidth > 1000 && {
           afterSettingsMenu: (
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -148,9 +157,12 @@ const VideoPlayer = ({ provider, sourceLink, subtitles, downloadLink }) => {
           )
         }}
         // download={{url:downloadLink}} 
-        thumbnails={provider === "dramacool" && subtitles && subtitles[0].url}
+        thumbnails={params.provider === "dramacool" && subtitles && subtitles[0].url}
       />
     </MediaPlayer>
+    <div className='md:max-w-[40%]'>
+      <EpisodeListSidebar episodes={episodes} params={params} info={info} currentPlayingEpisodeId={currentPlayingEpisodeId}/>
+    </div>
   </>
 };
 

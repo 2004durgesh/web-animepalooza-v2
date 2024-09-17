@@ -1,5 +1,6 @@
 import './globals.css'
 import Navbar from '@/components/Navbar'
+import Body from '@/components/Body'
 const APP_NAME = "AnimePalooza";
 const APP_DEFAULT_TITLE = "AnimePalooza-Your Ultimate Destination for Anime, Movies, TV Shows, Drama, Manga, and More";
 const APP_TITLE_TEMPLATE = "%s - PWA App";
@@ -42,11 +43,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="max-w-[80%] mx-auto overflow-x-hidden">
+      <Body>
         <Navbar />
         {children}
-      </body>
-    </html>
+      </Body>
   )
 }

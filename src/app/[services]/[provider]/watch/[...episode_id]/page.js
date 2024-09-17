@@ -13,24 +13,28 @@ const page = async ({ params }) => {
   const moviesEpisodeLinks = (params.services === "movies") && params.provider !== "tmdb" ? (await fetchData(services, provider, `watch`, { episodeId: params.episode_id[0], mediaId: `${params.episode_id[1]}/${params.episode_id[2]}` })) :
     (await fetchData(services, provider, `watch/${params.episode_id[0]}`, { id: `${params.episode_id[1]}/${params.episode_id[2]}` }))
 
-
-
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
   const sourceLink = params.services === 'anime' ? episodeLinks.sources[4].url : params.provider === "dramacool" ? episodeLinks.sources[0].url : episodeLinks.sources[3].url;
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
-  console.log("episodeLinks...........",episodeLinks)
+  // console.log("episodeLinks...........",episodeLinks)
 
   // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
     <Suspense fallback={<Loading />}>
       <main
-        className='-mt-16'
+        className='-mt-16 flex md:justify-between justify-center m-4 md:flex-row flex-col gap-4'
       >
         {/* {SearchParams} */}
-        {/* {JSON.stringify(episodeLinks)} */}
-        <VideoPlayer provider={provider} sourceLink={sourceLink} subtitles={subtitles} downloadLink={downloadLink} />
+        {/* {JSON.stringify(`${params.episode_id[0]}/${params.episode_id[1]}/${params.episode_id[2]}`)} */}
+        <VideoPlayer
+          params={params}
+          sourceLink={sourceLink}
+          subtitles={subtitles}
+          downloadLink={downloadLink}
+          currentPlayingEpisodeId={params.episode_id[0]}
+        />
       </main>
     </Suspense>
   )

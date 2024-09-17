@@ -1,10 +1,16 @@
+"use client"
 import Link from 'next/link'
 import React from 'react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from 'next/image';
+import useEpisode from "@/store/store"
 const EpisodeCard = ({episodes=[],params,info}) => {
-    console.warn(episodes,"episodes")
+    const { setEpisodes } = useEpisode();
+    const handleWatchClick = () => {
+        setEpisodes(episodes,info)
+      };
+      console.log({episodes,info})
     return (
         <section className='my-4'>
             <h2 className='text-lg font-semibold font-pro-medium text-primary'>Episodes</h2>
@@ -15,6 +21,7 @@ const EpisodeCard = ({episodes=[],params,info}) => {
                             <CardHeader>
                                 <Link
                                     href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}`}
+                                    onClick={() => handleWatchClick()}
                                     className="overflow-hidden">
                                     <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
                                         {(episode?.image ?? episode?.img) && <Image src={episode?.image ?? episode?.img?.hd} alt={episode.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
@@ -39,6 +46,7 @@ const EpisodeCard = ({episodes=[],params,info}) => {
                                 {episode?.releaseDate && <CardDescription className='text-white'>{new Date(episode?.releaseDate).toLocaleDateString()}</CardDescription>}
                                 <Link
                                     href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/?title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episode-number=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}`}
+                                    onClick={() => handleWatchClick()}
                                     className="text-white hover:underline transition-all duration-300 active:animate-ping"
                                 >Watch Now
                                 </Link>
