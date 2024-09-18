@@ -9,33 +9,28 @@ import { DownloadIcon, NextIcon, PauseIcon, PlayIcon, PreviousIcon } from '@vids
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import SeekForward85Icon from './SeekForward85Icon';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'
-import useEpisode from '@/store/store';
 import EpisodeListSidebar from './EpisodeListSidebar';
 
-const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink,currentPlayingEpisodeId }) => {
+const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayingEpisodeId, episodes, info }) => {
   const searchParams = useSearchParams()
   const title = searchParams.get('title')
   const episodeNumber = searchParams.get('episode-number')
+  const seasonNumber = searchParams.get('season-number')
   const thumbnail = searchParams.get('thumbnail')
   const ref = useRef(null);
-  const { controlsVisible, mediaWidth, paused } = useStore(MediaPlayerInstance, ref);
+  const { controlsVisible, mediaWidth, paused, fullscreen } = useStore(MediaPlayerInstance, ref);
   const remote = useMediaRemote();
-  const router = useRouter();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-  const episodes = useEpisode((state) => state.episodes);
-  const info = useEpisode((state) => state.info);
-  console.warn({ episodes, info });
-
-
+  console.warn(seasonNumber, "seasonNumber");
   const smallVideoLayoutQuery = useCallback(({ width, height }) => {
-    return width < 1000 || height < 380;
+    return width < 576 || height < 380;
   }, []);
-
+  const isTmdbProvider = params.provider === 'tmdb';
+  const seasonEpisodes = isTmdbProvider && episodes && seasonNumber !== undefined && episodes[Number(seasonNumber)] ? episodes[Number(seasonNumber)] : episodes;
   return <>
     <MediaPlayer
       ref={ref}
-      title={mediaWidth < 1000 && title}
+      title={!fullscreen && title}
       src={sourceLink}
       crossOrigin
       viewType='video'
@@ -46,10 +41,10 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink,currentPlayin
       autoPlay
       keyTarget='document'
       className='relative'
-      style={{width:isSmallScreen?'100%':'50%',height:'50vh'}}
+      style={{ width: isSmallScreen ? '100%' : '50%', height: isSmallScreen ? 'auto' : '50vh' }}
     >
       <MediaProvider>
-        {controlsVisible && mediaWidth > 1000 && <ChapterTitle className='text-white absolute top-0 p-4'>
+        {fullscreen && controlsVisible && mediaWidth > 576 && <ChapterTitle className='text-white absolute top-0 p-4'>
           <p className='font-bold font-pro-bold text-lg'>{title}</p>
           {episodeNumber && <p className='font-medium font-pro-medium text-sm italic'>Episode {episodeNumber}</p>}
         </ChapterTitle>}
@@ -70,7 +65,7 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink,currentPlayin
       <Controls.Root className="vds-controls ">
         <div className="vds-controls-spacer" />
         <Controls.Group className="vds-controls-group">
-          {controlsVisible && mediaWidth > 1000 && (
+          {fullscreen && controlsVisible && mediaWidth > 576 && (
             <>
               <div>
                 <div className="vds-controls-spacer" />
@@ -160,8 +155,8 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink,currentPlayin
         thumbnails={params.provider === "dramacool" && subtitles && subtitles[0].url}
       />
     </MediaPlayer>
-    <div className='md:max-w-[40%]'>
-      <EpisodeListSidebar episodes={episodes} params={params} info={info} currentPlayingEpisodeId={currentPlayingEpisodeId}/>
+    <div className='md:w-[40%]'>
+      <EpisodeListSidebar episodes={seasonEpisodes} params={params} info={info} currentPlayingEpisodeId={currentPlayingEpisodeId} seasonNumber={seasonNumber} />
     </div>
   </>
 };

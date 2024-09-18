@@ -100,7 +100,7 @@ const page = async ({ params }) => {
 
     return (
         <Suspense fallback={<Loading />}>
-            {/* <div>{JSON.stringify(params?.info_id[1]==="movie")}</div> */}
+            {/* <div>{JSON.stringify(params?.info_id)}</div> */}
             {/* <div>{JSON.stringify(info && info?.seasons[0]?.episodes)}</div> */}
             <div style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 100%), url(${info?.cover})`
