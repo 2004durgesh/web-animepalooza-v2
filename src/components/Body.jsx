@@ -7,7 +7,7 @@ const Body = ({ children }) => {
     console.warn(pathname);
     return (
         <html lang="en">
-            <body className={`${!pathname.includes("/watch/") ? "max-w-[80%] mx-auto" : ""} overflow-x-hidden`}>
+            <body className={`${!(pathname.includes("/watch/") || pathname.includes("/info/")) ? "max-w-[80%] mx-auto" : ""} overflow-x-hidden`}>
                 {children}
             </body>
         </html>

@@ -1,6 +1,8 @@
 "use client"
 import React, { cloneElement } from 'react'
 import { useMediaQuery } from 'react-responsive'
+import { Badge } from '@/components/ui/badge';
+
 
 const IconText = ({ Icon, children,size=0 }) => {
     // console.log(children, Icon);
@@ -16,10 +18,10 @@ const IconText = ({ Icon, children,size=0 }) => {
     // else if (isExtraLargeScreen) iconSize = 25+size;
 
     return (
-        <span className='flex items-center text-xs sm:text-sm md:text-base lg:text-lg px-1'>
+        <Badge variant="destructive" className='font-bold text-md'>
             {Icon && cloneElement(Icon)}
             {children}
-        </span>
+        </Badge>
     );
 };
 
