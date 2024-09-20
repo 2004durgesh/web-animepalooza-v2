@@ -9,12 +9,12 @@ const EpisodeListSidebar = ({ episodes = [], params, info, currentPlayingEpisode
 
     useEffect(() => {
         if (currentPlayingRef.current) {
-            currentPlayingRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            currentPlayingRef.current.scrollIntoView({ behavior: 'instant', block: 'center' });
         }
     }, [currentPlayingEpisodeId]);
     return (
-        <aside>
-            <ScrollArea className="h-screen">
+        <aside className=''>
+            <ScrollArea className="h-[50vh] md:h-screen">
                 <div className="flex flex-col gap-4">
                     {episodes && episodes.map((episode, index) => (
                         <Link key={episode.id}
@@ -26,7 +26,7 @@ const EpisodeListSidebar = ({ episodes = [], params, info, currentPlayingEpisode
                                 <CardHeader className="flex-row items-center">
                                     {(episode?.image ?? episode?.img) &&
                                         <div className='relative w-1/3 h-full'>
-                                            <Image unoptimized src={episode?.image ?? episode?.img?.hd} alt={episode.title} layout="fill" className='object-cover' />
+                                            <Image unoptimized src={episode?.image ?? episode?.img?.hd} alt={episode.title} width={100} height={50} className='object-cover w-auto h-auto' />
                                             <div className='absolute inset-0 bg-black/50'></div>
                                             <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" color="white" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" height="20" width="20" xmlns="http://www.w3.org/2000/svg" style={{ color: "white" }}>
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>

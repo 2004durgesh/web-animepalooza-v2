@@ -170,7 +170,7 @@ const page = async ({ params }) => {
                         <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
                     </AccordionTrigger>
                     <AccordionContent>
-                        <span className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</span>
+                        <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</p>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>

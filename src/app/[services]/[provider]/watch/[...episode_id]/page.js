@@ -60,7 +60,7 @@ const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpi
   return (
     <Suspense fallback={<Loading />}>
       <main
-        className='flex md:justify-between justify-center md:flex-row flex-col gap-4 m-4'
+        className='-mt-12 flex md:justify-between justify-center md:flex-row flex-col gap-4 m-4'
       >
         {/* {SearchParams} */}
         {/* {JSON.stringify(`${params.episode_id},}`)} */}
