@@ -105,7 +105,7 @@ const page = async ({ params }) => {
             <main className=' -mt-16'>
                 <div className='relative w-screen'>
                     <div className="w-screen absolute">
-                        <div class="bg-gradient-to-t from-black from-10% to-transparent absolute h-[440px] w-screen z-10 inset-0"></div>
+                        <div className="bg-gradient-to-t from-black from-10% to-transparent absolute h-[440px] w-screen z-10 inset-0"></div>
                         <Image
                             unoptimized
                             src={info?.cover??info?.image}
@@ -179,7 +179,7 @@ const page = async ({ params }) => {
                                     </CardHeader>
                                     {character?.role && <CardContent>
                                         <div className="flex items-center space-x-4 mx-4">
-                                            <Badge variant="secondary" className='py-1 px-2'>{character.role}</Badge>
+                                            <Badge variant="destructive" className='py-1 px-2'>{character.role}</Badge>
                                             <Link
                                                 href={`/${params.services}/character/${character.id}?info_id=${params.info_id}`} className="hover:underline transition-all duration-300 active:animate-ping">
                                                 Read More

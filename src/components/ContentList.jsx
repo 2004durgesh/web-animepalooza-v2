@@ -70,7 +70,7 @@ const ContentList = ({ params, headerText, services, provider, otherParams, data
                       {services === 'movies' || provider === "tmdb" || services === "favorites" ? result?.title : result?.title?.userPreferred ?? result?.title?.english}
                     </CardTitle>
                     <div className="flex items-center space-x-4 mx-4">
-                      {result?.type && <Badge variant="secondary" className='py-1 px-2'>{result?.type}</Badge>}
+                      {result?.type && <Badge variant="destructive" className='py-1 px-2'>{result?.type}</Badge>}
                       <Link
                         href={provider === "tmdb"
                           ?

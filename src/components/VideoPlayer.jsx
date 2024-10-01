@@ -11,18 +11,23 @@ import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/l
 import SeekForward85Icon from './SeekForward85Icon';
 import Link from 'next/link';
 import EpisodeListSidebar from './EpisodeListSidebar';
+import { decryptData } from './crypto';
+import { parseQueryString } from '@/lib/utils';
 
 const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayingEpisodeId, episodes, info }) => {
   const searchParams = useSearchParams()
-  const title = searchParams.get('title')
-  const episodeNumber = searchParams.get('episode-number')
-  const seasonNumber = searchParams.get('season-number')
-  const thumbnail = searchParams.get('thumbnail')
+  const encryptedData = searchParams.get('data');
+
+  const decryptedData = decryptData(decodeURIComponent(encryptedData), 'your-secret-key');
+  const queryParams = parseQueryString(decryptedData);
+  const title = queryParams.title;
+  const episodeNumber = queryParams.episodeNumber;
+  const seasonNumber = queryParams.seasonNumber;
+  const thumbnail = queryParams.thumbnail;
   const ref = useRef(null);
   const { controlsVisible, mediaWidth, paused, fullscreen } = useStore(MediaPlayerInstance, ref);
   const remote = useMediaRemote();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-  console.warn(seasonNumber, "seasonNumber");
   const smallVideoLayoutQuery = useCallback(({ width, height }) => {
     return width < 576 || height < 380;
   }, []);
@@ -120,7 +125,7 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
                   <ToggleButton
                     className="vds-button"
                     aria-label="Download">
-                    <Link href={downloadLink}>
+                    <Link href={downloadLink} className='w-full h-full flex items-center justify-center'>
                       <DownloadIcon size={32} />
                     </Link>
                   </ToggleButton>
