@@ -37,7 +37,7 @@
         "description": "Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!",
         "trending": false,
         "popular": true,
-        "recent": false
+        "recent": true
     },
     {
         "slug": "/tmdb",

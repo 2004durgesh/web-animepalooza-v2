@@ -125,13 +125,14 @@ const page = async ({ params }) => {
                             <div className='z-10 flex flex-col gap-2 md:items-start items-center'>
                                 <p>{info?.season} {info?.releaseDate}</p>
                                 <h1 className='font-bold text-2xl md:text-4xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
-                                <div className='flex gap-4'>
+                                <div className='flex gap-4 flex-wrap'>
                                     {info?.totalEpisodes && <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>}
                                     {info?.type && <Badge variant="destructive" className='font-bold text-md'>{info?.type}</Badge>}
                                     {info?.status && <IconText Icon={info?.status === "Completed" ? <CheckIcon /> : <ClockIcon />}>
                                         {info?.status}
                                     </IconText>}
                                     {info?.rating && <IconText Icon={<StarIcon />}>{`${params.services === 'movies' ? (Number(info?.rating)).toFixed(1) : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>}
+                                    {info?.status !== "Completed" && info?.nextAiringEpisode && <IconText Icon={<CardStackIcon />}>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</IconText>}
                                 </div>
                             </div>
                         </div>

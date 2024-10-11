@@ -2,6 +2,7 @@
 import ContentList from '@/components/ContentList';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react'
+import Loading from './[provider]/loading';
 
 const Favorite = () => {
     const storedFavorites = localStorage.getItem('favorites');
@@ -18,6 +19,7 @@ const Favorite = () => {
                 <span className="md:text-xl lg:text-2xl">No favorites found</span>
             </div>}
             {favorites.length > 0 && <Button variant="destructive" onClick={handleClearFavorites}>Clear favorites</Button>}
+            {/* <Loading/> */}
         </div>
     )
 }

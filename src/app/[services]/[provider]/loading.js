@@ -2,39 +2,29 @@ import React from 'react'
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
-const SkeletonComponent = () => (
-    <div className="h-6 w-1/4 bg-gray-300 rounded-md" />
-);
 
 const Loading = () => {
+    
     return (
         <>
-            <div className='flex flex-wrap justify-center'>
-                {Array(6).fill().map((_, i) => {
-                    return (
-                        <Card key={i} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 xl:w-1/7 animate-pulse m-2">
-                            <CardHeader>
-                                <div className="h-[40px] bg-gray-300 rounded-md" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    <Skeleton className="h-48 w-full bg-gray-300 rounded-md" />
-                                    <div className="space-y-3">
-                                        <Skeleton className="h-6 w-3/4 bg-gray-300 rounded-md" />
-                                        <div className="flex justify-between">
-                                            <SkeletonComponent />
-                                            <SkeletonComponent />
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <SkeletonComponent />
-                                            <SkeletonComponent />
-                                        </div>
+            <div className="w-full p-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {Array.from({ length: 20 }).map((_, index) => (
+                        <Card key={index} className="h-[190px] w-[135px] xl:h-[265px] xl:w-[185px] border-none overflow-hidden rounded-lg shadow-lg">
+                            <CardContent className="p-0 h-full relative">
+                                <Skeleton className="w-full h-full" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent p-4 flex flex-col justify-end">
+                                    <Skeleton className="h-6 w-3/4 mb-2" />
+                                    <Skeleton className="h-3 w-full mb-2" />
+                                    <div className="flex justify-between">
+                                        <Skeleton className="h-3 w-1/4" />
+                                        <Skeleton className="h-3 w-1/4" />
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
-                    )
-                })}
+                    ))}
+                </div>
             </div>
         </>
     )
