@@ -125,9 +125,9 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
                   <ToggleButton
                     className="vds-button"
                     aria-label="Download">
-                    <Link href={downloadLink} className='w-full h-full flex items-center justify-center'>
+                    <div onClick={()=>window.open(downloadLink)} className='w-full h-full flex items-center justify-center'>
                       <DownloadIcon size={32} />
-                    </Link>
+                    </div>
                   </ToggleButton>
                 </Tooltip.Trigger>
                 <Tooltip.Content

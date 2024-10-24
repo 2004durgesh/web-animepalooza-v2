@@ -104,7 +104,7 @@ const CardItem = ({ result, services, provider, params }) => {
             >
               <CardDescription>
 
-                <CardTitle className="xl:text-base text-[15px] font-bold line-clamp-1 w-3/4  text-primary-foreground">
+                <CardTitle className="xl:text-base text-[15px] font-bold line-clamp-1 w-full  text-primary-foreground">
                   {services === 'movies' || provider === "tmdb" || services === "favorites" ? result?.title : result?.title?.userPreferred ?? result?.title?.english}
                 </CardTitle>
                 <div className="flex items-center justify-between text-primary-foreground text-xs">

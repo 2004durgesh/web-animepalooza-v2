@@ -12,7 +12,7 @@ import ContentList from '@/components/ContentList';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from 'next/link';
-import { CardStackIcon, StarIcon, CalendarIcon, ClockIcon, CheckIcon } from '@radix-ui/react-icons'
+import { CardStackIcon, StarIcon, CalendarIcon, ClockIcon, CheckIcon, HeartIcon } from '@radix-ui/react-icons'
 import IconText from '@/components/IconText';
 import TMDBInfo from '@/components/TMDBInfo';
 import EpisodeCard from '@/components/EpisodeCard';
@@ -108,7 +108,7 @@ const page = async ({ params }) => {
                         <div className="bg-gradient-to-t from-black from-10% to-transparent absolute h-[440px] w-screen z-10 inset-0"></div>
                         <Image
                             unoptimized
-                            src={info?.cover??info?.image}
+                            src={info?.cover ?? info?.image}
                             alt={info?.title?.english ?? info?.title}
                             height={1000} width={1000}
                             style={{
@@ -124,15 +124,21 @@ const page = async ({ params }) => {
                             </div>
                             <div className='z-10 flex flex-col gap-2 md:items-start items-center'>
                                 <p>{info?.season} {info?.releaseDate}</p>
+                                <div className='flex items-center'>
+                                    {info?.genres && info?.genres.map((genre, index) => (
+                                        <Badge key={index} className='mx-1'>{genre}</Badge>
+                                    ))}
+                                </div>
                                 <h1 className='font-bold text-2xl md:text-4xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
                                 <div className='flex gap-4 flex-wrap'>
                                     {info?.totalEpisodes && <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>}
-                                    {info?.type && <Badge variant="destructive" className='font-bold text-md'>{info?.type}</Badge>}
+                                    {info?.type && <Badge className='font-bold text-md'>{info?.type}</Badge>}
                                     {info?.status && <IconText Icon={info?.status === "Completed" ? <CheckIcon /> : <ClockIcon />}>
                                         {info?.status}
                                     </IconText>}
                                     {info?.rating && <IconText Icon={<StarIcon />}>{`${params.services === 'movies' ? (Number(info?.rating)).toFixed(1) : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>}
-                                    {info?.status !== "Completed" && info?.nextAiringEpisode && <IconText Icon={<CardStackIcon />}>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</IconText>}
+                                    {info?.status !== "Completed" && info?.nextAiringEpisode && <IconText Icon={<CalendarIcon />}>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</IconText>}
+                                    <FavoriteButton item={favoriteItem} />
                                 </div>
                             </div>
                         </div>
@@ -140,16 +146,16 @@ const page = async ({ params }) => {
                 </div>
 
                 <div className='mx-4'>
-                        <Accordion type="single" collapsible>
-                            <AccordionItem value="description">
-                                <AccordionTrigger>
-                                    <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</p>
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                    <Accordion type="single" collapsible>
+                        <AccordionItem value="description">
+                            <AccordionTrigger>
+                                <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</p>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
                     <div className='grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-10'>
                         {info?.trailer &&
                             <div className='py-4 md:col-span-2 lg:col-span-2 xl:col-span-2 flex items-center justify-center'>

@@ -18,7 +18,7 @@ const Favorite = () => {
                 <span className="text-4xl md:text-6xl lg:text-7xl">{'.·´¯`(>__<)´¯`·.'}</span>
                 <span className="md:text-xl lg:text-2xl">No favorites found</span>
             </div>}
-            {favorites.length > 0 && <Button variant="destructive" onClick={handleClearFavorites}>Clear favorites</Button>}
+            {favorites.length > 0 && <Button onClick={handleClearFavorites}>Clear favorites</Button>}
             {/* <Loading/> */}
         </div>
     )

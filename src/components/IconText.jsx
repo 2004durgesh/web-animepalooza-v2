@@ -18,7 +18,7 @@ const IconText = ({ Icon, children,size=0 }) => {
     // else if (isExtraLargeScreen) iconSize = 25+size;
 
     return (
-        <Badge variant="destructive" className='font-bold text-md'>
+        <Badge className='font-bold text-md'>
             {Icon && cloneElement(Icon)}
             {children}
         </Badge>

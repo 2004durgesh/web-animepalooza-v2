@@ -1,6 +1,9 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import { HeartFilledIcon,HeartIcon } from '@radix-ui/react-icons'
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger,TooltipProvider } from "@/components/ui/tooltip"
+import { motion, AnimatePresence } from 'framer-motion'
 
 const FavoriteButton = ({ item }) => {
     const [isFavorite, setIsFavorite] = useState(false)
@@ -22,11 +25,43 @@ const FavoriteButton = ({ item }) => {
             setFavorites(newFavorites);
         }
     };
-    const favoriteIcon = isFavorite ? <HeartFilledIcon size={20} color="red" /> : <HeartIcon size={20} color="black" />;
+    const favoriteIcon = isFavorite ? <HeartFilledIcon size={20} color="white" /> : <HeartIcon size={20} color="white" />;
     return (
-        <button className="px-2" onClick={addToFavoritesHandler}>
-            <span className='px-2 aspect-square transition-all hover:scale-90 active:animate-ping duration-300 inline-flex items-center rounded-full bg-primary-foreground'>{favoriteIcon}</span>
-        </button>
+        <TooltipProvider>
+            <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="icon"
+                className="relative"
+                onClick={addToFavoritesHandler}
+                aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ scale: isFavorite ? 1.1 : 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                >
+                  {favoriteIcon}
+                </motion.div>
+                <AnimatePresence>
+                  {isFavorite && (
+                    <motion.span
+                      key="ping"
+                      initial={{ scale: 0, opacity: 0.5 }}
+                      animate={{ scale: 1.5, opacity: 0 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0 rounded-full"
+                    ></motion.span>
+                  )}
+                </AnimatePresence>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent  className="bg-secondary">
+              <p>{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</p>
+            </TooltipContent>
+                  </Tooltip>
+        </TooltipProvider>
     )
 }
 

@@ -28,8 +28,8 @@ const SearchBar = ({ placeholder,service}) => {
                     value={searchQuery}
                     onChange={(e) => { setSearchQuery(e.target.value) }}
                 />
-                <Button className="bg-transparent cursor-pointer border-none" onSubmit={handleSearch}>
-                    <MagnifyingGlassIcon className='h-4 w-4' />
+                <Button variant="ghost" className="bg-transparent cursor-pointer border-none" onSubmit={handleSearch}>
+                    <MagnifyingGlassIcon className='h-8 w-8' />
                 </Button>
             </div>
         </form>
