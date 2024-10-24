@@ -10,6 +10,16 @@
         "recent": true
     },
     {
+        "slug": "/zoro",
+        "service": "anime",
+        "name": "Zoro",
+        "logo": "/assets/images/zoro.webp",
+        "description": "Watch Anime Online, Free Anime Streaming Online on HiAnime.to Anime Website",
+        "trending": true,
+        "popular": true,
+        "recent": true
+    },
+    {
         "slug": "/mangadex",
         "service": "manga",
         "name": "MangaDex",

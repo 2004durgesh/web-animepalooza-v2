@@ -55,7 +55,7 @@ const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpi
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
-
+console.log(episodeLinks)
   // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
     <Suspense fallback={<Loading />}>
