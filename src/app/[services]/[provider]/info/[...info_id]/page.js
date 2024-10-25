@@ -12,10 +12,11 @@ import ContentList from '@/components/ContentList';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from 'next/link';
-import { CardStackIcon, StarIcon, CalendarIcon, ClockIcon, CheckIcon, HeartIcon } from '@radix-ui/react-icons'
+import { CardStackIcon, StarIcon, CalendarIcon, ClockIcon, CheckIcon, HeartIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import IconText from '@/components/IconText';
 import TMDBInfo from '@/components/TMDBInfo';
 import EpisodeCard from '@/components/EpisodeCard';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const page = async ({ params }) => {
     let services =
@@ -124,13 +125,43 @@ const page = async ({ params }) => {
                             </div>
                             <div className='z-10 flex flex-col gap-2 md:items-start items-center'>
                                 <p>{info?.season} {info?.releaseDate}</p>
-                                <div className='flex items-center'>
-                                    {info?.genres && info?.genres.map((genre, index) => (
-                                        <Badge key={index} className='mx-1'>{genre}</Badge>
-                                    ))}
+                                <div className='flex items-center gap-4'>
+                                    <h1 className='font-bold text-2xl md:text-4xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <InfoCircledIcon className="w-6 h-6" />
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 bg-muted text-white border-secondary-foreground p-4 rounded-lg shadow-lg">
+                                            <div>
+                                                <h3 className="text-lg font-semibold mb-3">Anime Details</h3>
+                                                <div className="space-y-4">
+                                                    <div>
+                                                        <h4 className="text-sm font-medium text-muted-foreground mb-2">Genres</h4>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {info?.genres && info?.genres.map((genre, index) => (
+                                                                <Badge key={index} variant="outline" className="bg-background">
+                                                                    {genre}
+                                                                </Badge>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className='sm:hidden flex flex-col gap-4'>
+                                                        <div className="grid grid-cols-2 gap-3">
+                                                            {info?.totalEpisodes && <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>}
+                                                            {info?.type && <Badge className='font-bold text-md'>{info?.type}</Badge>}
+                                                            {info?.status && <IconText Icon={info?.status === "Completed" ? <CheckIcon /> : <ClockIcon />}>
+                                                                {info?.status}
+                                                            </IconText>}
+                                                            {info?.rating && <IconText Icon={<StarIcon />}>{`${params.services === 'movies' ? (Number(info?.rating)).toFixed(1) : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>}
+                                                        </div>
+                                                        {info?.status !== "Completed" && info?.nextAiringEpisode && <IconText Icon={<CalendarIcon />}>Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}</IconText>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
-                                <h1 className='font-bold text-2xl md:text-4xl pro-bold inline '>{info?.title?.english || info?.title?.romaji || info?.title}</h1>
-                                <div className='flex gap-4 flex-wrap'>
+                                <div className='hidden sm:flex gap-4 flex-wrap'>
                                     {info?.totalEpisodes && <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>}
                                     {info?.type && <Badge className='font-bold text-md'>{info?.type}</Badge>}
                                     {info?.status && <IconText Icon={info?.status === "Completed" ? <CheckIcon /> : <ClockIcon />}>
