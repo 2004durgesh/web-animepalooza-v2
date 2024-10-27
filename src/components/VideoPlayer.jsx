@@ -18,7 +18,7 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
   const searchParams = useSearchParams()
   const encryptedData = searchParams.get('data');
 
-  const decryptedData = decryptData(decodeURIComponent(encryptedData), 'your-secret-key');
+  const decryptedData = decryptData(decodeURIComponent(encryptedData), process.env.NEXT_PUBLIC_SECRET_KEY);
   const queryParams = parseQueryString(decryptedData);
   const title = queryParams.title;
   const episodeNumber = queryParams.episodeNumber;
@@ -120,42 +120,10 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
 
             ),
             beforeSettingsMenu: (
-              downloadLink && <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <ToggleButton
-                    className="vds-button"
-                    aria-label="Download">
-                    <div onClick={()=>window.open(downloadLink)} className='w-full h-full flex items-center justify-center'>
+              downloadLink && 
+                    <Link href={downloadLink} aria-label='download' className='vds-button'>
                       <DownloadIcon size={32} />
-                    </div>
-                  </ToggleButton>
-                </Tooltip.Trigger>
-                <Tooltip.Content
-                  className="animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-10 rounded-sm bg-black/90 px-2 py-0.5 text-sm font-medium text-white border border-gray-400/20"
-                  placement="top start"
-                >
-                  Download
-                </Tooltip.Content>
-              </Tooltip.Root>
-            ),
-            beforeLoadButton: (
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <ToggleButton
-                    className="vds-button"
-                    aria-label="Skip 85 seconds">
-                    <SeekButton seconds={85}>
-                      <SeekForward85Icon size={32} />
-                    </SeekButton>
-                  </ToggleButton>
-                </Tooltip.Trigger>
-                <Tooltip.Content
-                  className="animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-10 rounded-sm bg-black/90 px-2 py-0.5 text-sm font-medium text-white border border-gray-400/20"
-                  placement="top start"
-                >
-                  Skip +85s
-                </Tooltip.Content>
-              </Tooltip.Root>
+                    </Link>
             )
           }}
           // download={{url:downloadLink}} 

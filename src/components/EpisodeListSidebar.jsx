@@ -21,17 +21,23 @@ const EpisodeListSidebar = ({ episodes = [], params, info, currentPlayingEpisode
                     {episodes && episodes.map((episode, index) => {
                         const queryParams = `title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episodeNumber=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}&seasonNumber=${encodeURIComponent(seasonNumber) || ''}`;
 
-                        const encryptedParams = encryptData(queryParams, 'your-secret-key');
+                        const encryptedParams = encryptData(queryParams, process.env.NEXT_PUBLIC_SECRET_KEY);
                         return <Link key={episode.id}
                             href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/${info?.mappings?.tmdb}?data=${encodeURIComponent(encryptedParams)}`}
                             className="overflow-hidden">
                             <Card
                                 ref={episode.id === currentPlayingEpisodeId ? currentPlayingRef : null}
-                                className={`w-full h-40 ${episode.id === currentPlayingEpisodeId ? "border-red-500" : ""}`}>
+                                className={`w-full ${episode.id === currentPlayingEpisodeId ? "border-red-500" : ""}`}>
                                 <CardHeader className="flex-row items-center p-2">
                                     {(episode?.image ?? episode?.img) &&
                                         <div className='relative w-1/3 h-full'>
-                                            <Image unoptimized src={episode?.image ?? episode?.img?.hd} alt={episode.title} width={100} height={50} className='object-cover w-auto h-auto' />
+                                            <Image
+                                                unoptimized
+                                                src={episode?.image ?? episode?.img?.hd}
+                                                onError={(e) => {
+                                                    e.target.src = "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg";
+                                                }}
+                                                alt={episode.title} width={100} height={50} className='object-cover w-auto h-auto aspect-[4/3]' />
                                             <div className='absolute inset-0 bg-black/50'></div>
                                             <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" color="white" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" height="20" width="20" xmlns="http://www.w3.org/2000/svg" style={{ color: "white" }}>
                                                 <path stroke-linecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
