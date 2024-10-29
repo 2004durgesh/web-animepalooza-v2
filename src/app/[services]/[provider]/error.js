@@ -5,6 +5,7 @@ import NoSearchResults from "/public/assets/images/No-Search-Results.gif"
 import {Button} from '@/components/ui/button'
 
 const error = ({error,reset}) => {
+  console.log(error,"from error.js")
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-900 text-white">
       <h1 className="text-4xl font-bold mb-4">Oops! Something Unexpected Occured.</h1>
