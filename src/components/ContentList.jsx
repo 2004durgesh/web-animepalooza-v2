@@ -102,8 +102,6 @@ const CardItem = ({ result, services, provider, params }) => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <CardDescription>
-
                 <CardTitle className="xl:text-base text-[15px] font-bold line-clamp-1 w-full  text-primary-foreground">
                   {services === 'movies' || provider === "tmdb" || services === "favorites" ? result?.title : result?.title?.userPreferred ?? result?.title?.english}
                 </CardTitle>
@@ -118,8 +116,6 @@ const CardItem = ({ result, services, provider, params }) => {
                     <span>{result?.totalEpisodes ?? result?.episodeTitle ?? result?.latestEpisode}</span>
                   </div>}
                 </div>
-              </CardDescription>
-
 
             </motion.div>
           </CardContent>
