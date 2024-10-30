@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import fetchData from "@/components/Datafetcher"
 import VideoPlayer from '@/components/VideoPlayer';
-import Loading from '../loading';
+import {VideoPlayerSkeleton} from '../loading';
 
 const page = async ({ params }) => {
   // await new Promise(resolve => setTimeout(resolve, 5000))
@@ -58,7 +58,7 @@ const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpi
 console.log(episodeLinks)
   // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<VideoPlayerSkeleton />}>
       <main
         className='-mt-12 flex md:justify-between justify-center md:flex-row flex-col gap-4 m-4'
       >

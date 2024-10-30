@@ -3,7 +3,7 @@ import React, { Suspense } from 'react'
 import fetchData from '@/components/Datafetcher'
 import Image from 'next/image';
 import parse from 'html-react-parser';
-import Loading from '../loading';
+import {InfoSkeleton,CharactersSkeleton,EpisodesSkeleton} from '../loading';
 import FavoriteButton from '@/components/FavoriteButton';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
@@ -100,10 +100,9 @@ const page = async ({ params }) => {
 
 
     return (
-        <Suspense fallback={<Loading />}>
-            {/* <div>{JSON.stringify(params?.info_id)}</div> */}
-            {/* <div>{JSON.stringify(info && info?.seasons[0]?.episodes)}</div> */}
-            <main className=' -mt-16'>
+
+        <main className=' -mt-16'>
+            <Suspense fallback={<InfoSkeleton/>}>
                 <div className='relative w-screen'>
                     <div className="w-screen absolute">
                         <div className="bg-gradient-to-t from-black from-10% to-transparent absolute h-[440px] w-screen z-10 inset-0"></div>
@@ -176,17 +175,20 @@ const page = async ({ params }) => {
                     </div>
                 </div>
 
-                <div className='mx-4'>
-                    <Accordion type="single" collapsible>
-                        <AccordionItem value="description">
-                            <AccordionTrigger>
-                                <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</p>
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
+
+            </Suspense>
+            <div className='mx-4'>
+                <Accordion type="single" collapsible>
+                    <AccordionItem value="description">
+                        <AccordionTrigger>
+                            <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{parse(String(info?.description))}</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+                <Suspense fallback="loading list.....">
                     <div className='grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-10'>
                         {info?.trailer &&
                             <div className='py-4 md:col-span-2 lg:col-span-2 xl:col-span-2 flex items-center justify-center'>
@@ -204,6 +206,8 @@ const page = async ({ params }) => {
                             <ContentList params={params} headerText='Recommendations' data={info?.recommendations} service={services} provider={provider} />
                         </div>}
                     </div>
+                </Suspense>
+                <Suspense fallback={<CharactersSkeleton/>}>
                     {info?.characters && <>
                         <h2 className='text-lg font-semibold font-pro-medium text-primary'>Characters: </h2>
                         <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
@@ -229,6 +233,8 @@ const page = async ({ params }) => {
                             <ScrollBar orientation="horizontal" />
                         </ScrollArea>
                     </>}
+                </Suspense>
+                <Suspense fallback={<EpisodesSkeleton/>}>
                     {
                         episodes && episodes.length > 0 ? (
                             provider !== "tmdb" ? (
@@ -242,49 +248,49 @@ const page = async ({ params }) => {
                             )
                         )
                     }
-                    {chapters && chapters.length > 0 &&
-                        <>
-                            <h2 className='text-lg font-semibold font-pro-medium text-primary'>Chapters</h2>
-                            <ScrollArea>
-                                <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${chapters.length > 5 ? "h-[75vh]" : null}`}>
-                                    {chapters.map((chapter, index) => (
-                                        <Card key={chapter.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
-                                            <CardHeader>
-                                                <Link
-                                                    href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
-                                                    className="overflow-hidden">
-                                                    <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
-                                                        {chapter?.image && <Image src={chapter?.image} alt={chapter.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
-                                                        <div className='absolute inset-0 bg-black/50'></div>
-                                                        {/* <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' /> */}
-                                                    </div>
-                                                </Link>
-                                                <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{chapter?.title ?? info?.title?.english ?? info?.title}</CardTitle>
-                                            </CardHeader>
-                                            {chapter?.description && <CardContent>
-                                                <CardDescription className="line-clamp-3">
-                                                    {chapter?.description}
-                                                </CardDescription>
-                                            </CardContent>}
-                                            <CardFooter className='grid grid-cols-2 mx-2 '>
-                                                {chapter?.chapterNumber && <CardDescription className='text-white'>Chapter: {chapter.chapterNumber}</CardDescription>}
-                                                {chapter?.volumeNumber && <CardDescription className='text-white'>Volume: {chapter.volumeNumber}</CardDescription>}
-                                                <Link
-                                                    href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
-                                                    className="text-white hover:underline transition-all duration-300 active:animate-ping"
-                                                >Read Now
-                                                </Link>
-                                            </CardFooter>
-                                        </Card>
-                                    ))}
-                                </div>
-                            </ScrollArea>
-                        </>
-                    }
-                </div>
+                </Suspense>
+                {chapters && chapters.length > 0 &&
+                    <>
+                        <h2 className='text-lg font-semibold font-pro-medium text-primary'>Chapters</h2>
+                        <ScrollArea>
+                            <div className={`grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 ${chapters.length > 5 ? "h-[75vh]" : null}`}>
+                                {chapters.map((chapter, index) => (
+                                    <Card key={chapter.id} className="border sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4">
+                                        <CardHeader>
+                                            <Link
+                                                href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
+                                                className="overflow-hidden">
+                                                <div className='relative hover:scale-110 active:scale-90 transition-all duration-300'>
+                                                    {chapter?.image && <Image src={chapter?.image} alt={chapter.title} width={526} height={296} className='mx-auto aspect-video object-cover bg-red-500' />}
+                                                    <div className='absolute inset-0 bg-black/50'></div>
+                                                    {/* <HiOutlinePlayCircle color='white' size={20} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50' /> */}
+                                                </div>
+                                            </Link>
+                                            <CardTitle className='px-2 text-sm font-bold font-pro-bold text-primary line-clamp-1'>{chapter?.title ?? info?.title?.english ?? info?.title}</CardTitle>
+                                        </CardHeader>
+                                        {chapter?.description && <CardContent>
+                                            <CardDescription className="line-clamp-3">
+                                                {chapter?.description}
+                                            </CardDescription>
+                                        </CardContent>}
+                                        <CardFooter className='grid grid-cols-2 mx-2 '>
+                                            {chapter?.chapterNumber && <CardDescription className='text-white'>Chapter: {chapter.chapterNumber}</CardDescription>}
+                                            {chapter?.volumeNumber && <CardDescription className='text-white'>Volume: {chapter.volumeNumber}</CardDescription>}
+                                            <Link
+                                                href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
+                                                className="text-white hover:underline transition-all duration-300 active:animate-ping"
+                                            >Read Now
+                                            </Link>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                        </ScrollArea>
+                    </>
+                }
+            </div>
 
-            </main>
-        </Suspense>
+        </main >
     )
 }
 

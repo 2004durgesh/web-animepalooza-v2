@@ -1,6 +1,6 @@
 "use server"
 const fetchData = async (service, provider, otherParams, params = {}) => {
-    //await new Promise(resolve => setTimeout(resolve, 5000));
+    // await new Promise(resolve => setTimeout(resolve, 10000));
 
     // Manually construct the query string from the params object
     const queryString = Object.keys(params)
