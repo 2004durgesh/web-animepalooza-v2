@@ -18,7 +18,7 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
   const searchParams = useSearchParams()
   const encryptedData = searchParams.get('data');
 
-  const decryptedData = decryptData(decodeURIComponent(encryptedData), process.env.NEXT_PUBLIC_SECRET_KEY);
+  const decryptedData = decryptData(decodeURIComponent(encryptedData), process.env.NEXT_PUBLIC_CRYPTO_KEY);
   const queryParams = parseQueryString(decryptedData);
   const title = queryParams.title;
   const episodeNumber = queryParams.episodeNumber;
@@ -120,10 +120,10 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
 
             ),
             beforeSettingsMenu: (
-              downloadLink && 
-                    <Link href={downloadLink} aria-label='download' className='vds-button'>
-                      <DownloadIcon size={32} />
-                    </Link>
+              downloadLink &&
+              <Link href={downloadLink} aria-label='download' className='vds-button'>
+                <DownloadIcon size={32} />
+              </Link>
             )
           }}
           // download={{url:downloadLink}} 
@@ -133,15 +133,15 @@ const VideoPlayer = ({ params, sourceLink, subtitles, downloadLink, currentPlayi
       {seasonEpisodes.map((episode, index) => (
         episode.id === currentPlayingEpisodeId && episode?.description ? (
           <Accordion type="single" collapsible key={episode.id}>
-                <AccordionItem value="description">
-                    <AccordionTrigger>
-                        <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                        <p className=' pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{String(episode?.description)}</p>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
+            <AccordionItem value="description">
+              <AccordionTrigger>
+                <h1 className='font-bold text-lg sm:text-xl pro-bold'>Description: </h1>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className=' pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>{String(episode?.description)}</p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         ) : null
       ))}
     </div>

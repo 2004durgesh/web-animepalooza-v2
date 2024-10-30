@@ -21,7 +21,7 @@ const EpisodeListSidebar = ({ episodes = [], params, info, currentPlayingEpisode
                     {episodes && episodes.map((episode, index) => {
                         const queryParams = `title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episodeNumber=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}&seasonNumber=${encodeURIComponent(seasonNumber) || ''}`;
 
-                        const encryptedParams = encryptData(queryParams, process.env.NEXT_PUBLIC_SECRET_KEY);
+                        const encryptedParams = encryptData(queryParams, process.env.NEXT_PUBLIC_CRYPTO_KEY);
                         return <Link key={episode.id}
                             href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/${info?.mappings?.tmdb}?data=${encodeURIComponent(encryptedParams)}`}
                             className="overflow-hidden">
