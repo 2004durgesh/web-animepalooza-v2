@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <>
       {/* Navigation bar */}
-      {(showNavbarRoutes.includes(pathname)) ? <nav className='flex items-center py-4 px-2 absolute top-0 w-4/5 z-20'>
+      {(showNavbarRoutes.includes(pathname)) ? <nav className='flex items-center p-2 fixed top-0 bg-background/80 backdrop-blur-sm w-4/5 z-20'>
         {/* Background overlay for mobile menu */}
 
         {pathname === '/' ? <Link href='/'>
