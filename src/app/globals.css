@@ -24,14 +24,13 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 72.2% 50.6%;
-    --radius:0.5rem;
+    --radius: 0.5rem;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-
 }
 
 @layer base {
@@ -44,7 +43,6 @@
   }
 }
 
-
 body {
   background-color: black;
   color: white;
@@ -52,20 +50,19 @@ body {
 
 .vds-video-layout {
   --media-brand: hsl(var(--primary));
-  --media-controls-color:  hsl(var(--primary-foreground));
+  --media-controls-color: hsl(var(--primary-foreground));
   --media-cue-backdrop: blur(0px);
   --media-cue-bg: rgba(0, 0, 0, 0);
 }
-.vds-button{
+.vds-button {
   margin: 0px 5px;
 }
-
 
 .logo {
   font-family: 'Bebas Neue', sans-serif;
 }
 
-input[type="search"]::-webkit-search-cancel-button {
+input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
 
@@ -95,7 +92,6 @@ input[type="search"]::-webkit-search-cancel-button {
   scrollbar-width: none;
   /* Firefox */
 }
-
 
 /* input[type='range'] {
   -webkit-appearance: none;

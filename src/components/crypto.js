@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js";
+import CryptoJS from 'crypto-js';
 
 // Encryption function
 export const encryptData = (data, secretKey) => {

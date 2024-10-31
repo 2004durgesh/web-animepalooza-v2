@@ -1,4 +1,3 @@
-
 <p align="center"><img src="./src/app/favicon.ico" width="153.6" style="border-radius:50%;aspect-ratio:1/1"/></p>
 
 <h1 align="center"> AnimePalooza </h1>
@@ -21,7 +20,6 @@
 - **Tailwind CSS**: For modern styling and responsive design.
 - **React Icons**: To enhance the user interface with intuitive and meaningful icons.
 - **Workbox**: Implements service worker and caching strategies to enable Progressive Web App (PWA) capabilities.
-
 
 ### Screenshots
 

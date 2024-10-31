@@ -1,92 +1,92 @@
 [
-    {
-        "slug": "/gogoanime",
-        "service": "anime",
-        "name": "Gogoanime",
-        "logo": "/assets/images/gogoanime.png",
-        "description": "Gogoanime/Anitaku is a totally free-running website where you can easily watch or download anime in high quality with English subtitles.",
-        "trending": true,
-        "popular": true,
-        "recent": true
-    },
-    {
-        "slug": "/zoro",
-        "service": "anime",
-        "name": "Zoro",
-        "logo": "/assets/images/zoro.webp",
-        "description": "Watch Anime Online, Free Anime Streaming Online on HiAnime.to Anime Website",
-        "trending": true,
-        "popular": true,
-        "recent": true
-    },
-    {
-        "slug": "/mangadex",
-        "service": "manga",
-        "name": "MangaDex",
-        "logo": "/assets/images/mangadex.jpg",
-        "description": "MangaDex is a manga reader that is available for free. It is a platform that lets you read manga online for free.",
-        "trending": true,
-        "popular": true,
-        "recent": false
-    },
-    {
-        "slug": "/mangareader",
-        "service": "manga",
-        "name": "MangaReader",
-        "logo": "/assets/images/mangareader.jpg",
-        "description": "Free to Read and Download Manga in Highest quality - Daily Update - No Ads - Read Manga Online NOW!",
-        "trending": true,
-        "popular": true,
-        "recent": false
-    },
-    {
-        "slug": "/dramacool",
-        "service": "movies",
-        "name": "DramaCool",
-        "logo": "/assets/images/dramacool.jpeg",
-        "description": "Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!",
-        "trending": false,
-        "popular": true,
-        "recent": true
-    },
-    {
-        "slug": "/tmdb",
-        "service": "movies",
-        "name": "TMDB",
-        "logo": "/assets/images/flixhq.png",
-        "description": "Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming",
-        "trending": true,
-        "popular": false,
-        "recent": false
-    },
-    {
-        "slug": "/flixhq",
-        "service": "movies",
-        "name": "FlixHQ",
-        "logo": "/assets/images/flixhq.png",
-        "description": "Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming",
-        "trending": true,
-        "popular": false,
-        "recent": true
-    },
-    {
-        "slug": "/goku",
-        "service": "movies",
-        "name": "Goku",
-        "logo": "/assets/images/goku.png",
-        "description": "GOKU | Watch Movies online Free on Goku with No Ads And No Account registration- Get Instant Movies Stream, Get Movies in HD quality.",
-        "trending": true,
-        "popular": false,
-        "recent": true
-    },
-    {
-        "slug": "/movieshd",
-        "service": "movies",
-        "name": "MoviesHDWatch",
-        "logo": "/assets/images/movieshd.png",
-        "description": "Fast and Free streaming of over 350,000 movies and tv series in our database. No registration, no payment, 100% Free full HD",
-        "trending": true,
-        "popular": false,
-        "recent": true
-    }
+  {
+    "slug": "/gogoanime",
+    "service": "anime",
+    "name": "Gogoanime",
+    "logo": "/assets/images/gogoanime.png",
+    "description": "Gogoanime/Anitaku is a totally free-running website where you can easily watch or download anime in high quality with English subtitles.",
+    "trending": true,
+    "popular": true,
+    "recent": true
+  },
+  {
+    "slug": "/zoro",
+    "service": "anime",
+    "name": "Zoro",
+    "logo": "/assets/images/zoro.webp",
+    "description": "Watch Anime Online, Free Anime Streaming Online on HiAnime.to Anime Website",
+    "trending": true,
+    "popular": true,
+    "recent": true
+  },
+  {
+    "slug": "/mangadex",
+    "service": "manga",
+    "name": "MangaDex",
+    "logo": "/assets/images/mangadex.jpg",
+    "description": "MangaDex is a manga reader that is available for free. It is a platform that lets you read manga online for free.",
+    "trending": true,
+    "popular": true,
+    "recent": false
+  },
+  {
+    "slug": "/mangareader",
+    "service": "manga",
+    "name": "MangaReader",
+    "logo": "/assets/images/mangareader.jpg",
+    "description": "Free to Read and Download Manga in Highest quality - Daily Update - No Ads - Read Manga Online NOW!",
+    "trending": true,
+    "popular": true,
+    "recent": false
+  },
+  {
+    "slug": "/dramacool",
+    "service": "movies",
+    "name": "DramaCool",
+    "logo": "/assets/images/dramacool.jpeg",
+    "description": "Download And Browse all Korean dramas and other Asian shows full Hd . Dramacool for everyone!",
+    "trending": false,
+    "popular": true,
+    "recent": true
+  },
+  {
+    "slug": "/tmdb",
+    "service": "movies",
+    "name": "TMDB",
+    "logo": "/assets/images/flixhq.png",
+    "description": "Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming",
+    "trending": true,
+    "popular": false,
+    "recent": false
+  },
+  {
+    "slug": "/flixhq",
+    "service": "movies",
+    "name": "FlixHQ",
+    "logo": "/assets/images/flixhq.png",
+    "description": "Watch latest movies online in HD Quality. Unlimited streaming movies for free now - No sign up - No Buffering - One Click Streaming",
+    "trending": true,
+    "popular": false,
+    "recent": true
+  },
+  {
+    "slug": "/goku",
+    "service": "movies",
+    "name": "Goku",
+    "logo": "/assets/images/goku.png",
+    "description": "GOKU | Watch Movies online Free on Goku with No Ads And No Account registration- Get Instant Movies Stream, Get Movies in HD quality.",
+    "trending": true,
+    "popular": false,
+    "recent": true
+  },
+  {
+    "slug": "/movieshd",
+    "service": "movies",
+    "name": "MoviesHDWatch",
+    "logo": "/assets/images/movieshd.png",
+    "description": "Fast and Free streaming of over 350,000 movies and tv series in our database. No registration, no payment, 100% Free full HD",
+    "trending": true,
+    "popular": false,
+    "recent": true
+  }
 ]

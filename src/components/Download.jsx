@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import useDownloader from 'react-use-downloader';
 import React from 'react';
 
@@ -10,47 +10,49 @@ const Download = () => {
   const filename = 'animepalooza.apk';
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <p className="text-lg mb-4">
+    <div className='flex min-h-screen items-center justify-center bg-gray-100'>
+      <div className='rounded-lg bg-white p-8 shadow-md'>
+        <p className='mb-4 text-lg'>
           Download is {isInProgress ? 'in progress' : 'stopped'}
         </p>
         <button
           onClick={() => download(fileUrl, filename)}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2"
+          className='mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
         >
           Download File
         </button>
         <button
           onClick={() => cancel()}
-          className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+          className='rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600'
         >
           Cancel Download
         </button>
-        <p className="mt-4">Download size: {size} bytes</p>
-        <label className="block mt-2" htmlFor="file">
+        <p className='mt-4'>Download size: {size} bytes</p>
+        <label className='mt-2 block' htmlFor='file'>
           Downloading progress:
         </label>
-        <div className="relative pt-1">
-          <div className="flex mb-2 items-center justify-between">
+        <div className='relative pt-1'>
+          <div className='mb-2 flex items-center justify-between'>
             <div>
-              <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+              <span className='inline-block rounded-full bg-blue-200 px-2 py-1 text-xs font-semibold uppercase text-blue-600'>
                 {percentage}%
               </span>
             </div>
           </div>
-          <div className="flex items-center justify-start">
-            <div className="w-full bg-gray-200 rounded-full">
+          <div className='flex items-center justify-start'>
+            <div className='w-full rounded-full bg-gray-200'>
               <div
-                className="rounded-full bg-blue-500 text-xs leading-none py-1 px-3 text-white"
+                className='rounded-full bg-blue-500 px-3 py-1 text-xs leading-none text-white'
                 style={{ width: `${percentage}%` }}
               ></div>
             </div>
           </div>
         </div>
-        <p className="mt-4">Elapsed time: {elapsed} seconds</p>
+        <p className='mt-4'>Elapsed time: {elapsed} seconds</p>
         {error && (
-          <p className="mt-4 text-red-500">Possible error: {JSON.stringify(error)}</p>
+          <p className='mt-4 text-red-500'>
+            Possible error: {JSON.stringify(error)}
+          </p>
         )}
       </div>
     </div>
