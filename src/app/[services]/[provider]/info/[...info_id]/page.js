@@ -132,10 +132,12 @@ const page = async ({ params }) => {
     services: params.services,
     url: `/${params.services}/${params.provider}/info/${params.info_id.join('/')}`,
   };
+
   const airingDate = new Date(
     info?.nextAiringEpisode?.airingTime * 1000 ??
       info?.nextAiringEpisode?.releaseDate
   );
+
   const ExtraInfoItem = ({ label, children, className }) => (
     <p
       className={`text-xs text-white sm:text-sm md:text-base lg:text-lg ${className}`}
@@ -144,6 +146,7 @@ const page = async ({ params }) => {
       <span>{children}</span>
     </p>
   );
+
   const ResponsiveText = ({ children }) => (
     <span className='px-1 text-xs sm:text-sm md:text-base lg:text-lg'>
       {children}

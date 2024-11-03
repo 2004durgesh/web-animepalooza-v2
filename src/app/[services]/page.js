@@ -4,16 +4,20 @@ import ServiceProvider from '@/constants/ServiceProvider.json';
 import { Skeleton } from '@/components/ui/skeleton';
 import { notFound } from 'next/navigation';
 import Favorite from './favorite';
+
 const page = ({ params }) => {
   const matchingProviders = ServiceProvider.filter(
     (provider) => provider.service === params.services
   );
+
   if (matchingProviders.length === 0 && params.services !== 'favorites') {
     notFound();
   }
+
   if (params.services === 'favorites') {
     return <Favorite />;
   }
+
   return (
     <div>
       {params.services !== 'favorites' && (

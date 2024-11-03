@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useState, Suspense } from 'react';
 import fetchData from '@/components/Datafetcher';
 import { useSearchParams } from 'next/navigation';
@@ -17,13 +18,18 @@ import {
 
 const Page = ({ params }) => {
   const searchParams = useSearchParams();
+
   const info_id = searchParams.get('info_id');
+
   const [voiceActor, setVoiceActor] = useState([]);
+
   const [character, setCharacter] = useState({});
+
   const fetchInfo = async () => {
     const info = await fetchData('meta', 'anilist', `data/${info_id}`, {
       provider: params.provider,
     });
+
     const character = await fetchData(
       'meta',
       'anilist',
@@ -33,16 +39,22 @@ const Page = ({ params }) => {
     info?.characters.map((item) => {
       if (item.id == params.character_id) {
         setVoiceActor(item.voiceActors);
+
         console.log(item.voiceActors);
       }
     });
+
     setCharacter(character);
+
     console.log(voiceActor);
+
     return character;
   };
+
   useEffect(() => {
     fetchInfo();
   }, []);
+
   return (
     <main className='p-4'>
       <div className='flex flex-col items-start space-y-4 md:flex-row md:space-x-4 md:space-y-0'>

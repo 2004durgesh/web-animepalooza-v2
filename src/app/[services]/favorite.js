@@ -1,4 +1,5 @@
 'use client';
+
 import ContentList from '@/components/ContentList';
 import { Button } from '@/components/ui/button';
 import React, { useState, useEffect } from 'react';
@@ -6,13 +7,17 @@ import Loading from './[provider]/loading';
 
 const Favorite = () => {
   const storedFavorites = localStorage.getItem('favorites');
+
   const [favorites, setFavorites] = useState(
     storedFavorites ? JSON.parse(storedFavorites) : []
   );
+
   const handleClearFavorites = () => {
     localStorage.setItem('favorites', JSON.stringify([]));
+
     setFavorites([]);
   };
+
   return (
     <div>
       {favorites.length > 0 && (

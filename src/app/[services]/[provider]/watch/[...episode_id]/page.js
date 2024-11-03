@@ -4,18 +4,20 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { VideoPlayerSkeleton } from '../loading';
 
 const page = async ({ params }) => {
-  // await new Promise(resolve => setTimeout(resolve, 5000))
   let services =
     params.services === 'anime' || params.provider === 'tmdb'
       ? 'meta'
       : params.services;
+
   let provider =
     params.services === 'anime' || params.services === 'manga'
       ? 'anilist'
       : params.provider;
+
   const animeEpisodeLinks =
     params.services === 'anime' &&
     (await fetchData(services, provider, `watch/${params.episode_id[0]}`));
+
   const moviesEpisodeLinks =
     params.services === 'movies' && params.provider !== 'tmdb'
       ? await fetchData(services, provider, `watch`, {
@@ -79,18 +81,29 @@ const page = async ({ params }) => {
   const episodeLinks =
     params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
 
-  console.log(episodeLinks);
+  console.log(episodeLinks, 'episodeLinks');
   const sourceLink = Array.isArray(episodeLinks?.sources)
-    ? episodeLinks.sources?.map((source, index) => {
-        if (source?.quality === 'default' || source?.quality === 'backup') {
-          return source?.url;
-        } else return source?.url;
-      })
+    ? episodeLinks.sources
+        .filter(
+          (source) =>
+            source?.quality === 'default' || source?.quality === 'backup'
+        )
+        .map((source) => source?.url).length > 0
+      ? episodeLinks.sources.filter(
+          (source) =>
+            source?.quality === 'default' || source?.quality === 'backup'
+        )[0]?.url
+      : episodeLinks.sources[0]?.url
     : episodeLinks?.sources?.url;
+
+  console.log(sourceLink);
+
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
+
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
+
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
-  // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
+
   return (
     <Suspense fallback={<VideoPlayerSkeleton />}>
       <main className='m-4 -mt-12 flex flex-col justify-center gap-4 md:flex-row md:justify-between'>

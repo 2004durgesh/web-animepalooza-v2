@@ -9,6 +9,7 @@ const page = async ({ params }) => {
     chapterId: params.chapter_id,
     provider: params.provider,
   });
+
   return (
     <>
       {/* <div>{JSON.stringify(params)}</div> */}

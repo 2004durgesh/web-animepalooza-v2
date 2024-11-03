@@ -1,4 +1,5 @@
 'use server';
+
 const fetchData = async (service, provider, otherParams, params = {}) => {
   // await new Promise(resolve => setTimeout(resolve, 10000));
 
@@ -13,6 +14,7 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
     'url is',
     `${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`
   );
+
   try {
     const response = await fetch(
       `${process.env.API_BASE_URL}/${service}/${provider}/${otherParams}?${queryString}`,
@@ -25,8 +27,10 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
         next: { revalidate: 3600 },
       }
     );
+
     // console.log("response", response)
     const data = await response.json();
+
     // console.log("data", data)
     if (data === null || data === undefined) {
       throw new Error('No data found');
@@ -38,4 +42,5 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
     throw new Error(`${error}`);
   }
 };
+
 export default fetchData;

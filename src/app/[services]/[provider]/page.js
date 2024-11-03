@@ -6,6 +6,7 @@ import ContentList from '@/components/ContentList';
 import fetchData from '@/components/Datafetcher';
 import SearchBar from '@/components/SearchBar';
 import Loading from './loading';
+
 const Provider = async ({ params }) => {
   console.log(params.provider);
   // console.log(AllProvider.includes(params.provider[0]))
@@ -15,23 +16,31 @@ const Provider = async ({ params }) => {
     params.provider === 'tmdb'
       ? 'meta'
       : params.services;
+
   let provider =
     params.services === 'anime'
       ? 'anilist'
       : params.services === 'manga'
         ? 'anilist-manga'
         : params.provider;
+
   const trending = await fetchData(services, provider, 'trending', { page: 1 });
+
   const popular = await fetchData(services, provider, 'popular', { page: 1 });
+
   const recentEpisodes = await fetchData(
     services,
     provider,
     'recent-episodes',
     { page: 1 }
   );
+
   const recentMovies = await fetchData(services, provider, 'recent-movies');
+
   const recentShows = await fetchData(services, provider, 'recent-shows');
+
   if (!AllProvider.includes(params.provider)) notFound();
+
   return (
     <>
       {AllProvider.includes(params.provider) && (

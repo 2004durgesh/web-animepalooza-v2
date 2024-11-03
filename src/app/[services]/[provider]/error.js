@@ -1,4 +1,5 @@
 'use client';
+
 import Image from 'next/image';
 import React from 'react';
 import NoSearchResults from '/public/assets/images/No-Search-Results.gif';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const error = ({ error, reset }) => {
   console.log(error, 'from error.js');
+
   return (
     <div className='-mt-16 flex h-screen flex-col items-center justify-center bg-gray-900 text-center text-white'>
       <h1 className='mb-4 text-4xl font-bold'>

@@ -1,3 +1,28 @@
 {
-  "extends": ["next/core-web-vitals", "prettier"]
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["@stylistic/eslint-plugin"],
+  "rules": {
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "var", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "*", "next": "block-like" },
+      { "blankLine": "always", "prev": "block-like", "next": "*" },
+      {
+        "blankLine": "always",
+        "prev": "import",
+        "next": ["const", "let", "var"]
+      },
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["./src/component/ui/**/*"],
+      "rules": {
+        "padding-line-between-statements": "off" // Disable the rule for this directory
+      }
+    }
+  ],
+  "ignorePatterns": ["./src/component/ui/**/*"] // Exclude the folder from being linted
 }
