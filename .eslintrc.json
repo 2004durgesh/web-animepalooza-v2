@@ -3,6 +3,7 @@
   "plugins": ["@stylistic/eslint-plugin"],
   "rules": {
     "padding-line-between-statements": [
+      "warn",
       { "blankLine": "always", "prev": "var", "next": "*" },
       { "blankLine": "always", "prev": "*", "next": "return" },
       { "blankLine": "always", "prev": "*", "next": "block-like" },
