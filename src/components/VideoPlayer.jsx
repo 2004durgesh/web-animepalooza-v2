@@ -18,23 +18,14 @@ import {
   MediaPlayerInstance,
   Controls,
 } from '@vidstack/react';
-import {
-  DownloadIcon,
-  NextIcon,
-  PauseIcon,
-  PlayIcon,
-  PreviousIcon,
-} from '@vidstack/react/icons';
+import { DownloadIcon, NextIcon, PauseIcon, PlayIcon, PreviousIcon } from '@vidstack/react/icons';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons,
-} from '@vidstack/react/player/layouts/default';
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import SeekForward85Icon from './SeekForward85Icon';
 import Link from 'next/link';
 import EpisodeListSidebar from './EpisodeListSidebar';
@@ -63,10 +54,7 @@ const VideoPlayer = ({
   const seasonNumber = queryParams.seasonNumber;
   const thumbnail = queryParams.thumbnail;
   const ref = useRef(null);
-  const { controlsVisible, mediaWidth, paused, fullscreen } = useStore(
-    MediaPlayerInstance,
-    ref
-  );
+  const { controlsVisible, mediaWidth, paused, fullscreen } = useStore(MediaPlayerInstance, ref);
   const remote = useMediaRemote();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const smallVideoLayoutQuery = useCallback(({ width, height }) => {
@@ -74,10 +62,7 @@ const VideoPlayer = ({
   }, []);
   const isTmdbProvider = params.provider === 'tmdb';
   const seasonEpisodes =
-    isTmdbProvider &&
-    episodes &&
-    seasonNumber !== undefined &&
-    episodes[Number(seasonNumber)]
+    isTmdbProvider && episodes && seasonNumber !== undefined && episodes[Number(seasonNumber)]
       ? episodes[Number(seasonNumber)]
       : episodes;
   return (
@@ -134,16 +119,10 @@ const VideoPlayer = ({
                     <div className='absolute inset-0 flex items-center justify-center'>
                       {/* <PreviousIcon size={32} /> */}
                       <ToggleButton
-                        onClick={(e) =>
-                          paused ? remote.play(e) : remote.pause(e)
-                        }
+                        onClick={(e) => (paused ? remote.play(e) : remote.pause(e))}
                         className='flex size-14 items-center justify-center rounded-full bg-black/60 shadow backdrop-blur-md hover:!bg-black/60'
                       >
-                        {paused ? (
-                          <PlayIcon size={35} />
-                        ) : (
-                          <PauseIcon size={35} />
-                        )}
+                        {paused ? <PlayIcon size={35} /> : <PauseIcon size={35} />}
                       </ToggleButton>
                       {/* <NextIcon size={32} /> */}
                     </div>
@@ -164,10 +143,7 @@ const VideoPlayer = ({
                 afterSettingsMenu: (
                   <Tooltip.Root>
                     <Tooltip.Trigger asChild>
-                      <ToggleButton
-                        className='vds-button'
-                        aria-label='Skip 85 seconds'
-                      >
+                      <ToggleButton className='vds-button' aria-label='Skip 85 seconds'>
                         <SeekButton seconds={85}>
                           <SeekForward85Icon size={32} />
                         </SeekButton>
@@ -182,20 +158,14 @@ const VideoPlayer = ({
                   </Tooltip.Root>
                 ),
                 beforeSettingsMenu: downloadLink && (
-                  <Link
-                    href={downloadLink}
-                    aria-label='download'
-                    className='vds-button'
-                  >
+                  <Link href={downloadLink} aria-label='download' className='vds-button'>
                     <DownloadIcon size={32} />
                   </Link>
                 ),
               }
             }
             // download={{url:downloadLink}}
-            thumbnails={
-              params.provider === 'dramacool' && subtitles && subtitles[0].url
-            }
+            thumbnails={params.provider === 'dramacool' && subtitles && subtitles[0].url}
           />
         </MediaPlayer>
         {seasonEpisodes?.map((episode, index) =>
@@ -203,9 +173,7 @@ const VideoPlayer = ({
             <Accordion type='single' collapsible key={episode.id}>
               <AccordionItem value='description'>
                 <AccordionTrigger>
-                  <h1 className='pro-bold text-lg font-bold sm:text-xl'>
-                    Description:{' '}
-                  </h1>
+                  <h1 className='pro-bold text-lg font-bold sm:text-xl'>Description: </h1>
                 </AccordionTrigger>
                 <AccordionContent>
                   <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>

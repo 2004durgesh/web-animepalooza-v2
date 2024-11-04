@@ -1,10 +1,6 @@
 'use client';
 import React, { useRef } from 'react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 
 import Image from 'next/image';
@@ -28,8 +24,7 @@ const HeroSection = ({ animeSrc, mangaSrc, movieSrc }) => {
     {
       src: movieSrc,
       type: 'image',
-      heroText:
-        'Streaming Asian Dramas and Global<br />Entertainment at Your Fingertips',
+      heroText: 'Streaming Asian Dramas and Global<br />Entertainment at Your Fingertips',
       width: 1920,
       height: 860,
     },
@@ -56,10 +51,7 @@ const HeroSection = ({ animeSrc, mangaSrc, movieSrc }) => {
               height={slide.height}
             />
             <div className='pointer-events-none absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 backdrop-blur-[0.5px]'></div>
-            <h1
-              className={heroTextStyle}
-              dangerouslySetInnerHTML={{ __html: slide.heroText }}
-            ></h1>
+            <h1 className={heroTextStyle} dangerouslySetInnerHTML={{ __html: slide.heroText }}></h1>
           </CarouselItem>
         ))}
       </CarouselContent>

@@ -1,13 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -38,10 +31,7 @@ const EpisodeListSidebar = ({
             episodes.map((episode, index) => {
               const queryParams = `title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episodeNumber=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}&seasonNumber=${encodeURIComponent(seasonNumber) || ''}`;
 
-              const encryptedParams = encryptData(
-                queryParams,
-                process.env.NEXT_PUBLIC_CRYPTO_KEY
-              );
+              const encryptedParams = encryptData(queryParams, process.env.NEXT_PUBLIC_CRYPTO_KEY);
               return (
                 <Link
                   key={episode.id}
@@ -49,11 +39,7 @@ const EpisodeListSidebar = ({
                   className='overflow-hidden'
                 >
                   <Card
-                    ref={
-                      episode.id === currentPlayingEpisodeId
-                        ? currentPlayingRef
-                        : null
-                    }
+                    ref={episode.id === currentPlayingEpisodeId ? currentPlayingRef : null}
                     className={`w-full ${episode.id === currentPlayingEpisodeId ? 'border-red-500' : ''}`}
                   >
                     <CardHeader className='flex-row items-center p-2'>
@@ -100,9 +86,7 @@ const EpisodeListSidebar = ({
                       )}
                       <CardContent className='flex h-full w-2/3 flex-col justify-center'>
                         <CardTitle className='font-pro-bold text-sm font-bold text-primary'>
-                          {episode?.title ??
-                            info?.title?.english ??
-                            info?.title}
+                          {episode?.title ?? info?.title?.english ?? info?.title}
                         </CardTitle>
                         {episode?.description && (
                           <CardDescription className='line-clamp-3'>

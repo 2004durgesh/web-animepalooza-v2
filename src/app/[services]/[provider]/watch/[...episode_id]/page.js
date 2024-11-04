@@ -5,14 +5,9 @@ import { VideoPlayerSkeleton } from '../loading';
 
 const page = async ({ params }) => {
   let services =
-    params.services === 'anime' || params.provider === 'tmdb'
-      ? 'meta'
-      : params.services;
-
+    params.services === 'anime' || params.provider === 'tmdb' ? 'meta' : params.services;
   let provider =
-    params.services === 'anime' || params.services === 'manga'
-      ? 'anilist'
-      : params.provider;
+    params.services === 'anime' || params.services === 'manga' ? 'anilist' : params.provider;
 
   const animeEpisodeLinks =
     params.services === 'anime' &&
@@ -50,16 +45,11 @@ const page = async ({ params }) => {
 
   const episodes =
     params.services === 'anime'
-      ? await fetchData(
-          services,
-          provider,
-          `episodes/${params.episode_id[1]}`,
-          { provider: params.provider }
-        )
+      ? await fetchData(services, provider, `episodes/${params.episode_id[1]}`, {
+          provider: params.provider,
+        })
       : params.provider === 'tmdb'
-        ? info?.seasons?.map(
-            (season, index) => season?.episodes ?? info?.seasons
-          )
+        ? info?.seasons?.map((season, index) => season?.episodes ?? info?.seasons)
         : movieInfo?.episodes;
 
   const moviesEpisode =
@@ -78,20 +68,15 @@ const page = async ({ params }) => {
         ]
       : null;
 
-  const episodeLinks =
-    params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
+  const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;
 
   console.log(episodeLinks, 'episodeLinks');
   const sourceLink = Array.isArray(episodeLinks?.sources)
     ? episodeLinks.sources
-        .filter(
-          (source) =>
-            source?.quality === 'default' || source?.quality === 'backup'
-        )
+        .filter((source) => source?.quality === 'default' || source?.quality === 'backup')
         .map((source) => source?.url).length > 0
       ? episodeLinks.sources.filter(
-          (source) =>
-            source?.quality === 'default' || source?.quality === 'backup'
+          (source) => source?.quality === 'default' || source?.quality === 'backup'
         )[0]?.url
       : episodeLinks.sources[0]?.url
     : episodeLinks?.sources?.url;
@@ -99,9 +84,7 @@ const page = async ({ params }) => {
   console.log(sourceLink);
 
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
-
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
-
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
 
   return (

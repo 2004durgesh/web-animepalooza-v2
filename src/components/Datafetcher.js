@@ -5,9 +5,7 @@ const fetchData = async (service, provider, otherParams, params = {}) => {
 
   // Manually construct the query string from the params object
   const queryString = Object.keys(params)
-    .map(
-      (key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
-    )
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     .join('&');
 
   console.log(

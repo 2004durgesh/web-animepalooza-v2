@@ -79,9 +79,7 @@ const Navbar = () => {
           {/* Mobile navigation menu */}
           <div
             className={
-              nav
-                ? `fixed inset-0 z-[0] bg-opacity-40 backdrop-blur-md backdrop-filter`
-                : null
+              nav ? `fixed inset-0 z-[0] bg-opacity-40 backdrop-blur-md backdrop-filter` : null
             }
           ></div>
           <ul

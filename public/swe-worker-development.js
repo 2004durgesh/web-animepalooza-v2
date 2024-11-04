@@ -70,10 +70,7 @@
           /******/
         };
 
-        /******/ if (
-          typeof trustedTypes !== 'undefined' &&
-          trustedTypes.createPolicy
-        ) {
+        /******/ if (typeof trustedTypes !== 'undefined' && trustedTypes.createPolicy) {
           /******/ policy = trustedTypes.createPolicy('nextjs#bundler', policy);
           /******/
         }
@@ -102,26 +99,16 @@
       /******/ __webpack_require__.i.push(function (options) {
         /******/ var originalFactory = options.factory;
 
-        /******/ options.factory = function (
-          moduleObject,
-          moduleExports,
-          webpackRequire
-        ) {
+        /******/ options.factory = function (moduleObject, moduleExports, webpackRequire) {
           /******/ var hasRefresh =
-            typeof self !== 'undefined' &&
-            !!self.$RefreshInterceptModuleExecution$;
+            typeof self !== 'undefined' && !!self.$RefreshInterceptModuleExecution$;
 
           /******/ var cleanup = hasRefresh
             ? self.$RefreshInterceptModuleExecution$(moduleObject.id)
             : function () {};
 
           /******/ try {
-            /******/ originalFactory.call(
-              this,
-              moduleObject,
-              moduleExports,
-              webpackRequire
-            );
+            /******/ originalFactory.call(this, moduleObject, moduleExports, webpackRequire);
             /******/
           } finally {
             /******/ cleanup();
@@ -162,9 +149,11 @@
   /******/ // This entry module can't be inlined because the eval-source-map devtool is used.
   /******/ var __webpack_exports__ = {};
 
-  /******/ __webpack_modules__[
-    './node_modules/@ducanh2912/next-pwa/dist/sw-entry-worker.js'
-  ](0, __webpack_exports__, __webpack_require__);
+  /******/ __webpack_modules__['./node_modules/@ducanh2912/next-pwa/dist/sw-entry-worker.js'](
+    0,
+    __webpack_exports__,
+    __webpack_require__
+  );
   /******/
   /******/
 })();

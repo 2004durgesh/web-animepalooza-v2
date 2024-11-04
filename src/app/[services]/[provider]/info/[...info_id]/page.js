@@ -36,17 +36,11 @@ import {
 import IconText from '@/components/IconText';
 import TMDBInfo from '@/components/TMDBInfo';
 import EpisodeCard from '@/components/EpisodeCard';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const page = async ({ params }) => {
   let services =
-    params.services === 'anime' ||
-    params.services === 'manga' ||
-    params.provider === 'tmdb'
+    params.services === 'anime' || params.services === 'manga' || params.provider === 'tmdb'
       ? 'meta'
       : params.services;
 
@@ -59,22 +53,16 @@ const page = async ({ params }) => {
 
   let animeInfo =
     params.services === 'anime'
-      ? await fetchData(
-          services,
-          provider,
-          `data/${params.info_id.join('/')}`,
-          { provider: params.provider }
-        )
+      ? await fetchData(services, provider, `data/${params.info_id.join('/')}`, {
+          provider: params.provider,
+        })
       : null;
 
   let mangaInfo =
     params.services === 'manga'
-      ? await fetchData(
-          services,
-          provider,
-          `info/${params.info_id.join('/')}`,
-          { provider: params.provider }
-        )
+      ? await fetchData(services, provider, `info/${params.info_id.join('/')}`, {
+          provider: params.provider,
+        })
       : null;
 
   let movieInfo =
@@ -89,11 +77,7 @@ const page = async ({ params }) => {
       : null;
 
   const info =
-    params.services === 'anime'
-      ? animeInfo
-      : params.services === 'manga'
-        ? mangaInfo
-        : movieInfo;
+    params.services === 'anime' ? animeInfo : params.services === 'manga' ? mangaInfo : movieInfo;
 
   const episodes =
     params.services === 'anime'
@@ -134,23 +118,18 @@ const page = async ({ params }) => {
   };
 
   const airingDate = new Date(
-    info?.nextAiringEpisode?.airingTime * 1000 ??
-      info?.nextAiringEpisode?.releaseDate
+    info?.nextAiringEpisode?.airingTime * 1000 ?? info?.nextAiringEpisode?.releaseDate
   );
 
   const ExtraInfoItem = ({ label, children, className }) => (
-    <p
-      className={`text-xs text-white sm:text-sm md:text-base lg:text-lg ${className}`}
-    >
+    <p className={`text-xs text-white sm:text-sm md:text-base lg:text-lg ${className}`}>
       <strong>{label}: </strong>
       <span>{children}</span>
     </p>
   );
 
   const ResponsiveText = ({ children }) => (
-    <span className='px-1 text-xs sm:text-sm md:text-base lg:text-lg'>
-      {children}
-    </span>
+    <span className='px-1 text-xs sm:text-sm md:text-base lg:text-lg'>{children}</span>
   );
 
   return (
@@ -197,9 +176,7 @@ const page = async ({ params }) => {
                     </PopoverTrigger>
                     <PopoverContent className='w-80 rounded-lg border-secondary-foreground bg-muted p-4 text-white shadow-lg'>
                       <div>
-                        <h3 className='mb-3 text-lg font-semibold'>
-                          Anime Details
-                        </h3>
+                        <h3 className='mb-3 text-lg font-semibold'>Anime Details</h3>
                         <div className='space-y-4'>
                           <div>
                             <h4 className='mb-2 text-sm font-medium text-muted-foreground'>
@@ -208,11 +185,7 @@ const page = async ({ params }) => {
                             <div className='flex flex-wrap gap-2'>
                               {info?.genres &&
                                 info?.genres.map((genre, index) => (
-                                  <Badge
-                                    key={index}
-                                    variant='outline'
-                                    className='bg-background'
-                                  >
+                                  <Badge key={index} variant='outline' className='bg-background'>
                                     {genre}
                                   </Badge>
                                 ))}
@@ -221,23 +194,15 @@ const page = async ({ params }) => {
                           <div className='flex flex-col gap-4 sm:hidden'>
                             <div className='grid grid-cols-2 gap-3'>
                               {info?.totalEpisodes && (
-                                <IconText Icon={<CardStackIcon />}>
-                                  {info?.totalEpisodes}
-                                </IconText>
+                                <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>
                               )}
                               {info?.type && (
-                                <Badge className='text-md font-bold'>
-                                  {info?.type}
-                                </Badge>
+                                <Badge className='text-md font-bold'>{info?.type}</Badge>
                               )}
                               {info?.status && (
                                 <IconText
                                   Icon={
-                                    info?.status === 'Completed' ? (
-                                      <CheckIcon />
-                                    ) : (
-                                      <ClockIcon />
-                                    )
+                                    info?.status === 'Completed' ? <CheckIcon /> : <ClockIcon />
                                   }
                                 >
                                   {info?.status}
@@ -249,13 +214,11 @@ const page = async ({ params }) => {
                                 >{`${params.services === 'movies' ? Number(info?.rating).toFixed(1) : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>
                               )}
                             </div>
-                            {info?.status !== 'Completed' &&
-                              info?.nextAiringEpisode && (
-                                <IconText Icon={<CalendarIcon />}>
-                                  Ep {info?.nextAiringEpisode?.episode},{' '}
-                                  {airingDate.toDateString()}
-                                </IconText>
-                              )}
+                            {info?.status !== 'Completed' && info?.nextAiringEpisode && (
+                              <IconText Icon={<CalendarIcon />}>
+                                Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}
+                              </IconText>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -264,23 +227,11 @@ const page = async ({ params }) => {
                 </div>
                 <div className='hidden flex-wrap gap-4 sm:flex'>
                   {info?.totalEpisodes && (
-                    <IconText Icon={<CardStackIcon />}>
-                      {info?.totalEpisodes}
-                    </IconText>
+                    <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>
                   )}
-                  {info?.type && (
-                    <Badge className='text-md font-bold'>{info?.type}</Badge>
-                  )}
+                  {info?.type && <Badge className='text-md font-bold'>{info?.type}</Badge>}
                   {info?.status && (
-                    <IconText
-                      Icon={
-                        info?.status === 'Completed' ? (
-                          <CheckIcon />
-                        ) : (
-                          <ClockIcon />
-                        )
-                      }
-                    >
+                    <IconText Icon={info?.status === 'Completed' ? <CheckIcon /> : <ClockIcon />}>
                       {info?.status}
                     </IconText>
                   )}
@@ -291,8 +242,7 @@ const page = async ({ params }) => {
                   )}
                   {info?.status !== 'Completed' && info?.nextAiringEpisode && (
                     <IconText Icon={<CalendarIcon />}>
-                      Ep {info?.nextAiringEpisode?.episode},{' '}
-                      {airingDate.toDateString()}
+                      Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}
                     </IconText>
                   )}
                   <FavoriteButton item={favoriteItem} />
@@ -306,9 +256,7 @@ const page = async ({ params }) => {
         <Accordion type='single' collapsible>
           <AccordionItem value='description'>
             <AccordionTrigger>
-              <h1 className='pro-bold text-lg font-bold sm:text-xl'>
-                Description:{' '}
-              </h1>
+              <h1 className='pro-bold text-lg font-bold sm:text-xl'>Description: </h1>
             </AccordionTrigger>
             <AccordionContent>
               <p className='pro-regular text-xs sm:text-sm md:text-base lg:text-lg'>
@@ -348,9 +296,7 @@ const page = async ({ params }) => {
         <Suspense fallback={<CharactersSkeleton />}>
           {info?.characters && (
             <>
-              <h2 className='font-pro-medium text-lg font-semibold text-primary'>
-                Characters:{' '}
-              </h2>
+              <h2 className='font-pro-medium text-lg font-semibold text-primary'>Characters: </h2>
               <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
                 {info?.characters.map((character, index) => (
                   <Card
@@ -360,20 +306,14 @@ const page = async ({ params }) => {
                     <Image
                       unoptimized
                       src={character.image}
-                      alt={
-                        services === 'movies'
-                          ? character?.name
-                          : character?.name?.userPreferred
-                      }
+                      alt={services === 'movies' ? character?.name : character?.name?.userPreferred}
                       className='mx-auto h-40 w-40 rounded-full object-cover'
                       width={197}
                       height={296}
                     />
                     <CardHeader className='mt-4 space-y-0 p-0'>
                       <CardTitle className='line-clamp-1 px-2 text-center font-pro-bold text-lg font-bold text-primary'>
-                        {services === 'movies'
-                          ? character?.name
-                          : character?.name?.userPreferred}
+                        {services === 'movies' ? character?.name : character?.name?.userPreferred}
                       </CardTitle>
                     </CardHeader>
                     {character?.role && (
@@ -414,18 +354,13 @@ const page = async ({ params }) => {
         </Suspense>
         {chapters && chapters.length > 0 && (
           <>
-            <h2 className='font-pro-medium text-lg font-semibold text-primary'>
-              Chapters
-            </h2>
+            <h2 className='font-pro-medium text-lg font-semibold text-primary'>Chapters</h2>
             <ScrollArea>
               <div
                 className={`my-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ${chapters.length > 5 ? 'h-[75vh]' : null}`}
               >
                 {chapters.map((chapter, index) => (
-                  <Card
-                    key={chapter.id}
-                    className='sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border'
-                  >
+                  <Card key={chapter.id} className='sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border'>
                     <CardHeader>
                       <Link
                         href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}

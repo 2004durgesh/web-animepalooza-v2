@@ -3,8 +3,7 @@ import useDownloader from 'react-use-downloader';
 import React from 'react';
 
 const Download = () => {
-  const { size, elapsed, percentage, download, cancel, error, isInProgress } =
-    useDownloader();
+  const { size, elapsed, percentage, download, cancel, error, isInProgress } = useDownloader();
 
   const fileUrl = '/animepalooza.apk';
   const filename = 'animepalooza.apk';
@@ -12,9 +11,7 @@ const Download = () => {
   return (
     <div className='flex min-h-screen items-center justify-center bg-gray-100'>
       <div className='rounded-lg bg-white p-8 shadow-md'>
-        <p className='mb-4 text-lg'>
-          Download is {isInProgress ? 'in progress' : 'stopped'}
-        </p>
+        <p className='mb-4 text-lg'>Download is {isInProgress ? 'in progress' : 'stopped'}</p>
         <button
           onClick={() => download(fileUrl, filename)}
           className='mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'
@@ -49,11 +46,7 @@ const Download = () => {
           </div>
         </div>
         <p className='mt-4'>Elapsed time: {elapsed} seconds</p>
-        {error && (
-          <p className='mt-4 text-red-500'>
-            Possible error: {JSON.stringify(error)}
-          </p>
-        )}
+        {error && <p className='mt-4 text-red-500'>Possible error: {JSON.stringify(error)}</p>}
       </div>
     </div>
   );

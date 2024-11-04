@@ -16,26 +16,16 @@ import { encryptData } from './crypto';
 const EpisodeCard = ({ episodes = [], params, info, seasonNumber }) => {
   return (
     <section className='my-4'>
-      <h2 className='font-pro-medium text-lg font-semibold text-primary'>
-        Episodes
-      </h2>
+      <h2 className='font-pro-medium text-lg font-semibold text-primary'>Episodes</h2>
       <ScrollArea>
-        <div
-          className={`my-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
-        >
+        <div className={`my-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}>
           {episodes &&
             episodes?.map((episode, index) => {
               const queryParams = `title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episodeNumber=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}&seasonNumber=${encodeURIComponent(seasonNumber) || ''}`;
 
-              const encryptedParams = encryptData(
-                queryParams,
-                process.env.NEXT_PUBLIC_CRYPTO_KEY
-              );
+              const encryptedParams = encryptData(queryParams, process.env.NEXT_PUBLIC_CRYPTO_KEY);
               return (
-                <Card
-                  key={episode.id}
-                  className='sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border'
-                >
+                <Card key={episode.id} className='sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border'>
                   <CardHeader>
                     <Link
                       href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/${info?.mappings?.tmdb}?data=${encodeURIComponent(encryptedParams)}`}

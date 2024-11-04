@@ -3,12 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from '../components/ui/card';
+import { Card, CardContent, CardDescription, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from './ui/button';
 import { StarIcon, CardStackIcon } from '@radix-ui/react-icons';
@@ -129,9 +124,7 @@ const CardItem = ({ result, services, provider, params }) => {
                 unoptimized
                 src={result?.image}
                 alt={
-                  services === 'movies' ||
-                  provider === 'tmdb' ||
-                  services === 'favorites'
+                  services === 'movies' || provider === 'tmdb' || services === 'favorites'
                     ? result?.title
                     : `${result?.title?.userPreferred} or ${result?.title?.english}`
                 }
@@ -147,9 +140,7 @@ const CardItem = ({ result, services, provider, params }) => {
               transition={{ duration: 0.3 }}
             >
               <CardTitle className='line-clamp-1 w-full text-[15px] font-bold text-primary-foreground xl:text-base'>
-                {services === 'movies' ||
-                provider === 'tmdb' ||
-                services === 'favorites'
+                {services === 'movies' || provider === 'tmdb' || services === 'favorites'
                   ? result?.title
                   : (result?.title?.userPreferred ?? result?.title?.english)}
               </CardTitle>
@@ -165,15 +156,11 @@ const CardItem = ({ result, services, provider, params }) => {
                   </div>
                 )}
                 {/* {result?.type && <Badge variant="destructive" className='py-1 px-2'>{result?.type}</Badge>} */}
-                {(result?.totalEpisodes ||
-                  result?.episodeTitle ||
-                  result?.latestEpisode) && (
+                {(result?.totalEpisodes || result?.episodeTitle || result?.latestEpisode) && (
                   <div className='flex items-center'>
                     <CardStackIcon className='mr-1 h-4 w-4' />
                     <span>
-                      {result?.totalEpisodes ??
-                        result?.episodeTitle ??
-                        result?.latestEpisode}
+                      {result?.totalEpisodes ?? result?.episodeTitle ?? result?.latestEpisode}
                     </span>
                   </div>
                 )}

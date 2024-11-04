@@ -7,10 +7,7 @@ const loading = () => {
   return (
     <div className='grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3'>
       {arr.map((_, i) => (
-        <div
-          key={i}
-          className='flex flex-col items-center justify-center rounded shadow'
-        >
+        <div key={i} className='flex flex-col items-center justify-center rounded shadow'>
           <Skeleton className='h-96 w-full' />
         </div>
       ))}

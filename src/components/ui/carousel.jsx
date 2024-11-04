@@ -18,18 +18,7 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef(
-  (
-    {
-      orientation = 'horizontal',
-      opts,
-      setApi,
-      plugins,
-      className,
-      children,
-      ...props
-    },
-    ref
-  ) => {
+  ({ orientation = 'horizontal', opts, setApi, plugins, className, children, ...props }, ref) => {
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
@@ -98,8 +87,7 @@ const Carousel = React.forwardRef(
           carouselRef,
           api: api,
           opts,
-          orientation:
-            orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
+          orientation: orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
           scrollPrev,
           scrollNext,
           canScrollPrev,
@@ -129,11 +117,7 @@ const CarouselContent = React.forwardRef(({ className, ...props }, ref) => {
     <div ref={carouselRef} className='overflow-hidden'>
       <div
         ref={ref}
-        className={cn(
-          'flex',
-          orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
-          className
-        )}
+        className={cn('flex', orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col', className)}
         {...props}
       />
     </div>
@@ -216,10 +200,4 @@ const CarouselNext = React.forwardRef(
 );
 CarouselNext.displayName = 'CarouselNext';
 
-export {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-};
+export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };

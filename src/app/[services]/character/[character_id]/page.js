@@ -1,28 +1,18 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import fetchData from '@/components/Datafetcher';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Page = ({ params }) => {
   const searchParams = useSearchParams();
-
   const info_id = searchParams.get('info_id');
 
   const [voiceActor, setVoiceActor] = useState([]);
-
   const [character, setCharacter] = useState({});
 
   const fetchInfo = async () => {
@@ -30,25 +20,16 @@ const Page = ({ params }) => {
       provider: params.provider,
     });
 
-    const character = await fetchData(
-      'meta',
-      'anilist',
-      `character/${params.character_id}`
-    );
+    const characterData = await fetchData('meta', 'anilist', `character/${params.character_id}`);
 
-    info?.characters.map((item) => {
-      if (item.id == params.character_id) {
+    info?.characters.forEach((item) => {
+      if (item.id === params.character_id) {
         setVoiceActor(item.voiceActors);
-
-        console.log(item.voiceActors);
       }
     });
 
-    setCharacter(character);
-
-    console.log(voiceActor);
-
-    return character;
+    setCharacter(characterData);
+    return characterData;
   };
 
   useEffect(() => {
@@ -61,27 +42,25 @@ const Page = ({ params }) => {
         {character?.image && (
           <Image
             unoptimized
-            src={character?.image}
-            alt={character?.name?.userPreferred}
+            src={character.image}
+            alt={character.name?.userPreferred}
             width={197}
             height={296}
             className='h-72 w-full rounded-lg object-cover shadow-lg md:w-48'
             priority
           />
         )}
+
         <div className='w-full'>
           <h1 className='font-pro-bold text-2xl font-bold text-primary'>
             {character.name?.userPreferred} / {character.name?.native}
           </h1>
-          <p className='mt-2 font-pro-regular'>
-            {parse(String(character.description))}
-          </p>
+          <p className='mt-2 font-pro-regular'>{parse(String(character.description))}</p>
+
           <div className='grid grid-cols-2 gap-4'>
             {(character?.age || character?.gender) && (
               <div className='mt-4'>
-                <h2 className='font-pro-medium text-lg font-semibold text-primary'>
-                  Details:
-                </h2>
+                <h2 className='font-pro-medium text-lg font-semibold text-primary'>Details:</h2>
                 <p>Age: {character.age}</p>
                 <p>Gender: {character.gender}</p>
               </div>
@@ -91,14 +70,11 @@ const Page = ({ params }) => {
                 <h2 className='font-pro-medium text-lg font-semibold text-primary'>
                   Additional Info:
                 </h2>
-                {character?.bloodType && (
-                  <p>Blood Type: {character?.bloodType}</p>
-                )}
-                {character?.dateOfBirth?.day && (
+                {character.bloodType && <p>Blood Type: {character.bloodType}</p>}
+                {character.dateOfBirth?.day && (
                   <p>
-                    Date of Birth: {character?.dateOfBirth?.day}/
-                    {character?.dateOfBirth?.month}/
-                    {character?.dateOfBirth?.year}
+                    Date of Birth: {character.dateOfBirth.day}/{character.dateOfBirth.month}/
+                    {character.dateOfBirth.year}
                   </p>
                 )}
               </div>
@@ -106,11 +82,10 @@ const Page = ({ params }) => {
           </div>
         </div>
       </div>
+
       {voiceActor.length > 0 && (
         <div>
-          <h2 className='font-pro-medium text-lg font-semibold text-primary'>
-            Voice Actors:{' '}
-          </h2>
+          <h2 className='font-pro-medium text-lg font-semibold text-primary'>Voice Actors:</h2>
           <ScrollArea className='flex flex-nowrap overflow-x-auto whitespace-nowrap py-4'>
             {voiceActor.map((actor) => (
               <Card
@@ -131,9 +106,7 @@ const Page = ({ params }) => {
                     {actor.name.userPreferred}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className='text-center'>
-                  {actor.language}
-                </CardContent>
+                <CardContent className='text-center'>{actor.language}</CardContent>
               </Card>
             ))}
             <ScrollBar orientation='horizontal' />

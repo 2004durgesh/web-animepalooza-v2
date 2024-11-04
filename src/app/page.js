@@ -5,17 +5,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import fetchData from '@/components/Datafetcher';
 
 export default async function Home() {
-  const trendingAnime = await fetchData('meta', 'anilist', 'trending', {
-    page: 1,
-  });
-
-  const popularAnime = await fetchData('meta', 'anilist', 'popular', {
-    page: 1,
-  });
-
-  const recentAnime = await fetchData('meta', 'anilist', 'recent-episodes', {
-    page: 1,
-  });
+  const trendingAnime = await fetchData('meta', 'anilist', 'trending', { page: 1 });
+  const popularAnime = await fetchData('meta', 'anilist', 'popular', { page: 1 });
+  const recentAnime = await fetchData('meta', 'anilist', 'recent-episodes', { page: 1 });
 
   return (
     <>
@@ -26,6 +18,7 @@ export default async function Home() {
           movieSrc='/assets/images/movies-bg.png'
         />
       </div>
+
       <div className='my-4'>
         <Tabs defaultValue='trending-now'>
           <TabsList>
@@ -46,6 +39,7 @@ export default async function Home() {
               />
             </div>
           </TabsContent>
+
           <TabsContent value='popular'>
             <div className=''>
               <ContentList
@@ -58,6 +52,7 @@ export default async function Home() {
               />
             </div>
           </TabsContent>
+
           <TabsContent value='recent-added'>
             <div className=''>
               <ContentList

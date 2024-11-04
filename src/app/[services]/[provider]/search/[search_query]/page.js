@@ -4,9 +4,7 @@ import ContentList from '@/components/ContentList';
 
 const page = async ({ params }) => {
   let services =
-    params.services === 'anime' ||
-    params.services === 'manga' ||
-    params.provider === 'tmdb'
+    params.services === 'anime' || params.services === 'manga' || params.provider === 'tmdb'
       ? 'meta'
       : params.services;
 
@@ -19,11 +17,7 @@ const page = async ({ params }) => {
 
   // const animeAndMangaSearchResults
   // // const moviesSearchResults = fetchData(services, provider, '${params.search_query}');
-  const searchResults = await fetchData(
-    services,
-    provider,
-    `${params.search_query}`
-  );
+  const searchResults = await fetchData(services, provider, `${params.search_query}`);
 
   return (
     <Suspense fallback={<h1>Loading search results...</h1>}>

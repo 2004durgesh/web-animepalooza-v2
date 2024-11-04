@@ -8,123 +8,84 @@ import SearchBar from '@/components/SearchBar';
 import Loading from './loading';
 
 const Provider = async ({ params }) => {
-  console.log(params.provider);
-  // console.log(AllProvider.includes(params.provider[0]))
-  let services =
-    params.services === 'anime' ||
-    params.services === 'manga' ||
-    params.provider === 'tmdb'
+  if (!AllProvider.includes(params.provider)) {
+    return notFound();
+  }
+
+  const services =
+    params.services === 'anime' || params.services === 'manga' || params.provider === 'tmdb'
       ? 'meta'
       : params.services;
 
-  let provider =
+  const provider =
     params.services === 'anime'
       ? 'anilist'
       : params.services === 'manga'
         ? 'anilist-manga'
         : params.provider;
 
-  const trending = await fetchData(services, provider, 'trending', { page: 1 });
+  try {
+    const [trending, popular, recentEpisodes, recentMovies, recentShows] = await Promise.all([
+      fetchData(services, provider, 'trending', { page: 1 }),
+      fetchData(services, provider, 'popular', { page: 1 }),
+      fetchData(services, provider, 'recent-episodes', { page: 1 }),
+      fetchData(services, provider, 'recent-movies'),
+      fetchData(services, provider, 'recent-shows'),
+    ]);
 
-  const popular = await fetchData(services, provider, 'popular', { page: 1 });
+    const renderContentList = (headerText, data, otherParams) => (
+      <Suspense fallback={<Loading />}>
+        <ContentList
+          params={params}
+          headerText={headerText}
+          data={data}
+          services={services}
+          provider={provider}
+          otherParams={otherParams}
+        />
+      </Suspense>
+    );
 
-  const recentEpisodes = await fetchData(
-    services,
-    provider,
-    'recent-episodes',
-    { page: 1 }
-  );
-
-  const recentMovies = await fetchData(services, provider, 'recent-movies');
-
-  const recentShows = await fetchData(services, provider, 'recent-shows');
-
-  if (!AllProvider.includes(params.provider)) notFound();
-
-  return (
-    <>
-      {AllProvider.includes(params.provider) && (
-        <>
-          <SearchBar services={params.services} />
-          <div>
-            {ServiceProvider.map(
-              (i) =>
-                i.trending &&
-                params?.provider == i.name.toLowerCase() && (
-                  <Suspense key={i.service} fallback={<Loading />}>
-                    <ContentList
-                      params={params}
-                      headerText={`Trending ${params.services === 'anime' ? 'Anime' : params.services === 'manga' ? 'Manga' : 'Movies and TV-Shows'}`}
-                      data={trending}
-                      services={services}
-                      provider={provider}
-                      otherParams='trending'
-                    />
-                  </Suspense>
-                )
-            )}
-
-            {ServiceProvider.map(
-              (i) =>
-                i.popular &&
-                params?.provider == i.name.toLowerCase() && (
-                  <Suspense key={i.service} fallback={<Loading />}>
-                    <ContentList
-                      params={params}
-                      headerText={`Popular ${params.services === 'anime' ? 'Anime' : params.services === 'manga' ? 'Manga' : 'Movies and TV-Shows'}`}
-                      data={popular}
-                      services={services}
-                      provider={provider}
-                      otherParams='popular'
-                    />
-                  </Suspense>
-                )
-            )}
-
-            {ServiceProvider.map(
-              (i) =>
-                i.recent &&
-                params?.provider == i.name.toLowerCase() && (
-                  <Suspense key={i.service} fallback={<Loading />}>
-                    {services === 'meta' && (
-                      <ContentList
-                        params={params}
-                        headerText='Recent Anime Episodes'
-                        data={recentEpisodes}
-                        services={services}
-                        provider={provider}
-                        otherParams='recent-episodes'
-                      />
+    return (
+      <>
+        <SearchBar services={params.services} />
+        <div>
+          {ServiceProvider.map((service) => {
+            if (service.name.toLowerCase() === params.provider) {
+              return (
+                <React.Fragment key={service.service}>
+                  {service.trending &&
+                    renderContentList(
+                      `Trending ${params.services === 'anime' ? 'Anime' : params.services === 'manga' ? 'Manga' : 'Movies and TV-Shows'}`,
+                      trending,
+                      'trending'
                     )}
-                    {services === 'movies' && (
-                      <>
-                        <ContentList
-                          params={params}
-                          headerText='Recent Movies'
-                          data={recentMovies}
-                          services={services}
-                          provider={provider}
-                          otherParams='recent-movies'
-                        />
-
-                        <ContentList
-                          params={params}
-                          headerText='Recent TV-Shows'
-                          data={recentShows}
-                          services={services}
-                          provider={provider}
-                          otherParams='recent-shows'
-                        />
-                      </>
+                  {service.popular &&
+                    renderContentList(
+                      `Popular ${params.services === 'anime' ? 'Anime' : params.services === 'manga' ? 'Manga' : 'Movies and TV-Shows'}`,
+                      popular,
+                      'popular'
                     )}
-                  </Suspense>
-                )
-            )}
-          </div>
-        </>
-      )}
-    </>
-  );
+                  {service.recent &&
+                    services === 'meta' &&
+                    renderContentList('Recent Anime Episodes', recentEpisodes, 'recent-episodes')}
+                  {service.recent && services === 'movies' && (
+                    <>
+                      {renderContentList('Recent Movies', recentMovies, 'recent-movies')}
+                      {renderContentList('Recent TV-Shows', recentShows, 'recent-shows')}
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            }
+          })}
+        </div>
+      </>
+    );
+  } catch (error) {
+    console.error('Data fetching error:', error);
+    return <p>Failed to load content. Please try again later.</p>;
+  }
 };
 
 export default Provider;

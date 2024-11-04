@@ -2,20 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { HeartFilledIcon, HeartIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FavoriteButton = ({ item }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const storedFavorites = localStorage.getItem('favorites');
-  const [favorites, setFavorites] = useState(
-    storedFavorites ? JSON.parse(storedFavorites) : []
-  );
+  const [favorites, setFavorites] = useState(storedFavorites ? JSON.parse(storedFavorites) : []);
 
   useEffect(() => {
     setIsFavorite(favorites.some((favorite) => favorite.id === item.id));
@@ -23,9 +16,7 @@ const FavoriteButton = ({ item }) => {
 
   const addToFavoritesHandler = () => {
     if (isFavorite) {
-      const newFavorites = favorites.filter(
-        (favorite) => favorite.id !== item.id
-      );
+      const newFavorites = favorites.filter((favorite) => favorite.id !== item.id);
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
       setFavorites(newFavorites);
     } else {
@@ -47,9 +38,7 @@ const FavoriteButton = ({ item }) => {
             size='icon'
             className='relative'
             onClick={addToFavoritesHandler}
-            aria-label={
-              isFavorite ? 'Remove from favorites' : 'Add to favorites'
-            }
+            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >
             <motion.div
               initial={false}
