@@ -11,7 +11,9 @@ const page = async ({ params }) => {
 
   const animeEpisodeLinks =
     params.services === 'anime' &&
-    (await fetchData(services, provider, `watch/${params.episode_id[0]}`));
+    (await fetchData(services, provider, `watch/${params.episode_id[0]}`, {
+      provider: params.provider,
+    }));
 
   const moviesEpisodeLinks =
     params.services === 'movies' && params.provider !== 'tmdb'
@@ -86,7 +88,7 @@ const page = async ({ params }) => {
   const subtitles = episodeLinks.subtitles ? episodeLinks.subtitles : null;
   const downloadLink = episodeLinks.download ? episodeLinks.download : null;
   const headers = episodeLinks.headers ? episodeLinks.headers : null;
-
+  // const proxiedLink=`https://m3u8-url-proxy.vercel.app/m3u8-proxy?url=${encodeURIComponent(sourceLink)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
   return (
     <Suspense fallback={<VideoPlayerSkeleton />}>
       <main className='m-4 -mt-12 flex flex-col justify-center gap-4 md:flex-row md:justify-between'>

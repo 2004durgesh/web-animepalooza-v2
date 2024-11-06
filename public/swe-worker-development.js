@@ -9,7 +9,6 @@
 /******/ (function () {
   // webpackBootstrap
   /******/ 'use strict';
-
   /******/ var __webpack_modules__ = {
     /***/ './node_modules/@ducanh2912/next-pwa/dist/sw-entry-worker.js':
       /*!*******************************************************************!*\
@@ -31,11 +30,9 @@
 
     /******/
   };
-
   /************************************************************************/
   /******/ // The require scope
   /******/ var __webpack_require__ = {};
-
   /******/
   /************************************************************************/
   /******/ /* webpack/runtime/make namespace object */
@@ -43,23 +40,18 @@
     /******/ // define __esModule on exports
     /******/ __webpack_require__.r = function (exports) {
       /******/ if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-        /******/ Object.defineProperty(exports, Symbol.toStringTag, {
-          value: 'Module',
-        });
+        /******/ Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
         /******/
       }
-
       /******/ Object.defineProperty(exports, '__esModule', { value: true });
       /******/
     };
     /******/
   })();
-
   /******/
   /******/ /* webpack/runtime/trusted types policy */
   /******/ !(function () {
     /******/ var policy;
-
     /******/ __webpack_require__.tt = function () {
       /******/ // Create Trusted Type policy if Trusted Types are available and the policy doesn't exist yet.
       /******/ if (policy === undefined) {
@@ -69,20 +61,17 @@
           },
           /******/
         };
-
         /******/ if (typeof trustedTypes !== 'undefined' && trustedTypes.createPolicy) {
           /******/ policy = trustedTypes.createPolicy('nextjs#bundler', policy);
           /******/
         }
         /******/
       }
-
       /******/ return policy;
       /******/
     };
     /******/
   })();
-
   /******/
   /******/ /* webpack/runtime/trusted types script */
   /******/ !(function () {
@@ -91,22 +80,18 @@
     };
     /******/
   })();
-
   /******/
   /******/ /* webpack/runtime/react refresh */
   /******/ !(function () {
     /******/ if (__webpack_require__.i) {
       /******/ __webpack_require__.i.push(function (options) {
         /******/ var originalFactory = options.factory;
-
         /******/ options.factory = function (moduleObject, moduleExports, webpackRequire) {
           /******/ var hasRefresh =
             typeof self !== 'undefined' && !!self.$RefreshInterceptModuleExecution$;
-
           /******/ var cleanup = hasRefresh
             ? self.$RefreshInterceptModuleExecution$(moduleObject.id)
             : function () {};
-
           /******/ try {
             /******/ originalFactory.call(this, moduleObject, moduleExports, webpackRequire);
             /******/
@@ -122,7 +107,6 @@
     }
     /******/
   })();
-
   /******/
   /******/ /* webpack/runtime/compat */
   /******/
@@ -130,7 +114,6 @@
   /******/ // noop fns to prevent runtime errors during initialization
   /******/ if (typeof self !== 'undefined') {
     /******/ self.$RefreshReg$ = function () {};
-
     /******/ self.$RefreshSig$ = function () {
       /******/ return function (type) {
         /******/ return type;
@@ -140,7 +123,6 @@
     };
     /******/
   }
-
   /******/
   /************************************************************************/
   /******/
@@ -148,7 +130,6 @@
   /******/ // Load entry module and return exports
   /******/ // This entry module can't be inlined because the eval-source-map devtool is used.
   /******/ var __webpack_exports__ = {};
-
   /******/ __webpack_modules__['./node_modules/@ducanh2912/next-pwa/dist/sw-entry-worker.js'](
     0,
     __webpack_exports__,

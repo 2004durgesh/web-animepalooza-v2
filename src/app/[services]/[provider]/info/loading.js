@@ -8,20 +8,22 @@ export function InfoSkeleton() {
         <Skeleton className='h-full w-full' />
         <div className='absolute inset-0 bg-gradient-to-t from-black from-10% to-transparent' />
       </div>
-      <div className='-mt-72 flex w-full flex-col items-center justify-center gap-6 sm:-mt-16'>
+      <div className='-mt-80 flex w-full flex-col items-center justify-center gap-6'>
         <div className='flex w-full flex-col items-center gap-5 px-3 py-10 pt-12 md:flex-row md:items-end xl:px-14'>
           <Skeleton className='h-[250px] w-[180px] shrink-0 rounded' />
           <div className='z-10 flex w-full max-w-2xl flex-col gap-4'>
-            <Skeleton className='h-8 w-3/4 sm:mx-auto' />
-            <div className='hidden flex-wrap gap-2 sm:flex'>
-              <Skeleton className='h-6 w-20' />
-              <Skeleton className='h-6 w-20' />
-              <Skeleton className='h-6 w-20' />
-            </div>
-            <div className='hidden flex-wrap gap-2 sm:flex'>
-              <Skeleton className='h-6 w-24' />
-              <Skeleton className='h-6 w-24' />
-              <Skeleton className='h-6 w-24' />
+            <Skeleton className='mx-auto h-8 w-3/4 md:mx-0 lg:mx-0 xl:mx-0' />
+            <div className='mx-auto md:mx-0'>
+              <div className='my-2 hidden flex-wrap gap-2 sm:flex'>
+                <Skeleton className='h-6 w-20' />
+                <Skeleton className='h-6 w-20' />
+                <Skeleton className='h-6 w-20' />
+              </div>
+              <div className='my-2 hidden flex-wrap gap-2 sm:flex'>
+                <Skeleton className='h-6 w-24' />
+                <Skeleton className='h-6 w-24' />
+                <Skeleton className='h-6 w-24' />
+              </div>
             </div>
           </div>
         </div>

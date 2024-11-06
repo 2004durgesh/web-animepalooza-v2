@@ -49,7 +49,7 @@ const EpisodeCard = ({ episodes = [], params, info, seasonNumber }) => {
                           <svg
                             stroke='currentColor'
                             fill='none'
-                            stroke-width='1.5'
+                            strokeWidth='1.5'
                             viewBox='0 0 24 24'
                             aria-hidden='true'
                             color='white'
