@@ -54,26 +54,26 @@ const page = async ({ params }) => {
   let animeInfo =
     params.services === 'anime'
       ? await fetchData(services, provider, `data/${params.info_id.join('/')}`, {
-          provider: params.provider,
-        })
+        provider: params.provider,
+      })
       : null;
 
   let mangaInfo =
     params.services === 'manga'
       ? await fetchData(services, provider, `info/${params.info_id.join('/')}`, {
-          provider: params.provider,
-        })
+        provider: params.provider,
+      })
       : null;
 
   let movieInfo =
     params.services === 'movies'
       ? provider !== 'tmdb'
         ? await fetchData(services, provider, `info`, {
-            id: params.info_id.join('/'),
-          })
+          id: params.info_id.join('/'),
+        })
         : await fetchData(services, provider, `info/${params.info_id[0]}`, {
-            type: params.info_id[1],
-          })
+          type: params.info_id[1],
+        })
       : null;
 
   const info =
@@ -82,8 +82,8 @@ const page = async ({ params }) => {
   const episodes =
     params.services === 'anime'
       ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, {
-          provider: params.provider,
-        })
+        provider: params.provider,
+      })
       : params.provider === 'tmdb'
         ? info?.seasons
         : movieInfo?.episodes;
@@ -91,17 +91,17 @@ const page = async ({ params }) => {
   const moviesEpisode =
     provider === 'tmdb' && params.info_id[1] === 'movie'
       ? [
-          {
-            id: info?.episodeId || 'N/A',
-            title: info?.title || 'No Title',
-            description: info?.description || 'No Description',
-            releaseDate: info?.releaseDate || 'No Release Date',
-            img: {
-              mobile: info?.cover || 'default-mobile-cover.jpg',
-              hd: info?.cover || 'default-hd-cover.jpg',
-            },
+        {
+          id: info?.episodeId || 'N/A',
+          title: info?.title || 'No Title',
+          description: info?.description || 'No Description',
+          releaseDate: info?.releaseDate || 'No Release Date',
+          img: {
+            mobile: info?.cover || 'default-mobile-cover.jpg',
+            hd: info?.cover || 'default-hd-cover.jpg',
           },
-        ]
+        },
+      ]
       : null;
 
   const chapters = mangaInfo?.chapters;
@@ -225,26 +225,28 @@ const page = async ({ params }) => {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className='hidden flex-wrap gap-4 sm:flex'>
-                  {info?.totalEpisodes && (
-                    <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>
-                  )}
-                  {info?.type && <Badge className='text-md font-bold'>{info?.type}</Badge>}
-                  {info?.status && (
-                    <IconText Icon={info?.status === 'Completed' ? <CheckIcon /> : <ClockIcon />}>
-                      {info?.status}
-                    </IconText>
-                  )}
-                  {info?.rating && (
-                    <IconText
-                      Icon={<StarIcon />}
-                    >{`${params.services === 'movies' ? Number(info?.rating).toFixed(1) : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>
-                  )}
-                  {info?.status !== 'Completed' && info?.nextAiringEpisode && (
-                    <IconText Icon={<CalendarIcon />}>
-                      Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}
-                    </IconText>
-                  )}
+                <div className='flex gap-4'>
+                  <div className='hidden flex-wrap gap-4 sm:flex'>
+                    {info?.totalEpisodes && (
+                      <IconText Icon={<CardStackIcon />}>{info?.totalEpisodes}</IconText>
+                    )}
+                    {info?.type && <Badge className='text-md font-bold'>{info?.type}</Badge>}
+                    {info?.status && (
+                      <IconText Icon={info?.status === 'Completed' ? <CheckIcon /> : <ClockIcon />}>
+                        {info?.status}
+                      </IconText>
+                    )}
+                    {info?.rating && (
+                      <IconText
+                        Icon={<StarIcon />}
+                      >{`${params.services === 'movies' ? Number(info?.rating).toFixed(1) : (Number(info?.rating) / 10).toFixed(1)}`}</IconText>
+                    )}
+                    {info?.status !== 'Completed' && info?.nextAiringEpisode && (
+                      <IconText Icon={<CalendarIcon />}>
+                        Ep {info?.nextAiringEpisode?.episode}, {airingDate.toDateString()}
+                      </IconText>
+                    )}
+                  </div>
                   <FavoriteButton item={favoriteItem} />
                 </div>
               </div>
