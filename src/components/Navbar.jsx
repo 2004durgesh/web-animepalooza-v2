@@ -29,7 +29,7 @@ const Navbar = () => {
     <>
       {/* Navigation bar */}
       {showNavbarRoutes.includes(pathname) ? (
-        <nav className='fixed top-0 z-20 flex w-4/5 items-center bg-background/80 p-2 backdrop-blur-sm'>
+        <nav className='fixed top-0 z-20 flex w-4/5 h-16 items-center bg-background/80 p-2 backdrop-blur-sm'>
           {/* Background overlay for mobile menu */}
 
           {pathname === '/' ? (
@@ -63,7 +63,7 @@ const Navbar = () => {
             {nav ? (
               <Cross1Icon
                 color='white'
-                className='relative mt-4 h-8 w-8'
+                className='relative mt-4 h-8 w-8 right-8'
                 onClick={() => setNav((prevValue) => !prevValue)}
               />
             ) : (
