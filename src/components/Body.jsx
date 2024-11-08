@@ -13,12 +13,7 @@ const Body = ({ children }) => {
         className={`${!(pathname.includes('/watch/') || pathname.includes('/info/')) ? 'mx-auto max-w-[80%]' : ''} overflow-x-hidden`}
       >
         {children}
-        <ProgressBar
-          height="4px"
-          color='#DB202C'
-          options={{ showSpinner: false }}
-          shallowRouting
-        />
+        <ProgressBar height='4px' color='#DB202C' options={{ showSpinner: false }} shallowRouting />
       </body>
     </html>
   );

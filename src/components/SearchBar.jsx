@@ -31,11 +31,7 @@ const SearchBar = ({ placeholder, service }) => {
             setSearchQuery(e.target.value);
           }}
         />
-        <Button
-          type='submit'
-          variant='ghost'
-          className='cursor-pointer border-none bg-transparent'
-        >
+        <Button type='submit' variant='ghost' className='cursor-pointer border-none bg-transparent'>
           <MagnifyingGlassIcon className='h-8 w-8' />
         </Button>
       </div>

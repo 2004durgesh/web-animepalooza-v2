@@ -3,11 +3,11 @@
   "plugins": ["@stylistic/eslint-plugin"],
   "overrides": [
     {
-      "files": ["./src/component/ui/**/*"],
+      "files": ["./src/component/ui/**/*", "./public/**/*"],
       "rules": {
         "padding-line-between-statements": "off"
       }
     }
   ],
-  "ignorePatterns": ["./src/component/ui/**/*"]
+  "ignorePatterns": ["./src/component/ui/**/*", "./public/**/*"]
 }
