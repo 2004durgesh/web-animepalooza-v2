@@ -57,7 +57,7 @@ const ContentList = ({
       <InfiniteScroll
         dataLength={items?.length}
         next={fetchMoreData}
-        hasMore={hasNextPage}
+        hasMore={false || hasNextPage}
         style={
           displayStyle === 'grid'
             ? {
@@ -100,6 +100,7 @@ const CardItem = ({ result, services, provider, params }) => {
     <div className='mx-1'>
       <Link
         asChild
+        prefetch
         href={
           provider === 'tmdb'
             ? `/${params?.services}/${params?.provider}/info/${result?.id}/${result?.type?.split(' ')[0].toLowerCase()}`

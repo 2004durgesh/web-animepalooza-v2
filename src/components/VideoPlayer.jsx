@@ -165,8 +165,8 @@ const VideoPlayer = ({
               }
             }
             // download={{url:downloadLink}}
-            thumbnails={params.provider === 'dramacool' && subtitles && subtitles[0].url}
-            // thumbnails="https://goodproxy.goodproxy.workers.dev/fetch?url=https://cache.anicache.net/images/7b08583b6db706b46af9b6c204d17b09/1.vtt"
+            // thumbnails={params.provider === 'dramacool' && subtitles && subtitles[0].url}
+            thumbnails='https://api.allorigins.win/raw?url=https://voe.sx/engine/storyboard/zm0wvpglgaww?t=1'
           />
         </MediaPlayer>
         {seasonEpisodes?.map((episode, index) =>

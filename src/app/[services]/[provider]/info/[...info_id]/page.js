@@ -54,26 +54,26 @@ const page = async ({ params }) => {
   let animeInfo =
     params.services === 'anime'
       ? await fetchData(services, provider, `data/${params.info_id.join('/')}`, {
-        provider: params.provider,
-      })
+          provider: params.provider,
+        })
       : null;
 
   let mangaInfo =
     params.services === 'manga'
       ? await fetchData(services, provider, `info/${params.info_id.join('/')}`, {
-        provider: params.provider,
-      })
+          provider: params.provider,
+        })
       : null;
 
   let movieInfo =
     params.services === 'movies'
       ? provider !== 'tmdb'
         ? await fetchData(services, provider, `info`, {
-          id: params.info_id.join('/'),
-        })
+            id: params.info_id.join('/'),
+          })
         : await fetchData(services, provider, `info/${params.info_id[0]}`, {
-          type: params.info_id[1],
-        })
+            type: params.info_id[1],
+          })
       : null;
 
   const info =
@@ -82,8 +82,8 @@ const page = async ({ params }) => {
   const episodes =
     params.services === 'anime'
       ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, {
-        provider: params.provider,
-      })
+          provider: params.provider,
+        })
       : params.provider === 'tmdb'
         ? info?.seasons
         : movieInfo?.episodes;
@@ -91,17 +91,17 @@ const page = async ({ params }) => {
   const moviesEpisode =
     provider === 'tmdb' && params.info_id[1] === 'movie'
       ? [
-        {
-          id: info?.episodeId || 'N/A',
-          title: info?.title || 'No Title',
-          description: info?.description || 'No Description',
-          releaseDate: info?.releaseDate || 'No Release Date',
-          img: {
-            mobile: info?.cover || 'default-mobile-cover.jpg',
-            hd: info?.cover || 'default-hd-cover.jpg',
+          {
+            id: info?.episodeId || 'N/A',
+            title: info?.title || 'No Title',
+            description: info?.description || 'No Description',
+            releaseDate: info?.releaseDate || 'No Release Date',
+            img: {
+              mobile: info?.cover || 'default-mobile-cover.jpg',
+              hd: info?.cover || 'default-hd-cover.jpg',
+            },
           },
-        },
-      ]
+        ]
       : null;
 
   const chapters = mangaInfo?.chapters;
@@ -325,6 +325,7 @@ const page = async ({ params }) => {
                             {character.role}
                           </Badge>
                           <Link
+                            prefetch
                             href={`/${params.services}/character/${character.id}?info_id=${params.info_id}`}
                             className='transition-all duration-300 hover:underline active:animate-ping'
                           >
@@ -365,6 +366,7 @@ const page = async ({ params }) => {
                   <Card key={chapter.id} className='sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border'>
                     <CardHeader>
                       <Link
+                        prefetch
                         href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
                         className='overflow-hidden'
                       >
@@ -405,6 +407,7 @@ const page = async ({ params }) => {
                         </CardDescription>
                       )}
                       <Link
+                        prefetch
                         href={`/${params?.services}/${params?.provider}/read/${chapter?.id}?title=${encodeURIComponent(chapter?.title ?? info?.title?.english ?? info?.title)}&chapter-number=${encodeURIComponent(chapter?.chapterNumber || '')}&volume-number=${encodeURIComponent(chapter?.volumeNumber || '')}`}
                         className='text-white transition-all duration-300 hover:underline active:animate-ping'
                       >

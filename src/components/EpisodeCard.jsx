@@ -28,6 +28,7 @@ const EpisodeCard = ({ episodes = [], params, info, seasonNumber }) => {
                 <Card key={episode.id} className='sm:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border'>
                   <CardHeader>
                     <Link
+                      prefetch
                       href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/${info?.mappings?.tmdb}?data=${encodeURIComponent(encryptedParams)}`}
                       className='overflow-hidden'
                     >
@@ -106,6 +107,7 @@ const EpisodeCard = ({ episodes = [], params, info, seasonNumber }) => {
                       </CardDescription>
                     )}
                     <Link
+                      prefetch
                       href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/${info?.mappings?.tmdb}?data=${encodeURIComponent(encryptedParams)}`}
                       className='text-white transition-all duration-300 hover:underline active:animate-ping'
                     >

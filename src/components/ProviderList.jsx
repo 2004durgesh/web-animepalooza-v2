@@ -9,7 +9,7 @@ const ProviderList = ({ name, description, imgSrc, slug }) => {
   const href = `${pathname}${slug}`;
 
   return (
-    <Link href={href} className='p-4'>
+    <Link href={href} className='p-4' prefetch>
       <motion.div
         className='mx-auto gap-4 border-b px-4 py-8 duration-200 hover:scale-105 active:scale-90 sm:px-6 lg:px-8'
         whileHover={{ scale: 1.05 }}

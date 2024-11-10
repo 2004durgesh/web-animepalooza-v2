@@ -35,6 +35,7 @@ const EpisodeListSidebar = ({
               return (
                 <Link
                   key={episode.id}
+                  prefetch
                   href={`/${params?.services}/${params?.provider}/watch/${episode?.id}/${info.id}/${info?.mappings?.tmdb}?data=${encodeURIComponent(encryptedParams)}`}
                   className='overflow-hidden'
                 >
