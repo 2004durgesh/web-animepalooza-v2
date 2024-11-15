@@ -28,49 +28,52 @@ const WatchPage = async ({ params, searchParams }) => {
           id: `${params.episode_id[1]}/${params.episode_id[2]}`,
         });
 
-  let animeInfo =
-    params.services === 'anime'
-      ? await fetchData(services, provider, `data/${params.episode_id[1]}`, {
-          provider: params.provider,
+  // Initiate all requests in parallel
+  const [animeInfo, movieInfo] = await Promise.all([
+    params.services === "anime"
+      ? fetchData(services, provider, `data/${params.episode_id[1]}`, {
+        provider: params.provider,
+      })
+      : null,
+    params.services === "movies"
+      ? provider !== "tmdb"
+        ? fetchData(services, provider, `info`, {
+          id: `${params.episode_id.slice(1, 3).join('/')}`,
         })
-      : null;
-
-  let movieInfo =
-    params.services === 'movies'
-      ? provider !== 'tmdb'
-        ? await fetchData(services, provider, `info`, {
-            id: `${params.episode_id.slice(1, 3).join('/')}`,
-          })
-        : await fetchData(services, provider, `info/${params.episode_id[3]}`, {
-            type: params.episode_id[1],
-          })
-      : null;
-
-  const info = params.services === 'anime' ? animeInfo : movieInfo;
-
-  const episodes =
-    params.services === 'anime'
-      ? await fetchData(services, provider, `episodes/${params.episode_id[1]}`, {
-          provider: params.provider,
+        : fetchData(services, provider, `info/${params.episode_id[3]}`, {
+          type: params.episode_id[1],
         })
-      : params.provider === 'tmdb'
-        ? info?.seasons?.map((season, index) => season?.episodes ?? info?.seasons)
-        : movieInfo?.episodes;
+      : null,
+  ]);
+
+  const info =
+    params.services === "anime"
+      ? animeInfo
+        : movieInfo;
+
+        const episodes =
+        params.services === 'anime'
+          ? await fetchData(services, provider, `episodes/${params.episode_id[1]}`, {
+              provider: params.provider,
+            })
+          : params.provider === 'tmdb'
+            ? info?.seasons?.map((season, index) => season?.episodes ?? info?.seasons)
+            : movieInfo?.episodes;
 
   const moviesEpisode =
-    provider === 'tmdb' && params.episode_id[1] === 'movie'
+    provider === "tmdb" && params.info_id[1] === "movie"
       ? [
-          {
-            id: info?.episodeId || 'N/A',
-            title: info?.title || 'No Title',
-            description: info?.description || 'No Description',
-            releaseDate: info?.releaseDate || 'No Release Date',
-            img: {
-              mobile: info?.cover || 'default-mobile-cover.jpg',
-              hd: info?.cover || 'default-hd-cover.jpg',
-            },
+        {
+          id: info?.episodeId || "N/A",
+          title: info?.title || "No Title",
+          description: info?.description || "No Description",
+          releaseDate: info?.releaseDate || "No Release Date",
+          img: {
+            mobile: info?.cover || "default-mobile-cover.jpg",
+            hd: info?.cover || "default-hd-cover.jpg",
           },
-        ]
+        },
+      ]
       : null;
 
   const episodeLinks = params.services === 'anime' ? animeEpisodeLinks : moviesEpisodeLinks;

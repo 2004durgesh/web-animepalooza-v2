@@ -51,60 +51,64 @@ const InfoPage = async ({ params }) => {
         ? 'anilist-manga'
         : params.provider;
 
-  let animeInfo =
-    params.services === 'anime'
-      ? await fetchData(services, provider, `data/${params.info_id.join('/')}`, {
-          provider: params.provider,
+  // Initiate all requests in parallel
+  const [animeInfo, mangaInfo, movieInfo] = await Promise.all([
+    params.services === "anime"
+      ? fetchData(services, provider, `data/${params.info_id.join("/")}`, {
+        provider: params.provider,
+      })
+      : null,
+    params.services === "manga"
+      ? fetchData(services, provider, `info/${params.info_id.join("/")}`, {
+        provider: params.provider,
+      })
+      : null,
+    params.services === "movies"
+      ? provider !== "tmdb"
+        ? fetchData(services, provider, `info`, {
+          id: params.info_id.join("/"),
         })
-      : null;
-
-  let mangaInfo =
-    params.services === 'manga'
-      ? await fetchData(services, provider, `info/${params.info_id.join('/')}`, {
-          provider: params.provider,
+        : fetchData(services, provider, `info/${params.info_id[0]}`, {
+          type: params.info_id[1],
         })
-      : null;
-
-  let movieInfo =
-    params.services === 'movies'
-      ? provider !== 'tmdb'
-        ? await fetchData(services, provider, `info`, {
-            id: params.info_id.join('/'),
-          })
-        : await fetchData(services, provider, `info/${params.info_id[0]}`, {
-            type: params.info_id[1],
-          })
-      : null;
+      : null,
+  ]);
 
   const info =
-    params.services === 'anime' ? animeInfo : params.services === 'manga' ? mangaInfo : movieInfo;
+    params.services === "anime"
+      ? animeInfo
+      : params.services === "manga"
+        ? mangaInfo
+        : movieInfo;
 
-  const episodes =
-    params.services === 'anime'
-      ? await fetchData(services, provider, `episodes/${params.info_id[0]}`, {
-          provider: params.provider,
-        })
-      : params.provider === 'tmdb'
+  // Fetch episodes or chapters in parallel if needed
+  const [episodes, chapters] = await Promise.all([
+    params.services === "anime"
+      ? fetchData(services, provider, `episodes/${params.info_id[0]}`, {
+        provider: params.provider,
+      })
+      : params.provider === "tmdb"
         ? info?.seasons
-        : movieInfo?.episodes;
+        : movieInfo?.episodes,
+    params.services === "manga" ? mangaInfo?.chapters : null,
+  ]);
 
   const moviesEpisode =
-    provider === 'tmdb' && params.info_id[1] === 'movie'
+    provider === "tmdb" && params.info_id[1] === "movie"
       ? [
-          {
-            id: info?.episodeId || 'N/A',
-            title: info?.title || 'No Title',
-            description: info?.description || 'No Description',
-            releaseDate: info?.releaseDate || 'No Release Date',
-            img: {
-              mobile: info?.cover || 'default-mobile-cover.jpg',
-              hd: info?.cover || 'default-hd-cover.jpg',
-            },
+        {
+          id: info?.episodeId || "N/A",
+          title: info?.title || "No Title",
+          description: info?.description || "No Description",
+          releaseDate: info?.releaseDate || "No Release Date",
+          img: {
+            mobile: info?.cover || "default-mobile-cover.jpg",
+            hd: info?.cover || "default-hd-cover.jpg",
           },
-        ]
+        },
+      ]
       : null;
 
-  const chapters = mangaInfo?.chapters;
 
   // if(!info||!chapters) return notFound()
   const favoriteItem = {
