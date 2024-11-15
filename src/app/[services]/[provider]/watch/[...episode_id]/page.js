@@ -1,18 +1,20 @@
 import React, { Suspense } from 'react';
-import fetchData from '@/components/Datafetcher';
+import fetchData from '@/lib/Datafetcher';
 import VideoPlayer from '@/components/VideoPlayer';
+import ServerSelector from '@/components/ServerSelector';
 import { VideoPlayerSkeleton } from '../loading';
 
-const page = async ({ params }) => {
+const WatchPage = async ({ params, searchParams }) => {
   let services =
     params.services === 'anime' || params.provider === 'tmdb' ? 'meta' : params.services;
   let provider =
     params.services === 'anime' || params.services === 'manga' ? 'anilist' : params.provider;
-
+  const server = searchParams.server || 'asianload';
   const animeEpisodeLinks =
     params.services === 'anime' &&
     (await fetchData(services, provider, `watch/${params.episode_id[0]}`, {
       provider: params.provider,
+      server: server,
     }));
 
   const moviesEpisodeLinks =
@@ -20,6 +22,7 @@ const page = async ({ params }) => {
       ? await fetchData(services, provider, `watch`, {
           episodeId: params.episode_id[0],
           mediaId: `${params.episode_id[1]}/${params.episode_id[2]}`,
+          server: server,
         })
       : await fetchData(services, provider, `watch/${params.episode_id[0]}`, {
           id: `${params.episode_id[1]}/${params.episode_id[2]}`,
@@ -102,10 +105,11 @@ const page = async ({ params }) => {
           currentPlayingEpisodeId={params.episode_id[0]}
           episodes={episodes || moviesEpisode}
           info={info}
+          server={server}
         />
       </main>
     </Suspense>
   );
 };
 
-export default page;
+export default WatchPage;

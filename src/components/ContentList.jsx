@@ -8,7 +8,7 @@ import { Badge } from '../components/ui/badge';
 import { Button } from './ui/button';
 import { StarIcon, CardStackIcon } from '@radix-ui/react-icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import fetchData from '../components/Datafetcher';
+import fetchData from '../lib/Datafetcher';
 
 export function MiniDescription({ icon, text }) {
   return (
@@ -55,7 +55,7 @@ const ContentList = ({
         {headerText}
       </h1>
       <InfiniteScroll
-        dataLength={items?.length}
+        dataLength={items?.length || 0}
         next={fetchMoreData}
         hasMore={false || hasNextPage}
         style={

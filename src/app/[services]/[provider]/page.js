@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import AllProvider from '@/constants/AllProvider.json';
 import ServiceProvider from '@/constants/ServiceProvider.json';
 import ContentList from '@/components/ContentList';
-import fetchData from '@/components/Datafetcher';
+import fetchData from '@/lib/Datafetcher';
 import SearchBar from '@/components/SearchBar';
 import Loading from './loading';
 

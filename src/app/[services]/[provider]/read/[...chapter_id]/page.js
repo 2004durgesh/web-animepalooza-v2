@@ -1,9 +1,9 @@
-import fetchData from '@/components/Datafetcher';
+import fetchData from '@/lib/Datafetcher';
 import Image from 'next/image';
 import React, { Suspense } from 'react';
 import Loading from '../loading';
 
-const page = async ({ params }) => {
+const ReadPage = async ({ params }) => {
   const chapterPages = await fetchData('meta', 'anilist-manga', `read`, {
     chapterId: params.chapter_id,
     provider: params.provider,
@@ -35,4 +35,4 @@ const page = async ({ params }) => {
   );
 };
 
-export default page;
+export default ReadPage;

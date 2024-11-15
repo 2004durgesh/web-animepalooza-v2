@@ -1,6 +1,6 @@
 // "use client"
 import React, { Suspense } from 'react';
-import fetchData from '@/components/Datafetcher';
+import fetchData from '@/lib/Datafetcher';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import { InfoSkeleton, CharactersSkeleton, EpisodesSkeleton } from '../loading';
@@ -38,7 +38,7 @@ import TMDBInfo from '@/components/TMDBInfo';
 import EpisodeCard from '@/components/EpisodeCard';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-const page = async ({ params }) => {
+const InfoPage = async ({ params }) => {
   let services =
     params.services === 'anime' || params.services === 'manga' || params.provider === 'tmdb'
       ? 'meta'
@@ -425,4 +425,4 @@ const page = async ({ params }) => {
   );
 };
 
-export default page;
+export default InfoPage;

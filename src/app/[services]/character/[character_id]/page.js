@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import fetchData from '@/components/Datafetcher';
+import fetchData from '@/lib/Datafetcher';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const Page = ({ params }) => {
+const CharacterPage = ({ params }) => {
   const searchParams = useSearchParams();
   const info_id = searchParams.get('info_id');
 
@@ -118,4 +118,4 @@ const Page = ({ params }) => {
   );
 };
 
-export default Page;
+export default CharacterPage;

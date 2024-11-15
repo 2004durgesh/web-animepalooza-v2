@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
@@ -31,6 +31,7 @@ import Link from 'next/link';
 import EpisodeListSidebar from './EpisodeListSidebar';
 import { decryptData } from './crypto';
 import { parseQueryString } from '@/lib/utils';
+import ServerSelector from './ServerSelector';
 
 const VideoPlayer = ({
   params,
@@ -40,9 +41,12 @@ const VideoPlayer = ({
   currentPlayingEpisodeId,
   episodes,
   info,
+  server,
 }) => {
   const searchParams = useSearchParams();
   const encryptedData = searchParams.get('data');
+  const currentServer = searchParams.get('server') || server;
+  const [key, setKey] = useState(0);
 
   const decryptedData = decryptData(
     decodeURIComponent(encryptedData),
@@ -52,7 +56,8 @@ const VideoPlayer = ({
   const title = queryParams.title;
   const episodeNumber = queryParams.episodeNumber;
   const seasonNumber = queryParams.seasonNumber;
-  const thumbnail = queryParams.thumbnail;
+  const poster = queryParams.poster;
+
   const ref = useRef(null);
   const { controlsVisible, mediaWidth, paused, fullscreen } = useStore(MediaPlayerInstance, ref);
   const remote = useMediaRemote();
@@ -65,6 +70,9 @@ const VideoPlayer = ({
     isTmdbProvider && episodes && seasonNumber !== undefined && episodes[Number(seasonNumber)]
       ? episodes[Number(seasonNumber)]
       : episodes;
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [currentServer]);
   return (
     <>
       <div className='flex w-auto flex-col md:w-[50vw]'>
@@ -76,7 +84,7 @@ const VideoPlayer = ({
           viewType='video'
           streamType='on-demand'
           logLevel='warn'
-          poster={thumbnail}
+          poster={poster}
           playsInline
           autoPlay
           keyTarget='document'
@@ -106,7 +114,7 @@ const VideoPlayer = ({
                   default={index === 0}
                 />
               ))}
-            <Poster src={thumbnail} className='vds-poster object-contain' />
+            <Poster src={poster} className='vds-poster object-contain' />
           </MediaProvider>
 
           <Controls.Root className='vds-controls'>
@@ -185,6 +193,7 @@ const VideoPlayer = ({
             </Accordion>
           ) : null
         )}
+        <ServerSelector initialServer={currentServer} />
       </div>
       <div className='md:w-[40%]'>
         <EpisodeListSidebar

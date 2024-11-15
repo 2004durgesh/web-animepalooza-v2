@@ -29,7 +29,7 @@ const EpisodeListSidebar = ({
         <div className='flex flex-col gap-4'>
           {episodes &&
             episodes.map((episode, index) => {
-              const queryParams = `title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&thumbnail=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episodeNumber=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}&seasonNumber=${encodeURIComponent(seasonNumber) || ''}`;
+              const queryParams = `title=${encodeURIComponent(episode?.title ?? info?.title?.english ?? info?.title)}&poster=${encodeURIComponent(episode?.image ?? episode?.img?.hd ?? info?.cover ?? info?.image)}&episodeNumber=${encodeURIComponent((episode?.number ?? episode?.episode) || '')}&seasonNumber=${encodeURIComponent(seasonNumber) || ''}`;
 
               const encryptedParams = encryptData(queryParams, process.env.NEXT_PUBLIC_CRYPTO_KEY);
               return (

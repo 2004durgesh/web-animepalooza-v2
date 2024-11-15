@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
-import fetchData from '@/components/Datafetcher';
+import fetchData from '@/lib/Datafetcher';
 import ContentList from '@/components/ContentList';
 
-const page = async ({ params }) => {
+const SearchPage = async ({ params }) => {
   let services =
     params.services === 'anime' || params.services === 'manga' || params.provider === 'tmdb'
       ? 'meta'
@@ -35,4 +35,4 @@ const page = async ({ params }) => {
   );
 };
 
-export default page;
+export default SearchPage;
